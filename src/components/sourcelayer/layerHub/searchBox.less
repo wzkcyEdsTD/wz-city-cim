@@ -1,0 +1,89 @@
+.search-box {
+    display: inline-flex;
+    position: relative;
+
+    .result-wrapper {
+        position: absolute;
+        width: 30vh;
+        top: 4vh;
+        left: 0.4vh;
+        background-color: rgba(0, 0, 255, .2);
+        border: 1px solid rgba(0, 0, 255, 0.8);
+        border-radius: 1vh;
+
+        >.result-no-result{
+            text-align: center;
+            color: white;
+            padding: 1vh 0;
+        }
+        >.result-list {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 14vh;
+            box-sizing: border-box;
+            padding: 0 1vh;
+
+            &::-webkit-scrollbar {
+                width: 5px;
+                background: rgba(1, 41, 38, .3);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #2a51fe;
+                box-shadow: 0px 3px 6px 0px #012623;
+            }
+
+            >.result-item {
+                font-weight: 300;
+                color: white;
+                font-size: 1.4vh;
+                padding: 1vh 0;
+                border-bottom: 1px solid rgba(255, 255, 255, .2);
+                &:last-child{
+                    border-bottom: 0px;
+                }
+            }
+        }
+    }
+
+    .searchHeader {
+        margin: 0vh 0.4vh;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 1.6vh;
+        border-radius: 2vh;
+        background-color: rgba(0, 0, 255, 0.2);
+        border: 1px solid rgba(0, 0, 255, 0.8);
+        width: 30vh;
+
+        .searchFilterInput {
+            flex: 1;
+
+            .el-input__inner {
+                background: none;
+                border: none;
+                color: white;
+                padding: 0 1vh;
+                height: 2.8vh;
+            }
+        }
+
+        .icon-common {
+            display: inline-block;
+            width: 2.4vh;
+            height: 2.4vh;
+        }
+
+        .icon-clear {
+            .bg-image('/static/images/common/clear');
+            cursor: pointer;
+        }
+
+        .icon-search {
+            .bg-image('/static/images/common/search2');
+        }
+
+    }
+
+}
