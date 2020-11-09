@@ -12,9 +12,11 @@
       <img src="/static/images/mode-ico/camera-ico@2x.png" />
       <span>{{ cameraLabel }}</span>
     </div>
-    <div class="btn" @click="gridImageShow = !gridImageShow">
-      <img src="/static/images/icons/station-in.png" />
-      <span>{{ gridImageShow ? "取消" : "叠加" }}网格</span>
+    <div class="btn">
+      <InfoSource />
+    </div>
+    <div class="btn">
+      <GridSource />
     </div>
     <SearchBox ref="searchBox" />
   </div>
@@ -22,6 +24,8 @@
 
 <script>
 import SearchBox from "components/sourcelayer/layerHub/searchBox";
+import GridSource from "./GridSource";
+import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
 import { mapGetters, mapActions } from "vuex";
 import { CenterPoint, CenterPoint2D } from "mock/overview.js";
@@ -38,6 +42,8 @@ export default {
   },
   components: {
     SearchBox,
+    GridSource,
+    InfoSource,
   },
   computed: {
     ...mapGetters("map", ["cameraMode"]),
@@ -48,9 +54,6 @@ export default {
   watch: {
     cameraMode(n) {
       this.cameraMove();
-    },
-    gridImageShow(n) {
-      this.doGridImage();
     },
   },
   methods: {
@@ -83,33 +86,5 @@ export default {
 </script>
 
 <style lang="less">
-.scene-switch {
-  position: absolute;
-  height: auto;
-  top: 9vh;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  cursor: pointer;
-  * {
-    vertical-align: middle;
-  }
-  .btn {
-    display: inline-block;
-    padding: 0.4vh 1vh;
-    background: rgba(89, 123, 235, 1);
-    color: #ffffff;
-    border-radius: 2vh;
-    margin: 0vh 0.4vh;
-    > * {
-      vertical-align: middle;
-    }
-    > img {
-      height: 2.2vh;
-    }
-    > span {
-      font-size: 1.6vh;
-    }
-  }
-}
+@import url("./SceneSwitch.less");
 </style>

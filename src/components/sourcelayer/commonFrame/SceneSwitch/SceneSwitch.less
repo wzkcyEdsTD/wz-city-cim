@@ -1,0 +1,89 @@
+.scene-switch {
+  position: absolute;
+  height: auto;
+  top: 9vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  cursor: pointer;
+
+  * {
+    vertical-align: middle;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0 1vh;
+    background: rgba(89, 123, 235, 1);
+    color: #ffffff;
+    border-radius: 2vh;
+    margin: 0vh 0.4vh;
+    height: 3vh;
+    line-height: 2.6vh;
+
+    >* {
+      vertical-align: middle;
+    }
+
+    >img {
+      height: 2.2vh;
+    }
+
+    >span {
+      display: inline-block;
+      font-size: 1.6vh;
+    }
+
+    >.map-popup-frame {
+      .el-popover {
+        margin-top: 3vh;
+        padding: 0.8vh;
+        background: rgba(15, 9, 47, 0.6);
+        border: 1px solid rgba(28, 80, 255, 0.6);
+
+        .source-tree {
+          .el-tree {
+            background-color: unset;
+            color: rgba(255, 255, 255, 0.6);
+
+            .el-tree-node__content:hover {
+              background: none;
+            }
+
+            //  tree字体
+            .el-tree-node__content {
+              color: rgba(255, 255, 255, 0.8);
+            }
+
+            //  checkbox样式
+
+            .el-checkbox__input.is-checked .el-checkbox__inner {
+              background-color: #3AACD6;
+              border-color: #2758c6;
+            }
+
+            //  展开图标
+            .el-tree-node__expand-icon {
+              color: #445baa;
+              font-size: 18px;
+            }
+
+            .el-tree-node__expand-icon.is-leaf {
+              color: transparent;
+            }
+          }
+        }
+      }
+
+      .el-button {
+        background: unset;
+        border: none;
+        color: white;
+        padding: 0;
+        display: block;
+        height: 100%;
+        line-height: 2.4vh;
+      }
+    }
+  }
+}

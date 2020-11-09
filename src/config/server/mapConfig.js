@@ -6,6 +6,7 @@
  * @Description:
  * @FilePath: \wz-city-culture-tour\src\config\server\mapConfig.js
  */
+const _GRID_SOURCE_HOST_ = "https://ditu.wzcitybrain.com/iserver/services/map-wangge/rest/maps/";
 export const ServiceUrl = {
   //  温州全市域白模
   WZBaimo: [{
@@ -60,7 +61,21 @@ export const ServiceUrl = {
   //  大数据底图
   DataImage:
     "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DSJCGS2000SW/rest/realspace/datas/DSJ_CGS2000_SW",
-  GridImage: "https://ditu.wzcitybrain.com/iserver/services/map-wangge/rest/maps/%E9%B9%BF%E5%9F%8E%E6%9D%91%E7%A4%BE%E7%BD%91%E6%A0%BC",
+  GridSource: [{
+    label: "鹿城区",
+    children: [
+      { label: "鹿城网格", id: "lc_grid" },
+      { label: "鹿城街镇", id: "lc_town" },
+      { label: "鹿城村社", id: "lc_village" }
+    ].map(v => { return { ...v, url: _GRID_SOURCE_HOST_ + v.label } })
+  }, {
+    label: "经济技术开发区",
+    children: [
+      { label: "经开网格", id: "jk_grid" },
+      { label: "经开街镇", id: "jk_town" },
+      { label: "经开村社", id: "jk_village" }
+    ].map(v => { return { ...v, url: _GRID_SOURCE_HOST_ + v.label } })
+  }],
   // 全市域地形
   YJDem:
     "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DEMLC/rest/realspace/datas/DEM_LC",

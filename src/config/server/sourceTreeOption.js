@@ -16,10 +16,10 @@ const MEDICAL_TOPIC = [
     label: "医疗场所",
     dataset: "JZJZNL_YLJH_JHCS_LC",
     // dataset: "JZJZNL_YLJH_JHCS",
-    withExtraData: "medicalList",
-    withExtraDataGeometry: "medicalListWithGeometry",
-    saveExtraDataByGeometry: "setMedicalListWithGeometry",
-    withExtraKey: "SHORTNAME",
+    // withExtraData: "medicalList",
+    // withExtraDataGeometry: "medicalListWithGeometry",
+    // saveExtraDataByGeometry: "setMedicalListWithGeometry",
+    // withExtraKey: "SHORTNAME",
   },
   { label: "派出所", dataset: "PoliceStation" },
 ];
@@ -335,6 +335,19 @@ export const CESIUM_TREE_TRAFFIC_OPTION = [{
       icon: v.label,
       url: SERVER_DEFAULT_DATA,
       type: v.type || "mvt",
+      newdataset: `${SW_DATA_NAME}${v.dataset}`
+    };
+  })
+}]
+export const CESIUM_TREE_SOURCE_OPTION = [{
+  label: "资源信息",
+  children: MEDICAL_TOPIC.map(v => {
+    return {
+      ...v,
+      id: v.label,
+      icon: v.label,
+      url: SERVER_DEFAULT_DATA,
+      type: "mvt",
       newdataset: `${SW_DATA_NAME}${v.dataset}`
     };
   })

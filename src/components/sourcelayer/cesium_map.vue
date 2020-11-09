@@ -14,13 +14,12 @@
       <DetailPopup ref="detailPopup" />
     </div>
     <!-- 模块切换 -->
-    <LayerHub ref="layerHub" />
-    <!-- 视角切换 -->
-    <SceneSwitch />
+    <!-- <LayerHub ref="layerHub" /> -->
     <!-- 功能组件 -->
     <div v-if="mapLoaded && validated">
+      <SceneSwitch />
       <RoadLine ref="roadline" />
-      <VideoCircle ref="videoCircle" />
+      <!-- <VideoCircle ref="videoCircle" /> -->
       <RtmpVideo />
       <Population />
     </div>
@@ -83,10 +82,8 @@ export default {
     window.billboardMap = {};
     //  点位label hash
     window.labelMap = {};
-    //  特殊信息 hash
-    window.entityMapGeometry = {};
-    //  路人
-    window.walkMans = {};
+    //  网格信息
+    window.gridMap = {};
   },
   async mounted() {
     await this.init3DMap(() => {
