@@ -17,6 +17,13 @@
           <header>突发事件<span /></header>
           <p>车站大道，发生火灾事件</p>
         </div>
+        <div class="blue-line"></div>
+        <div class="around-people">
+          <header>周边实时人口</header>
+          <p>范围：500米</p>
+          <p>人数：{{ aroundPopulation.data || "-" }}人</p>
+          <p>时间：{{ aroundPopulation.task_time || "-" }}</p>
+        </div>
       </div>
     </div>
     <div
@@ -34,15 +41,20 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import VideoSingle from "./videoSingle";
-import { getRtmpVideoList, getRtmpVideoURL } from "api/cityBrainAPI";
+import {
+  getRtmpVideoList,
+  getRtmpVideoURL,
+  getPopulation,
+} from "api/cityBrainAPI";
 const Cesium = window.Cesium;
 
 export default {
   data() {
     return {
       shallPop: false,
-      geometry: { lng: 120.67981080700007, lat: 28.01218421800008 },
+      geometry: { lng: 120.66743, lat: 28.011360000000002 },
       queryRadius: 200,
+      aroundPopulation: {},
       item: {},
       entitiesID: [],
       rtmpOn: true,
@@ -54,8 +66,10 @@ export default {
   },
   components: { VideoSingle },
   mounted() {
-    this.doDraw();
     this.eventRegsiter();
+    setTimeout(() => {
+      this.doDraw();
+    }, 2500);
   },
   methods: {
     ...mapActions("map", ["SetRtmpListOther"]),
@@ -84,11 +98,12 @@ export default {
         ...data,
       };
     },
-    doDraw() {
+    async doDraw() {
       this.removeVideoCircle();
       this.shallPop = true;
       this.doPopup();
       this.drawVideoCircle(this.geometry, this.queryRadius);
+      this.aroundPopulation = await getPopulation(this.geometry);
     },
     doPopup() {
       let position = Cesium.Cartesian3.fromDegrees(
@@ -319,6 +334,41 @@ export default {
           height: 3.2vh;
           width: 3.2vh;
         }
+      }
+      > p {
+        margin-top: 0.6vh;
+        font-size: 1.4vh;
+        line-height: 1.4vh;
+      }
+    }
+    > .blue-line {
+      background-image: url(/static/images/common/blueline.png);
+      background-size: 100% 100%;
+      height: 10vh;
+      width: 6vh;
+      bottom: 8vh;
+      position: absolute;
+      left: 50%;
+      transform: scaleX(-1) translateX(6vh);
+    }
+    > .around-people {
+      position: absolute;
+      top: -8vh;
+      width: 23vh;
+      left: -22vh;
+      color: white;
+      border: 1px solid blue;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 81, 255, 0.6),
+        rgba(0, 0, 0, 0.6)
+      );
+      padding: 1vh 2vh 2vh;
+      text-align: left;
+      > header {
+        font-size: 2.2vh;
+        line-height: 2.2vh;
+        font-family: YouSheBiaoTiHei;
       }
       > p {
         margin-top: 0.6vh;

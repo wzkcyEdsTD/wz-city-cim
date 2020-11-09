@@ -52,7 +52,7 @@ export const getRtmpVideoURL = mp_id => {
  * @param {*} token
  */
 export const getPopulation = geometry => {
-  return getAxios("100007059", { ...geometry, type: 2 });
+  return getAxios("100007059", { ...geometry, type: 2,radius:100 });
 };
 /**
  * [概览]已接入健康数据共享平台的医疗机构数	100002050

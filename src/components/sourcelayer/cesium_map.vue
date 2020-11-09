@@ -19,7 +19,7 @@
     <div v-if="mapLoaded && validated">
       <SceneSwitch />
       <RoadLine ref="roadline" />
-      <!-- <VideoCircle ref="videoCircle" /> -->
+      <VideoCircle ref="videoCircle" />
       <RtmpVideo />
       <Population />
     </div>
