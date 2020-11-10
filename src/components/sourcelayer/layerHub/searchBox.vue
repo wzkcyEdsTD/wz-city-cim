@@ -50,11 +50,12 @@
 import { mapGetters, mapActions } from "vuex";
 import { getAddressList } from "api/addressAPI";
 const Cesium = window.Cesium;
-
+const iconId = "address-location";
 export default {
   name: "searchBox",
   data() {
     return {
+      iconId,
       searchBoxResult: false,
       searchText: "",
       searchResult: [],
@@ -75,6 +76,7 @@ export default {
       this.searchText = "";
       this.searchResult = [];
       this.toogleVisible(false);
+      window.earth.entities.removeById(this.iconId);
     },
     async searchFilter() {
       if (!this.searchText) return;
@@ -82,7 +84,7 @@ export default {
       this.searchResult = records;
       this.toogleVisible(true);
     },
-    resultCheck({ lng, lat }) {
+    resultCheck({ lng, lat, result }) {
       window.earth.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(lng, lat - 0.005, 450),
         orientation: {
@@ -91,7 +93,33 @@ export default {
           roll: 0.0,
         },
         maximumHeight: 450,
+        duration : 1
       });
+      window.earth.entities.removeById(this.iconId);
+      const addressLocationEntity = new Cesium.Entity({
+        id: this.iconId,
+        position: Cesium.Cartesian3.fromDegrees(Number(lng), Number(lat), 4),
+        geometry: { lng, lat },
+        billboard: {
+          image: "/static/images/common/address-location.png",
+          width: 36,
+          height: 45,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+        label: {
+          text: result,
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLUE,
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          font: "11px",
+          scale: 1,
+          outlineWidth: 2,
+          pixelOffset: new Cesium.Cartesian2(0, -40),
+          scaleByDistance: new Cesium.NearFarScalar(5000, 1, 10000, 0.5),
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+      });
+      window.earth.entities.add(addressLocationEntity);
     },
   },
 };
