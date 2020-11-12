@@ -30,7 +30,7 @@ export default {
   height: 14vh;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 4;
   > span {
     position: fixed;
     left: 50%;

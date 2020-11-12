@@ -4,15 +4,12 @@
     <div class="cesium-map">
       <cesium-map ref="cesiumMap" />
     </div>
-    <div class="mask-wrapper">
-      <div class="left"></div>
-      <div class="right"></div>
-      <!-- <div class="bottom"></div> -->
-    </div>
+    <panel />
   </div>
 </template>
 <script>
 import CesiumMap from "components/sourcelayer/cesium_map";
+import Panel from "components/sourcelayer/panel/Panel";
 import LayerHeader from "./layerHeader";
 import { mapGetters, mapActions } from "vuex";
 
@@ -27,6 +24,7 @@ export default {
   components: {
     CesiumMap,
     LayerHeader,
+    Panel,
   },
 };
 </script>
@@ -53,48 +51,6 @@ export default {
   }
   .tree {
     overflow: auto;
-  }
-}
-
-.mask-wrapper {
-  position: relative;
-  .left {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20vh;
-    height: 100%;
-    background-image: linear-gradient(
-      90deg,
-      rgba(0, 13, 26, 0.84) 0%,
-      rgba(0, 17, 34, 0.55) 40%,
-      rgba(0, 19, 38, 0) 100%
-    );
-  }
-  .right {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 20vh;
-    height: 100%;
-    background-image: linear-gradient(
-      270deg,
-      rgba(0, 13, 26, 0.84) 0%,
-      rgba(0, 17, 34, 0.55) 40%,
-      rgba(0, 19, 38, 0) 100%
-    );
-  }
-  .bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 14vh;
-    background-image: linear-gradient(
-      0deg,
-      #031d38 0%,
-      rgba(0, 29, 59, 0.64) 61%,
-      rgba(3, 45, 62, 0) 100%
-    );
   }
 }
 </style>

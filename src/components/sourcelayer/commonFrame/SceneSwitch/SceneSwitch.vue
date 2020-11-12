@@ -48,7 +48,7 @@ export default {
   computed: {
     ...mapGetters("map", ["cameraMode"]),
     cameraLabel() {
-      return this.cameraMode ? "2D" : "3D";
+      return this.cameraMode ? "三维" : "2.5维";
     },
   },
   watch: {
@@ -79,6 +79,13 @@ export default {
       window.earth.camera.flyTo({
         ...(this.cameraMode ? this.CenterPoint2D : this.CenterPoint),
         duration: 1,
+      });
+      window.datalayer.show = !this.cameraMode;
+      window.wmts25d.show = this.cameraMode;
+      window.earth.scene.bloomEffect.show = !this.cameraMode;
+      window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
+      ServiceUrl.WZBaimo.map(({ KEY }) => {
+        window.earth.scene.layers.find(KEY).visible = !this.cameraMode;
       });
     },
   },

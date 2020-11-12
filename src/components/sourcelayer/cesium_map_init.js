@@ -9,7 +9,6 @@ export const mapConfigInit = () => {
     // window.earth.scene.globe.depthTestAgainstTerrain = false;
     // window.earth.scene.debugShowFramesPerSecond = true;
     window.earth.clock.currentTime.secondsOfDay = 39279.36380499996
-    // window.earth.scene.fxaa = true;
     window.earth.scene.sun.show = true;
     window.earth.scene.bloomEffect.show = true;
     window.earth.scene.bloomEffect.bloomDirtTexIntensity = 0.4
@@ -40,6 +39,30 @@ export const mapMvtLayerInit = (name, url) => {
 }
 
 /**
+ * wmts 2.5d
+ * @param {*} name 
+ * @param {*} url 
+ */
+export const mapWmtsLayerInit = (name, url) => {
+    const matrixIds = [];
+    for (let i = 0; i < 20; ++i) {
+        matrixIds[i] = i + 1;
+    }
+    return window.earth.imageryLayers.addImageryProvider(new Cesium.WebMapTileServiceImageryProvider({
+        url,
+        name,
+        layer: '3dmap',
+        style: "default",
+        format: "image/png",
+        tileMatrixSetID: "custom_3dmap",
+        tileMatrixLabels: matrixIds,
+        tilingScheme: new Cesium.GeographicTilingScheme({
+            numberOfLevelZeroTilesX: 2
+        }),
+    }));
+}
+
+/**
  * 水面叠加
  * @param {*} name 
  * @param {*} url 
@@ -52,7 +75,6 @@ export const mapRiverLayerInit = (name, url) => {
             LAYER.style3D.bottomAltitude = 0;
             LAYER.refresh();
             LAYER.visibleDistanceMax = 2000;
-            // LAYER.visible = false;
             resolve(true)
         });
     })
@@ -131,9 +153,6 @@ export const mapBaimoLayerInit = (arrURL) => {
                 LAYER.indexedDBSetting.isGeoTilesRootNodeSave = true;
                 LAYER.residentRootTile = true;
                 LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
-                // LAYER.style3D.fillStyle = Cesium.FillStyle.Fill_And_WireFrame;
-                // LAYER.style3D.lineColor = new Cesium.Color.fromCssColorString("rgba(0,0,255, 0.15)");
-                // LAYER.style3D.lineWidth = 1;
                 const hyp = new Cesium.HypsometricSetting();
                 const colorTable = new Cesium.ColorTable();
                 hyp.MaxVisibleValue = 300;
@@ -142,13 +161,9 @@ export const mapBaimoLayerInit = (arrURL) => {
                 colorTable.insert(160, new Cesium.Color(0.95, 0.95, 0.95));
                 colorTable.insert(76, new Cesium.Color(0.7, 0.7, 0.7));
                 colorTable.insert(0, new Cesium.Color(20 / 255, 28 / 255, 64 / 255));
-                // colorTable.insert(0, new Cesium.Color(0, 0, 0));
                 hyp.ColorTable = colorTable;
                 hyp.DisplayMode = Cesium.HypsometricSettingEnum.DisplayMode.FACE;
                 hyp.Opacity = 1;
-                //  贴图纹理
-                // hyp.emissionTextureUrl = "/static/images/area/speedline.png";
-                // hyp.emissionTexCoordUSpeed = 0.2;
                 LAYER.hypsometricSetting = {
                     hypsometricSetting: hyp,
                     analysisMode:

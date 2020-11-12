@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       shallPop: false,
-      geometry: { lng: 120.66743, lat: 28.011360000000002 },
+      geometry: { lng: 120.67743, lat: 28.011360000000002 },
       queryRadius: 200,
       aroundPopulation: {},
       item: {},

@@ -61,6 +61,7 @@ export const ServiceUrl = {
   //  大数据底图
   DataImage:
     "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DSJCGS2000SW/rest/realspace/datas/DSJ_CGS2000_SW",
+  //  网格图
   GridSource: [{
     label: "鹿城区",
     children: [
@@ -76,6 +77,8 @@ export const ServiceUrl = {
       { label: "经开村社", id: "jk_village" }
     ].map(v => { return { ...v, url: _GRID_SOURCE_HOST_ + v.label } })
   }],
+  //  wmts 2.5d
+  WmtsImage: "http://61.164.104.154:80/iserver/services/3dmap/wmts",
   // 全市域地形
   YJDem:
     "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DEMLC/rest/realspace/datas/DEM_LC",
