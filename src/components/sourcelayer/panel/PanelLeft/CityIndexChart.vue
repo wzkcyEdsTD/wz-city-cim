@@ -2,12 +2,12 @@
   <div class="city-index-chart">
     <header class="ph-left">城市运行信息监控</header>
     <ul class="city-index-ul">
-      <li v-for="(item, i) in dataInfo" :key="i + item.k">
-        <img :src="`/static/images/panel/left/${item.k}@2x.png`" />
+      <li v-for="(value, key, i) in dataInfo" :key="i + key">
+        <img :src="`/static/images/panel/left/${key}@2x.png`" />
         <div>
-          <p>{{ item.k }}</p>
+          <p>{{ key }}</p>
           <p>
-            {{ item.v }}<i>{{ item.u }}</i>
+            {{ value.v }}<i>{{ value.u }}</i>
           </p>
         </div>
       </li>
@@ -16,19 +16,31 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "cityIndexChart",
   data() {
     return {
-      dataInfo: [
-        { k: "事件数", v: "14", u: "" },
-        { k: "人口数", v: "13", u: "万" },
-        { k: "特殊人员", v: "632", u: "" },
-        { k: "房屋数", v: "5320", u: "" },
-        { k: "网格数", v: "132", u: "" },
-        { k: "楼栋数", v: "3.2", u: "万" },
-      ],
+      dataInfo: {
+        事件数: { v: "-", u: "" },
+        人口数: { v: "13", u: "万" },
+        特殊人员: { v: "632", u: "" },
+        房屋数: { v: "5320", u: "" },
+        网格数: { v: "132", u: "" },
+        楼栋数: { v: "3.2", u: "万" },
+      },
     };
+  },
+  computed: {
+    ...mapGetters("map", ["eventList"]),
+  },
+  watch: {
+    eventList: {
+      handler(n) {
+        this.dataInfo = { ...this.dataInfo, 事件数: { v: n.length, u: "" } };
+      },
+      deep: true,
+    },
   },
 };
 </script>

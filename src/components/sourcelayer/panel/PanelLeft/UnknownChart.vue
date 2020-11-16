@@ -1,19 +1,36 @@
 <template>
   <div class="unknown-chart">
-    <header class="ph-left">unknown</header>
+    <header class="ph-left">重点人员分布</header>
     <chart-core chartId="unknown-chart" :option="option" />
   </div>
 </template>
 
 <script>
 import ChartCore from "../Chart/ChartCore";
-import option from "../Chart/Options/test";
+import option from "../Chart/Options/unknown";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "unknownChart",
   data() {
     return { option };
   },
   components: { ChartCore },
+  async created() {
+    const result = await this.getAllKindsList();
+    console.log(result);
+    this.updateChartOption(result);
+  },
+  methods: {
+    ...mapActions("map", ["getAllKindsList"]),
+    updateChartOption(result) {
+      const yAxisData = Object.keys(result);
+      const seriesData = yAxisData.map((v) => result[v].rows.length);
+      const option = JSON.parse(JSON.stringify(this.option));
+      option.yAxis.data = yAxisData;
+      option.series[0].data = seriesData;
+      this.option = option;
+    },
+  },
 };
 </script>
 

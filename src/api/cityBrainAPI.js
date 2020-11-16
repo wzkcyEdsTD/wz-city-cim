@@ -54,35 +54,3 @@ export const getRtmpVideoURL = mp_id => {
 export const getPopulation = geometry => {
   return getAxios("100007059", { ...geometry, type: 2,radius:100 });
 };
-/**
- * [概览]已接入健康数据共享平台的医疗机构数	100002050
- * [先不用,数据为0]
- */
-export const getWzAllMedicalInstitution = () => {
-  return getAxios("100002050");
-};
-/**
- * [概览]当日实时门诊人次 100002034
- * @param {string} areaCode 区域代码 暂不明确
- */
-export const getWzAllOutpatientCount = () => {
-  return getAxios("100002034", { areaCode: "330300000000" });
-};
-/**
- * [概览]定点医院家数	100004121
- */
-export const getWzAllDesignatedHospitals = () => {
-  return getAxios("100004121");
-};
-/**
- * [概览]医保参保单位数	100005051
- */
-export const getWzAllMedicalInsuranceInstitution = () => {
-  return getAxios("100005051");
-};
-/**
- * [概览]	医保支付额	100004125
- */
-export const getWzAllMedicalInsurancePayment = () => {
-  return getAxios("100004125");
-};

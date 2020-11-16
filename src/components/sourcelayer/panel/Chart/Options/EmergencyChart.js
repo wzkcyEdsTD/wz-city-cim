@@ -26,7 +26,7 @@ export default {
     xAxis: {
         type: "category",
         boundaryGap: false,
-        data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月",],
+        data: [],
         axisLine: {
             lineStyle: {
                 color: "rgba(255, 255, 255, 0.5)",
@@ -59,20 +59,7 @@ export default {
         name: "突发事件",
         type: "line",
         smooth: true,
-        data: [
-            80,
-            35,
-            14,
-            55,
-            86,
-            122,
-            24,
-            55,
-            61,
-            56,
-            55,
-            86
-        ],
+        data: [],
         itemStyle: { color: "#fc5453", },
         lineStyle: { color: "#fc5453", },
         areaStyle: {

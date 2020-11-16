@@ -9,7 +9,7 @@ export default {
   props: ["option", "chartId"],
   watch: {
     option(n) {
-      this.chart.setOption(value, true);
+      this.chart.setOption(n, true);
     },
   },
   mounted() {

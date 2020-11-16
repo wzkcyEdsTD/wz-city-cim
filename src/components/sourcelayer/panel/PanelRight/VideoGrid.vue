@@ -2,8 +2,8 @@
   <div class="video-grid">
     <header class="ph-right">重点道路监控</header>
     <ul class="video-grid-ul">
-      <li v-for="(item, i) in videoList" :key="i + item">
-        <Video :index="i" :mp_id="item" />
+      <li v-for="(item, i) in videoList" :key="i + item.mp_id">
+        <Video :index="i" :mp_id="item.mp_id" :mp_name="item.mp_name" />
       </li>
     </ul>
   </div>
@@ -11,19 +11,27 @@
 
 <script>
 import Video from "./Video/Video";
+import { getRtmpVideoList } from "api/cityBrainAPI";
+
 export default {
   name: "videoGrid",
   data() {
     return {
-      videoList: [
-        "122213000100000131003310", //  物华天宝
-        "122213000100000166002823", //
-        "122225000100000001000760", //  特警桥公交站头西
-        "122225000100001509000349", //  民航路体育场东侧
-      ],
+      geometry: { lng: 120.67743, lat: 28.011360000000002 },
+      queryRadius: 200,
+      videoList: [],
     };
   },
   components: { Video },
+  mounted() {
+    this.fetchVideoList();
+  },
+  methods: {
+    async fetchVideoList() {
+      const { data } = await getRtmpVideoList(this.geometry, this.queryRadius);
+      this.videoList = data.splice(4, 4);
+    },
+  },
 };
 </script>
 

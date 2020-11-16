@@ -4,14 +4,14 @@
     <div class="emergency-list-ul">
       <header>
         <span>网格</span>
-        <span>地址</span>
         <span>事件</span>
+        <span>日期</span>
       </header>
       <ul>
-        <li v-for="(item, i) in emergencyList" :key="i + item.g">
-          <span>{{ item.g }}</span>
-          <span>{{ item.a }}</span>
-          <span>{{ item.t }}</span>
+        <li v-for="(item, i) in eventList" :key="i" :title="item.SUBJECT">
+          <span>{{ item.OCCURORG }}</span>
+          <span>{{ item.SUBJECT }}</span>
+          <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span>
         </li>
       </ul>
     </div>
@@ -19,21 +19,20 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "emergencyList",
   data() {
-    return {
-      emergencyList: [
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-        { g: "xxx", a: "蒲鞋市街道学院中路288号", t: "纠纷" },
-      ],
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters("map", ["eventList"]),
+  },
+  created() {
+    this.getEventList();
+  },
+  methods: {
+    ...mapActions("map", ["getEventList"]),
   },
 };
 </script>
@@ -43,7 +42,7 @@ export default {
   height: 26vh;
   .emergency-list-ul {
     flex: 1;
-    color: #c9c9c9;
+    color: #fff;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -59,7 +58,7 @@ export default {
       overflow-x: hidden;
       overflow-y: auto;
       &::-webkit-scrollbar {
-        width: 5px;
+        width: 4px;
         background: rgba(1, 41, 38, 0.3);
       }
 
@@ -79,6 +78,7 @@ export default {
           background-color: rgba(29, 77, 155, 0.4);
         }
         > span {
+          font-size: 1.5vh;
           &:last-child {
             color: #fc5453;
           }
@@ -88,7 +88,7 @@ export default {
     span {
       display: inline-block;
       box-sizing: border-box;
-      padding: 0 0.8vh;
+      padding: 0 0.6vh;
       &:first-child {
         width: 8vh;
       }
@@ -99,7 +99,7 @@ export default {
         overflow: hidden;
       }
       &:last-child {
-        width: 6vh;
+        width: 11vh;
       }
     }
   }

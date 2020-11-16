@@ -11,56 +11,8 @@ import { type } from "jquery";
 import * as types from "./mutation-types";
 
 const mutations = {
-  [types.SET_WZ_EMERGENCY_DATA](state, data) {
-    state.WzEmergencyData = data;
-  },
-  [types.SET_WZ_BASIC_DATA](state, data) {
-    state.WzBasicData = data;
-  },
-  [types.SET_WZ_SOURCE_DATA](state, data) {
-    state.WzSourceData = data;
-  },
-  [types.SET_WZ_TOUR_DATA](state, data) {
-    state.WzTourData = data;
-  },
-  [types.SET_WZ_CULTURE_DATA](state, data) {
-    state.WzCultureData = data;
-  },
-  [types.SET_WZ_TRAFFIC_DATA](state, data) {
-    state.WzTrafficData = data;
-  },
-  [types.SET_WZ_OVERVIEW_dATA](state, data) {
-    state.WzOverviewData = data;
-  },
-  [types.SET_WZ_MEDICAL_DATA](state, data) {
-    state.WzMedicalData = data;
-  },
-  [types.SET_HOSPITAL_LIST](state, data) {
-    state.hospitalList = data;
-  },
-  [types.SET_MEDICAL_LIST_WITH_GEOMETRY](state, data) {
-    state.medicalListWithGeometry = data;
-  },
-  [types.SET_MEDICAL_LIST](state, data) {
-    state.medicalList = data;
-  },
-  [types.SET_STATION_LIST_WITH_GEOMETRY](state, data) {
-    state.stationListWithGeometry = data;
-  },
-  [types.SET_STATION_LIST](state, data) {
-    state.stationList = data;
-  },
-  [types.SET_BAYONET_LIST_WITH_GEOMETRY](state, data) {
-    state.bayonetListWithGeometry = data;
-  },
-  [types.SET_BAYONET_LIST](state, data) {
-    state.bayonetList = data;
-  },
-  [types.SET_TOUR_POINT_LIST_WITH_GEOMETRY](state, data) {
-    state.tourPointListWithGeometry = data;
-  },
-  [types.SET_TOUR_POINT_LIST](state, data) {
-    state.tourPointList = data;
+  [types.SET_EVENT_LIST](state, data) {
+    state.eventList = data;
   },
   [types.SET_RTMP_LIST](state, data) {
     state.rtmpList = data;

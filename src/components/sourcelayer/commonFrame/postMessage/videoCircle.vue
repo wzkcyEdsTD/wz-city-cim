@@ -144,11 +144,8 @@ export default {
      * @param {queryRadius!} 监控点查询半径
      */
     async drawVideoCircle({ lng, lat }, queryRadius = 200) {
-      // setTimeout(() => {
-      //   this.cameraMove({ lng, lat, queryRadius });
-      // }, 800);
       // 画圈
-      console.log("[drawVideoCircle]", lng, lat, queryRadius);
+      // console.log("[drawVideoCircle]", lng, lat, queryRadius);
       const circleEntity = new Cesium.Entity({
         position: Cesium.Cartesian3.fromDegrees(lng, lat, 4),
         ellipse: {

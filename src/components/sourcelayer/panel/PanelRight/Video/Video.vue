@@ -1,5 +1,6 @@
 <template>
   <div class="videoDemoPlayer">
+    <p>{{ mp_name }}</p>
     <div :id="`video_grid_${index}`" class="frequency-pic type1" />
     <div class="refresh-video">
       <img
@@ -20,7 +21,7 @@ export default {
       videoTimer: undefined,
     };
   },
-  props: ["mp_id", "index"],
+  props: ["mp_id", "mp_name", "index"],
   beforeDestroy() {
     this.destroyVideo();
   },
@@ -61,7 +62,7 @@ export default {
           useH5Prism: true,
         },
         (player) => {
-          console.log(this.mp_id, "播放器创建");
+          // console.log(this.mp_id, "播放器创建");
           player.mute();
           player.play();
           this.videoTimer = setInterval(() => {
@@ -83,16 +84,34 @@ export default {
   overflow: hidden;
   border-radius: 1vh;
   position: relative;
+  p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    z-index: 999;
+    line-height: 2.4vh;
+    font-size: 1.4vh;
+    box-sizing: border-box;
+    padding: 0 1.8vh 0 1vh;
+    color: white;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
   .refresh-video {
     position: absolute;
     top: 0;
     right: 0;
-    width: 4vh;
-    padding: 0.4vh;
+    width: 2.4vh;
+    padding: 0.2vh;
     background: rgba(0, 0, 0, 0.4);
     border-radius: 0 1vh;
     cursor: pointer;
-    z-index: 99;
+    z-index: 1000;
     > img {
       height: 100%;
       width: 100%;
