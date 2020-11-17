@@ -1,0 +1,109 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.6930466603751,
+                    28.010471604181248
+                ]
+            },
+            "properties": {
+                "SZSQ": "芳园社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.67488846153333,
+                    28.007707519886196
+                ]
+            },
+            "properties": {
+                "SZSQ": "横河社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.68177121147232,
+                    28.008369446093127
+                ]
+            },
+            "properties": {
+                "SZSQ": "蒋家桥社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.66745740123815,
+                    28.006233692031287
+                ]
+            },
+            "properties": {
+                "SZSQ": "金丝桥社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.68632727408453,
+                    28.005315481524292
+                ]
+            },
+            "properties": {
+                "SZSQ": "锦园社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.69284003214182,
+                    28.00540960726761
+                ]
+            },
+            "properties": {
+                "SZSQ": "绿园社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.67002525795931,
+                    28.010543227987625
+                ]
+            },
+            "properties": {
+                "SZSQ": "蒲鞋市社区"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    120.68745951514461,
+                    28.010447460082275
+                ]
+            },
+            "properties": {
+                "SZSQ": "青园社区"
+            }
+        }
+    ]
+}

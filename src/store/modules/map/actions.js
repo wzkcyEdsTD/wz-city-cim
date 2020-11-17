@@ -16,7 +16,6 @@ export const getEventList = async ({ commit }, data) => {
 //  设置各类人员信息
 export const getAllKindsList = async ({ commit }, data) => {
   const result = await CIM_API.getAllKindsList();
-  console.log(result);
   return result;
 }
 //  设置监控视频

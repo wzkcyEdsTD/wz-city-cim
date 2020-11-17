@@ -16,23 +16,36 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { switchHeatMap, doHeatMap } from "./HeatMap";
 export default {
   name: "panelBottom",
   data() {
     return {
-      forceKey: "k1",
+      forceKey: undefined,
       blocks: [
         { label: "管辖重点区", k: "k1" },
         { label: "人流集聚区", k: "k2" },
-        { label: "重点人员密集区", k: "k3" },
+        { label: "重点人员密集区", k: "k3", ava: true },
         { label: "矛盾纠纷高热区", k: "k4" },
         { label: "宗教活动高热区", k: "k5" },
       ],
     };
   },
+  computed: {
+    ...mapGetters("map", ["eventList"]),
+  },
+  watch: {
+    forceKey(n) {
+      this.doForceHeatMap();
+    },
+  },
   methods: {
     doBlockAnalyse({ k }) {
-      this.forceKey = k;
+      this.forceKey = this.forceKey == k ? undefined : k;
+    },
+    doForceHeatMap() {
+      switchHeatMap(this.blocks, this.forceKey, this.eventList);
     },
   },
 };

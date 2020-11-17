@@ -14,7 +14,7 @@
 const Cesium = window.Cesium;
 import PolylineTrailLinkMaterialProperty from "./PolylineTrailLink";
 import lines from "mock/Routes_data_YJ_FeaturesToJSO.json";
-import walls from "mock/XZQH_LuCheng_FeaturesTo.json";
+import walls from "mock/PXS_AREA.json";
 export default {
   data() {
     return {
@@ -23,7 +23,7 @@ export default {
   },
   async mounted() {
     this.eventRegsiter();
-    // this.drawWall();
+    this.drawWall();
     // this.addDynamicLine();
     this.addHaloLine();
     this.changeSkyBox("day");
@@ -143,16 +143,21 @@ export default {
         name: "wall",
         wall: {
           show: true,
+          // positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+          //   walls.features[0].geometry.rings[0]
+          //     .map((v) => [...v, 40])
+          //     .reduce((a, b) => a.concat(b))
+          // ), //  鹿城区划解析
           positions: Cesium.Cartesian3.fromDegreesArrayHeights(
-            walls.features[0].geometry.rings[0]
-              .map((v) => [...v, 40])
+            walls.features[0].geometry.coordinates[0]
+              .map((v) => [...v, 50])
               .reduce((a, b) => a.concat(b))
-          ),
+          ),  //  蒲鞋市街道解析
           material: new Cesium.ImageMaterialProperty({
             image: "/static/images/area/1.png",
             transparent: true,
             color: new Cesium.CallbackProperty(() => {
-              num % 2 === 0 ? (alp -= 0.01) : (alp += 0.01);
+              num % 2 === 0 ? (alp -= 0.005) : (alp += 0.005);
               alp <= 0.3 || alp >= 1 ? num++ : undefined;
               return Cesium.Color.WHITE.withAlpha(alp);
             }, false),

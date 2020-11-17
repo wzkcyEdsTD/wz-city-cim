@@ -22,6 +22,7 @@
       <VideoCircle ref="videoCircle" />
       <RtmpVideo />
       <Population />
+      <Overview ref="overview" />
     </div>
   </div>
 </template>
@@ -46,6 +47,7 @@ import {
 } from "components/sourcelayer/cesium_map_init";
 import { doValidation } from "api/validation/validation";
 import { mapGetters } from "vuex";
+import Overview from "./extraModel/Overview/Overview.vue";
 const Cesium = window.Cesium;
 
 export default {
@@ -61,9 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters("map", ["initDataLoaded", "forceTreeLabel"]),
-    isOverview() {
-      return this.showSubHubFrame == "3d1";
-    },
   },
   components: {
     LayerHub,
@@ -73,6 +72,7 @@ export default {
     Population,
     SceneSwitch,
     VideoCircle,
+    Overview,
   },
   created() {
     //  点位信息 hash
@@ -83,6 +83,8 @@ export default {
     window.labelMap = {};
     //  网格信息
     window.gridMap = {};
+    //  热力图信息
+    window.heatMap = {};
   },
   async mounted() {
     await this.init3DMap(() => {
@@ -97,7 +99,7 @@ export default {
       window.earth.scene.postRender.addEventListener(() => {
         if (!window.earth || !this.mapLoaded || !this.validated) return;
         //  *****[indexPoints]  城市总览指标*****
-        if (this.isOverview && this.$refs.overview.$refs.overviewNow) {
+        if (this.$refs.overview.$refs.overviewNow) {
           this.$refs.overview.$refs.overviewNow.doIndexPoints();
         }
         //  *****[videoCircle]  事件传递点位*****
@@ -171,6 +173,7 @@ export default {
       window.wmts25d.show = false;
       //  地图注记
       // const mapMvt = mapMvtLayerInit("mapMvt", ServiceUrl.YJMVT);
+      // const pxsMvt = mapMvtLayerInit("pxsMvt", ServiceUrl.PXSMVT);
       //  水面
       await mapRiverLayerInit("RIVER", ServiceUrl.STATIC_RIVER);
       //  白模叠加

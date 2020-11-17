@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       sourceURLs: CESIUM_TREE_SOURCE_OPTION,
-      forceNodeKeys: ["医疗场所", "派出所"],
+      forceNodeKeys: [],
     };
   },
   mounted() {

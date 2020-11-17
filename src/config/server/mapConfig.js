@@ -85,6 +85,7 @@ export const ServiceUrl = {
   // mvt矢量服务
   YJMVT:
     "https://ditu.wzcitybrain.com/iserver/services/map-mongodbMvt-XZQH3Q/restjsr/v1/vectortile/maps/XZQH_3Q",
+  PXSMVT: "https://ditu.wzcitybrain.com/iserver/services/map-PuXieShiCunShe/restjsr/v1/vectortile/maps/%E8%92%B2%E9%9E%8B%E5%B8%82%E6%9D%91%E7%A4%BE",
   //  重要地物注记
   KEYMVT: "https://ditu.wzcitybrain.com/iserver/services/map-mongodbMvt-ZhongYaoDiWu/restjsr/v1/vectortile/maps/ZhongYaoDiWu",
   //  全市区精模

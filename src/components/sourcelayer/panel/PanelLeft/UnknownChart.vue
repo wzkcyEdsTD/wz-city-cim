@@ -17,7 +17,6 @@ export default {
   components: { ChartCore },
   async created() {
     const result = await this.getAllKindsList();
-    console.log(result);
     this.updateChartOption(result);
   },
   methods: {

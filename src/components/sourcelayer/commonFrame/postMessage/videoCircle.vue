@@ -67,9 +67,9 @@ export default {
   components: { VideoSingle },
   mounted() {
     this.eventRegsiter();
-    setTimeout(() => {
-      this.doDraw();
-    }, 2500);
+    // setTimeout(() => {
+    //   this.doDraw();
+    // }, 2500);
   },
   methods: {
     ...mapActions("map", ["SetRtmpListOther"]),
@@ -276,8 +276,8 @@ export default {
   width: 13vh;
   height: 10vh;
   cursor: pointer;
-  background-image: url("/static/images/common/fire.gif");
-  background-size: 100% 100%;
+  // background-image: url("/static/images/common/fire.gif");
+  // background-size: 100% 100%;
   .popup-container {
     width: 100%;
     height: 100%;

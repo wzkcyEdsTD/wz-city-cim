@@ -1,21 +1,15 @@
 <template>
   <div>
-    <OverviewNOW ref="overviewNow" v-if="forceTime == 'now'" />
-    <OverviewPASS ref="overviewPass" v-if="forceTime == 'pass'" />
+    <OverviewNOW ref="overviewNow" />
   </div>
 </template>
 
 <script>
 import OverviewNOW from "./OverviewNOW";
-import OverviewPASS from "./OverviewPASS";
-import { mapGetters } from "vuex";
 
 export default {
   name: "Overview",
-  computed: {
-    ...mapGetters("map", ["forceTime"]),
-  },
-  components: { OverviewNOW, OverviewPASS },
+  components: { OverviewNOW },
 };
 </script>
 
