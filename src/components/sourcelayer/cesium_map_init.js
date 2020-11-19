@@ -34,8 +34,9 @@ export const mapImageLayerInit = (url) => {
  * @param {*} name 
  * @param {*} url 
  */
-export const mapMvtLayerInit = (name, url) => {
-    window.earth.scene.addVectorTilesMap({ url, name, viewer: window.earth });
+export const mapMvtLayerInit = (name, url, show = true) => {
+    const layer = window.earth.scene.addVectorTilesMap({ url, name, viewer: window.earth });
+    layer.show = show;
 }
 
 /**

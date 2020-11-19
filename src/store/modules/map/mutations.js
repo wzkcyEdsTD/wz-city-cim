@@ -11,8 +11,20 @@ import { type } from "jquery";
 import * as types from "./mutation-types";
 
 const mutations = {
+  [types.SET_GRID_MEMBER_LIST](state, data) {
+    state.gridMemberList = data;
+  },
+  [types.SET_FORCE_BUILDING](state, data) {
+    state.forceBuilding = data;
+  },
   [types.SET_EVENT_LIST](state, data) {
     state.eventList = data;
+  },
+  [types.SET_EVENT_LOG](state, data) {
+    state.eventLog = data;
+  },
+  [types.SET_EVENT_FORCE](state, data) {
+    state.eventForce = data;
   },
   [types.SET_RTMP_LIST](state, data) {
     state.rtmpList = data;

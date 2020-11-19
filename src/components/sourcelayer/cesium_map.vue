@@ -13,6 +13,10 @@
     <div class="popup-groups">
       <DetailPopup ref="detailPopup" />
     </div>
+    <!-- 弹出框 -->
+    <div class="force-frames">
+      <ForceBuilding ref="forceBuilding" />
+    </div>
     <!-- 模块切换 -->
     <!-- <LayerHub ref="layerHub" /> -->
     <!-- 功能组件 -->
@@ -36,6 +40,7 @@ import RtmpVideo from "components/sourcelayer/extraModel/RtmpVideo/RtmpVideo";
 import Population from "components/sourcelayer/extraModel/Population/Population";
 import SceneSwitch from "components/sourcelayer/commonFrame/SceneSwitch/SceneSwitch";
 import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCircle";
+import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
 import { CenterPoint } from "mock/overview.js";
 import {
   mapConfigInit,
@@ -73,6 +78,7 @@ export default {
     SceneSwitch,
     VideoCircle,
     Overview,
+    ForceBuilding,
   },
   created() {
     //  点位信息 hash
@@ -91,6 +97,7 @@ export default {
       this.mapLoaded = true;
       this.initPostRender();
       this.initClickHandler();
+      this.initEntityHandler();
     });
     this.eventRegsiter();
   },
@@ -110,6 +117,14 @@ export default {
         if (this.$refs.detailPopup) {
           this.$refs.detailPopup.renderForceEntity();
         }
+      });
+    },
+    initEntityHandler() {
+      window.earth.selectedEntityChanged.addEventListener((entity) => {
+        const layerID = "pxs25d@pxs25d";
+        if (!entity.pickResult || entity.pickResult.layerID != layerID) return;
+        const properties = entity.pickResult[layerID][0].feature.properties;
+        properties && this.$refs.forceBuilding.doForce(properties);
       });
     },
     initClickHandler() {
@@ -173,7 +188,7 @@ export default {
       window.wmts25d.show = false;
       //  地图注记
       // const mapMvt = mapMvtLayerInit("mapMvt", ServiceUrl.YJMVT);
-      // const pxsMvt = mapMvtLayerInit("pxsMvt", ServiceUrl.PXSMVT);
+      const pxsMvt = mapMvtLayerInit("PXS25dMVT", ServiceUrl.PXS25dMVT, false);
       //  水面
       await mapRiverLayerInit("RIVER", ServiceUrl.STATIC_RIVER);
       //  白模叠加

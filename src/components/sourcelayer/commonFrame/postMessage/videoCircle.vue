@@ -15,7 +15,7 @@
         <div class="red-line" />
         <div class="warn-popup">
           <header>突发事件<span /></header>
-          <p>车站大道，发生火灾事件</p>
+          <p>{{ eventForce.SUBJECT }}</p>
         </div>
         <div class="blue-line"></div>
         <div class="around-people">
@@ -62,22 +62,31 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["rtmpListOther"]),
+    ...mapGetters("map", ["rtmpListOther", "eventForce"]),
+  },
+  watch: {
+    eventForce: {
+      handler(n) {
+        !n && this.removeVideoCircle();
+      },
+      deep: true,
+    },
   },
   components: { VideoSingle },
   mounted() {
     this.eventRegsiter();
-    // setTimeout(() => {
-    //   this.doDraw();
-    // }, 2500);
   },
   methods: {
     ...mapActions("map", ["SetRtmpListOther"]),
     eventRegsiter() {
       const that = this;
-      this.$bus.$off("cesium-3d-video-circle");
-      this.$bus.$on("cesium-3d-video-circle", (layer) => {
-        window._POST_MESSAGE_ && this.doDraw();
+      this.$bus.$off("emergency-simulate");
+      this.$bus.$on("emergency-simulate", ({ LON, LAT }) => {
+        this.geometry = { lng: LON, lat: LAT };
+        this.removeVideoCircle();
+        this.$nextTick(() => {
+          this.doDraw();
+        });
       });
       // 穿透事件监控视频点
       this.$bus.$off("cesium-3d-video-single");
@@ -98,12 +107,19 @@ export default {
         ...data,
       };
     },
+    /**
+     * 关视频
+     */
+    closeVideo() {
+      this.forceVideo = undefined;
+    },
     async doDraw() {
       this.removeVideoCircle();
-      this.shallPop = true;
-      this.doPopup();
+      // this.doPopup();
       this.drawVideoCircle(this.geometry, this.queryRadius);
+      this.cameraMove({ ...this.geometry, queryRadius: this.queryRadius });
       this.aroundPopulation = await getPopulation(this.geometry);
+      this.shallPop = true;
     },
     doPopup() {
       let position = Cesium.Cartesian3.fromDegrees(
@@ -214,7 +230,7 @@ export default {
      * @param {object} geometry
      */
     cameraMove({ lng, lat, queryRadius }) {
-      window.earth.scene.camera.setView({
+      window.earth.scene.camera.flyTo({
         destination: Cesium.Cartesian3.fromDegrees(
           lng,
           lat -
@@ -233,6 +249,7 @@ export default {
      * @param {string|number|undefined} 有id删id 没id删全部
      */
     removeVideoCircle() {
+      this.closeVideo();
       this.entitiesID.forEach((item) => {
         window.earth.entities.removeById(item);
       });
@@ -266,6 +283,7 @@ export default {
   position: fixed;
   top: 7vh;
   left: -39vh;
+  z-index: 3;
 }
 .vc-popup {
   position: absolute;
@@ -274,7 +292,7 @@ export default {
   left: 0;
   z-index: 2;
   width: 13vh;
-  height: 10vh;
+  height: 0;
   cursor: pointer;
   // background-image: url("/static/images/common/fire.gif");
   // background-size: 100% 100%;
@@ -306,8 +324,9 @@ export default {
     }
     > .warn-popup {
       position: absolute;
-      top: -8vh;
+      top: -18vh;
       right: -19vh;
+      width: 20vh;
       color: white;
       border: 1px solid red;
       background: linear-gradient(
@@ -333,9 +352,8 @@ export default {
         }
       }
       > p {
-        margin-top: 0.6vh;
         font-size: 1.4vh;
-        line-height: 1.4vh;
+        line-height: 1.8vh;
       }
     }
     > .blue-line {
@@ -350,7 +368,7 @@ export default {
     }
     > .around-people {
       position: absolute;
-      top: -8vh;
+      top: -18vh;
       width: 23vh;
       left: -22vh;
       color: white;

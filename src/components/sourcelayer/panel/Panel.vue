@@ -37,6 +37,7 @@ export default {
     flex-direction: column;
     > header {
       font-family: YouSheBiaoTiHei;
+      position: relative;
       font-size: 2.4vh;
       color: white;
       height: 4vh;

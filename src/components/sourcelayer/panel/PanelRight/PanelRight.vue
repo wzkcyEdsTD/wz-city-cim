@@ -2,7 +2,8 @@
   <div class="panel panel-right">
     <video-grid />
     <emergency-list />
-    <relation-chart />
+    <!-- <relation-chart /> -->
+    <grid-member-list />
   </div>
 </template>
 
@@ -10,9 +11,10 @@
 import EmergencyList from "./EmergencyList";
 import VideoGrid from "./VideoGrid";
 import RelationChart from "./RelationChart";
+import GridMemberList from "./GridMemberList";
 export default {
   name: "panelRight",
-  components: { EmergencyList, VideoGrid, RelationChart },
+  components: { EmergencyList, VideoGrid, RelationChart, GridMemberList },
 };
 </script>
 
@@ -23,7 +25,7 @@ export default {
   background-image: linear-gradient(
     to left,
     rgba(0, 13, 26, 0.84) 0%,
-    rgba(0, 17, 34, 0.2) 100%
+    rgba(0, 17, 34, 0.4) 100%
   );
 }
 </style>

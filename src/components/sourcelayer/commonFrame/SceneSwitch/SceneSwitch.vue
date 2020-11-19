@@ -13,6 +13,9 @@
       <span>{{ cameraLabel }}</span>
     </div>
     <div class="btn">
+      <RangeSource />
+    </div>
+    <div class="btn">
       <InfoSource />
     </div>
     <div class="btn">
@@ -24,6 +27,7 @@
 
 <script>
 import SearchBox from "components/sourcelayer/layerHub/searchBox";
+import RangeSource from "./RangeSource";
 import GridSource from "./GridSource";
 import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
@@ -42,6 +46,7 @@ export default {
   },
   components: {
     SearchBox,
+    RangeSource,
     GridSource,
     InfoSource,
   },
@@ -82,6 +87,9 @@ export default {
       });
       window.datalayer.show = !this.cameraMode;
       window.wmts25d.show = this.cameraMode;
+      window.earth.scene.getVectorTilesLayer(
+        "PXS25dMVT"
+      ).show = this.cameraMode;
       window.earth.scene.bloomEffect.show = !this.cameraMode;
       window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
       ServiceUrl.WZBaimo.map(({ KEY }) => {

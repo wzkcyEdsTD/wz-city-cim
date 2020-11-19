@@ -76,21 +76,30 @@ export default {
     left: 0;
     cursor: pointer;
     .texts {
-      margin-bottom: 1vh;
+      margin-bottom: -2.4vh;
+      margin-left: -2vh;
+      width: 18vh;
+      height: 10vh;
+      box-sizing: border-box;
+      padding: 3.9vh 0vh 3.9vh 7.2vh;
+      background: url(/static/images/common/overview-title.png);
+      background-size: 100% 100%;
       > header {
-        color: #2acbfe;
-        font-weight: bold;
-        font-size: 1.8vh;
-        text-shadow: 3px 4px 4px #000000;
+        font-family: YouSheBiaoTiHei;
+        color: #BCF7FF;
+        font-size: 2.2vh;
+        width: 100%;
+        text-align: left;
+        text-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6);
       }
     }
     .imgs {
       text-align: center;
       > img:first-child {
-        width: 2.2vh;
+        width: 2vh;
       }
       > img:last-child {
-        height: 14vh;
+        height: 10vh;
       }
     }
     .move {

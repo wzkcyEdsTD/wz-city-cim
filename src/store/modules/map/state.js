@@ -28,6 +28,12 @@ const state = {
   forceTrueTopicLabels: [],
   forceTrueTopicLabelId: "",
   //  cim
-  eventList : [],
+  eventList: [],
+  eventLog: [],
+  eventForce: undefined,
+  //  building
+  forceBuilding: undefined,
+  //  grid
+  gridMemberList: [],
 };
 export default state;

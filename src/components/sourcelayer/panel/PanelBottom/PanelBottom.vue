@@ -18,6 +18,9 @@
 <script>
 import { mapGetters } from "vuex";
 import { switchHeatMap, doHeatMap } from "./HeatMap";
+import keyPersonList from "mock/PXS_KEY_PERSONS";
+import normalPersonList from "mock/PXS_NORMAL_PERSONS";
+
 export default {
   name: "panelBottom",
   data() {
@@ -25,15 +28,33 @@ export default {
       forceKey: undefined,
       blocks: [
         { label: "管辖重点区", k: "k1" },
-        { label: "人流集聚区", k: "k2" },
+        { label: "人口集聚区", k: "k2" },
         { label: "重点人员密集区", k: "k3", ava: true },
-        { label: "矛盾纠纷高热区", k: "k4" },
-        { label: "宗教活动高热区", k: "k5" },
+        { label: "事件高热区", k: "k4" },
       ],
+      //  重点人员
+      keyPersonList,
+      //  户籍人口
+      normalPersonList,
     };
   },
   computed: {
     ...mapGetters("map", ["eventList"]),
+    eventHeatList() {
+      return this.eventList.map((v) => [v.LON, v.LAT, 8]);
+    },
+    keyPersonHeatList() {
+      return this.keyPersonList.features.map((v) => [
+        ...v.geometry.coordinates,
+        8,
+      ]);
+    },
+    normalPersonHeatList() {
+      return this.normalPersonList.features.map((v) => [
+        ...v.geometry.coordinates,
+        parseInt(v.properties.num / 12),
+      ]);
+    },
   },
   watch: {
     forceKey(n) {
@@ -45,7 +66,13 @@ export default {
       this.forceKey = this.forceKey == k ? undefined : k;
     },
     doForceHeatMap() {
-      switchHeatMap(this.blocks, this.forceKey, this.eventList);
+      const heatArr =
+        this.forceKey == "k3"
+          ? this.keyPersonHeatList
+          : this.forceKey == "k2"
+          ? this.normalPersonHeatList
+          : this.eventHeatList;
+      switchHeatMap(this.blocks, this.forceKey, heatArr);
     },
   },
 };
@@ -56,7 +83,7 @@ export default {
   position: fixed;
   z-index: 5;
   bottom: 2vh;
-  left: 50%;
+  left: 45%;
   transform: translateX(-50%);
   color: white;
   > header {

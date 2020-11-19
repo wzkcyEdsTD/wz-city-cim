@@ -3,10 +3,10 @@
  * @param {*} blocks 
  * @param {*} forceKey 
  */
-export const switchHeatMap = (blocks, forceKey, arr) => {
+export const switchHeatMap = (blocks, forceKey, heatArr) => {
     blocks.map(({ k }) => {
         if (k == forceKey) {
-            window.heatMap[k] ? window.heatMap[k].show(true) : doHeatMap(k, arr);
+            window.heatMap[k] ? window.heatMap[k].show(true) : doHeatMap(k, heatArr);
         } else {
             window.heatMap[k] ? window.heatMap[k].show(false) : undefined
         }
@@ -16,7 +16,7 @@ export const switchHeatMap = (blocks, forceKey, arr) => {
  * 制造热力图
  * @param {*} name 
  */
-export const doHeatMap = (forceKey, arr) => {
+export const doHeatMap = (forceKey, heatArr) => {
     let bounds = {
         west: 120.58254,
         east: 120.738342,
@@ -38,7 +38,7 @@ export const doHeatMap = (forceKey, arr) => {
     );
 
     // random example data
-    let data = arr.map(({ LON, LAT }) => { return { x: LON, y: LAT, value: 10 } });
+    let data = heatArr.map(([LON, LAT, value]) => { return { x: LON, y: LAT, value } });
     let valueMin = 0;
     let valueMax = 100;
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASEURL = "http://localhost:3000";
+const BASEURL = ~window.location.host.indexOf('localhost') ? "http://localhost:3000" : "http://10.36.198.161:3000";
 const serverInstanec = axios.create();
 serverInstanec.defaults.baseURL = BASEURL;
 
@@ -8,8 +8,8 @@ serverInstanec.defaults.baseURL = BASEURL;
  * @param {*} url
  * @param {*} data
  */
-const getAxios = (url = "", data = {}) => {
-    return serverInstanec.request({ url, data, method: "get" }).then(res => {
+const getAxios = (url = "", params = {}) => {
+    return serverInstanec.request({ url, params, method: "get" }).then(res => {
         return res.data ? Promise.resolve(res.data.data) : Promise.reject(res);
     });
 };
@@ -21,6 +21,13 @@ const getEventList = () => {
     return getAxios("/event/getEventList")
 }
 /**
+ * 获取事件流程
+ * @param {*} id 
+ */
+const getEventLog = (id) => {
+    return getAxios("/event/getEventLog", { id })
+}
+/**
  * 获取各类人员列表
  */
 const getAllKindsList = () => {
@@ -28,5 +35,5 @@ const getAllKindsList = () => {
 }
 
 export default {
-    getEventList, getAllKindsList
+    getEventList, getAllKindsList, getEventLog
 }

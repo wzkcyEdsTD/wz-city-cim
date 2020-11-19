@@ -1,6 +1,6 @@
 <template>
   <div class="video-single">
-    <header>{{ name }}</header>
+    <header>{{ name }}<i class="close" @click="closeVideo"></i></header>
     <div class="blue-tip" />
     <div class="video-frame">
       <div id="player-con-1" class="frequency-pic type1" />
@@ -33,6 +33,9 @@ export default {
     this.initRtmp();
   },
   methods: {
+    closeVideo() {
+      this.$parent.closeVideo();
+    },
     initRtmp() {
       this.video = undefined;
       this.video = new Aliplayer(
@@ -71,12 +74,13 @@ export default {
     text-align: right;
     line-height: 2vh;
     height: 2.4vh;
+    position: relative;
     color: white;
     text-shadow: black 2px 2px 3px;
     position: relative;
     margin-bottom: 0.8vh;
     box-sizing: border-box;
-    padding-right: 1.6vh;
+    padding-right: 3.4vh;
     &::before {
       content: "";
       position: absolute;
@@ -95,6 +99,26 @@ export default {
       background-image: linear-gradient(to left, #2acbfe, transparent);
       -webkit-transform: skewX(-30deg);
       transform: skewX(30deg);
+    }
+    .close {
+      width: 2vh;
+      height: 2vh;
+      margin-left: 0.4vh;
+      display: inline-block;
+      position: absolute;
+      right: 1vh;
+      .bg-image("/static/images/icons/zoom-in");
+      transform: rotate(-45deg);
+      transition: all 0.1s linear;
+      cursor: pointer;
+      z-index: 10;
+
+      &:hover {
+        transform: rotate(45deg);
+      }
+    }
+    * {
+      vertical-align: middle;
     }
   }
   > .blue-tip {

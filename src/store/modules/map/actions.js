@@ -8,10 +8,27 @@
  */
 import * as types from "./mutation-types";
 import CIM_API from "api/cimAPI";
+export const setGridMemberList = async ({ commit }, data) => {
+  const { rows } = await CIM_API.getGridMemberList();
+  commit(types.SET_GRID_MEMBER_LIST, rows);
+}
+//  设置mvt楼栋数据
+export const setForceBuilding = ({ commit }, data) => {
+  commit(types.SET_FORCE_BUILDING, data);
+}
 //  设置事件列表
 export const getEventList = async ({ commit }, data) => {
   const { rows } = await CIM_API.getEventList();
   commit(types.SET_EVENT_LIST, rows);
+}
+//  设置事件流程
+export const getEventLog = async ({ commit }, data) => {
+  const { rows } = await CIM_API.getEventLog(data);
+  commit(types.SET_EVENT_LOG, rows);
+}
+//  设置事件点
+export const setEventForce = ({ commit }, data) => {
+  commit(types.SET_EVENT_FORCE, data);
 }
 //  设置各类人员信息
 export const getAllKindsList = async ({ commit }, data) => {
