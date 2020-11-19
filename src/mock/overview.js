@@ -34,6 +34,20 @@ const CenterPoint2D = {
     },
 }
 
+
+const angle3d = {
+    heading: 0,
+    pitch: -0.5124541444178274,
+    roll: 0
+}
+
+const angle25d = {
+    heading: 0,
+    pitch: -1.569945592292223,
+    roll: 0
+}
+
 export {
-    CenterPoint, CenterPoint_JKQ_XH, CenterPoint2D
+    CenterPoint, CenterPoint_JKQ_XH, CenterPoint2D,
+    angle3d, angle25d
 }

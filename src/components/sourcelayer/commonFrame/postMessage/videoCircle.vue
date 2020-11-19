@@ -46,6 +46,7 @@ import {
   getRtmpVideoURL,
   getPopulation,
 } from "api/cityBrainAPI";
+import { angle3d, angle25d } from "mock/overview.js";
 const Cesium = window.Cesium;
 
 export default {
@@ -62,7 +63,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["rtmpListOther", "eventForce"]),
+    ...mapGetters("map", ["rtmpListOther", "eventForce", "cameraMode"]),
   },
   watch: {
     eventForce: {
@@ -230,19 +231,23 @@ export default {
      * @param {object} geometry
      */
     cameraMove({ lng, lat, queryRadius }) {
-      window.earth.scene.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(
-          lng,
-          lat -
-            (0.008 + (0.002 * queryRadius * (queryRadius / 200) * 1.1) / 100),
-          700 + queryRadius * (queryRadius / 200) * 1.2
-        ),
-        orientation: {
-          heading: 0.003336768850279448,
-          pitch: -0.5808830390057418,
-          roll: 0.0,
-        },
-      });
+      window.earth.scene.camera.flyTo(
+        this.cameraMode
+          ? {
+              destination: Cesium.Cartesian3.fromDegrees(lng, lat, 1000),
+              orientation: angle25d,
+            }
+          : {
+              destination: Cesium.Cartesian3.fromDegrees(
+                lng,
+                lat -
+                  (0.008 +
+                    (0.002 * queryRadius * (queryRadius / 200) * 1.1) / 100),
+                700 + queryRadius * (queryRadius / 200) * 1.2
+              ),
+              orientation: angle3d,
+            }
+      );
     },
     /**
      * 删缓冲区

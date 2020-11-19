@@ -32,7 +32,12 @@ import GridSource from "./GridSource";
 import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
 import { mapGetters, mapActions } from "vuex";
-import { CenterPoint, CenterPoint2D } from "mock/overview.js";
+import {
+  CenterPoint,
+  CenterPoint2D,
+  angle3d,
+  angle25d,
+} from "mock/overview.js";
 
 export default {
   name: "sceneSwitch",
@@ -42,6 +47,7 @@ export default {
       CenterPoint2D,
       gridImage: undefined,
       gridImageShow: false,
+      height: 2000,
     };
   },
   components: {
@@ -80,11 +86,42 @@ export default {
         this.gridImage.show = false;
       }
     },
+    /**
+     * @param {boolean} cameraMode
+     *  true 2.5d
+     *  false 3d
+     */
     cameraMove() {
-      window.earth.camera.flyTo({
-        ...(this.cameraMode ? this.CenterPoint2D : this.CenterPoint),
-        duration: 1,
-      });
+      const viewer = window.earth;
+      //  视角计算
+      if (this.cameraMode) {
+        const { x, y } = this.fetchLngLat(
+          viewer.scene.globe.pick(
+            viewer.camera.getPickRay(
+              new Cesium.Cartesian2(
+                document.body.clientWidth / 2,
+                document.body.clientHeight / 2
+              )
+            ),
+            viewer.scene
+          )
+        );
+        window.earth.camera.flyTo({
+          destination: new Cesium.Cartesian3.fromDegrees(x, y, this.height),
+          orientation: angle25d,
+        });
+      } else {
+        const { x, y } = this.fetchLngLat(window.earth.scene.camera.position);
+        window.earth.camera.flyTo({
+          destination: new Cesium.Cartesian3.fromDegrees(
+            x,
+            y - 0.022,
+            this.height - 600
+          ),
+          orientation: angle3d,
+        });
+      }
+      // //  地图要素开关
       window.datalayer.show = !this.cameraMode;
       window.wmts25d.show = this.cameraMode;
       window.earth.scene.getVectorTilesLayer(
@@ -95,6 +132,15 @@ export default {
       ServiceUrl.WZBaimo.map(({ KEY }) => {
         window.earth.scene.layers.find(KEY).visible = !this.cameraMode;
       });
+    },
+    fetchLngLat({ x, y, z }) {
+      const viewer = window.earth;
+      const ellipsoid = viewer.scene.globe.ellipsoid;
+      const cartesian3 = new Cesium.Cartesian3(x, y, z);
+      const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
+      const lat = Cesium.Math.toDegrees(cartographic.latitude);
+      const lng = Cesium.Math.toDegrees(cartographic.longitude);
+      return { x: lng, y: lat };
     },
   },
 };
