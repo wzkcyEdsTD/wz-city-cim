@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASEURL = ~window.location.host.indexOf('localhost') ? "http://localhost:3000" : "http://10.36.198.161:3000";
+// const BASEURL = ~window.location.host.indexOf('localhost') ? "http://localhost:3000" : "http://10.36.198.161:3000";
+const BASEURL = "http://10.36.198.161:3000";
 const serverInstanec = axios.create();
 serverInstanec.defaults.baseURL = BASEURL;
 
