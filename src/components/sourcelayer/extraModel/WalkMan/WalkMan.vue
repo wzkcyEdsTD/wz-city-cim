@@ -87,9 +87,10 @@ export default {
     display: inline-block;
     padding: 0.6vh 1vh;
     border-radius: 1vh;
-    border: 2px solid #597beb;
     box-sizing: border-box;
-    color: #597beb;
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #ebf0ff;
+    border: 2px solid #597beb;
     font-size: 1.8vh;
     font-weight: bold;
     vertical-align: middle;

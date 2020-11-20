@@ -5,7 +5,7 @@
       <header>
         <span>序号</span>
         <span>网格员</span>
-        <span>里程数</span>
+        <span>里程数(公里)</span>
       </header>
       <ul>
         <li
@@ -103,7 +103,7 @@ export default {
       overflow: hidden;
     }
     &:last-child {
-      width: 6vh;
+      width: 12vh;
     }
   }
 }

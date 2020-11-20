@@ -8,18 +8,31 @@
 -->
 <template>
   <div class="force-building">
-    <div class="_force-building_" v-if="forceBuilding">
+    <div class="_force_building_" v-if="forceBuilding">
       <header>
         {{ forceBuilding.NAME }}
         <i class="close" @click="closeFrame"></i>
       </header>
       <div class="frame-content">
+        <header>楼栋信息</header>
+        <div>-</div>
+        <header>楼层情况</header>
         <ul>
-          <li v-for="(value, key, i) in forceBuilding" :key="key + i">
-            <p>
-              <i>{{ key }}:</i
-              >{{ value }}
-            </p>
+          <li v-for="(value, key, i) in forceBuildFloorRoom" :key="key + i">
+            <p>第{{ key }}层</p>
+            <ul>
+              <li v-for="(item, room, j) in value" :key="room + j">
+                <span :class="{ active: item.length }"
+                  >{{ room }}室
+                  <div class="room-info" v-if="item.length">
+                    <span v-for="(people, k) in item" :key="k">
+                      <p>{{ people.NAME }}</p>
+                      <!-- <p>{{ people.IDCARD }}</p> -->
+                    </span>
+                  </div>
+                </span>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -29,7 +42,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import BUILD_FLOOR_ROOM_PEOPLE from "mock/building/BUILD_FLOOR_ROOM_PEOPLE";
 export default {
   name: "ForceBuilding",
   data() {
@@ -37,6 +50,9 @@ export default {
   },
   computed: {
     ...mapGetters("map", ["forceBuilding"]),
+    forceBuildFloorRoom() {
+      return BUILD_FLOOR_ROOM_PEOPLE[this.forceBuilding.OBJECTID] || {};
+    },
   },
   beforeDestroy() {
     this.closeFrame();

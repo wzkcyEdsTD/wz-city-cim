@@ -34,7 +34,13 @@ const state = {
   //  building
   forceBuilding: undefined,
   //  grid
-  gridMemberList: [{ name: '小王', km: "122" }],
+  gridMemberList: [
+    { name: '小王', km: "122" },
+    { name: '老金', km: "102" },
+    { name: '阿邦', km: "86" },
+    { name: '阿振', km: "56" },
+    { name: '小捷', km: "55" }
+  ],
   forceGridMember: undefined
 };
 export default state;
