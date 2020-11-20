@@ -29,3 +29,4 @@ export const eventLog = state => state.eventLog;
 export const eventForce = state => state.eventForce;
 export const forceBuilding = state => state.forceBuilding;
 export const gridMemberList = state => state.gridMemberList;
+export const forceGridMember = state => state.forceGridMember;

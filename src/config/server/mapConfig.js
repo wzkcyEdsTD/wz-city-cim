@@ -11,7 +11,11 @@ export const ServiceUrl = {
   //  温州全市域白模
   WZBaimo: [{
     KEY: 'WZBaimo_POINT_AROUND',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-BaiMo/rest/realspace/datas/BaiMo/config",
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D/rest/realspace/datas/%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
+    FLOW: true
+  }, {
+    KEY: 'WZBaimo_JKQ_XH',
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D/rest/realspace/datas/%E6%98%9F%E6%B5%B7%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
     FLOW: true
   }],
   //  夜间模型

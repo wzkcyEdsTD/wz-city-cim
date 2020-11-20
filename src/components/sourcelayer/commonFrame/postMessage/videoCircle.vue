@@ -168,7 +168,7 @@ export default {
         ellipse: {
           semiMinorAxis: queryRadius,
           semiMajorAxis: queryRadius,
-          height: 4,
+          height: 1,
           material: new Cesium.ImageMaterialProperty({
             image: "/static/images/common/circle.png",
             transparent: true,
@@ -211,7 +211,7 @@ export default {
           position: Cesium.Cartesian3.fromDegrees(
             Number(item.lng),
             Number(item.lat),
-            4
+            1
           ),
           geometry: { lng: item.lng, lat: item.lat },
           billboard: {
@@ -314,7 +314,6 @@ export default {
       background-size: 100% 100%;
       z-index: 12;
       position: absolute;
-      bottom: 4vh;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -323,13 +322,13 @@ export default {
       background-size: 100% 100%;
       height: 10vh;
       width: 6vh;
-      bottom: 8vh;
+      bottom: 0;
       position: absolute;
       left: 50%;
     }
     > .warn-popup {
       position: absolute;
-      top: -18vh;
+      top: -10vh;
       right: -19vh;
       width: 20vh;
       color: white;
@@ -366,14 +365,14 @@ export default {
       background-size: 100% 100%;
       height: 10vh;
       width: 6vh;
-      bottom: 8vh;
+      bottom: 0;
       position: absolute;
       left: 50%;
       transform: scaleX(-1) translateX(6vh);
     }
     > .around-people {
       position: absolute;
-      top: -18vh;
+      top: -10vh;
       width: 23vh;
       left: -22vh;
       color: white;

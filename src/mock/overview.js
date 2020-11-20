@@ -12,9 +12,9 @@ const CenterPoint = {
 }
 const CenterPoint_JKQ_XH = {
     destination: {
-        x: -2893210.092621385,
-        y: 4852306.672090849,
-        z: 2972106.798769979
+        x: -2888288.6950720917,
+        y: 4845762.431331338,
+        z: 2978247.0570766213
     },
     orientation: {
         heading: 0,

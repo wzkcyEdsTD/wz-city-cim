@@ -8,6 +8,11 @@
  */
 import * as types from "./mutation-types";
 import CIM_API from "api/cimAPI";
+//  设置网格员
+export const setForceGridMember = ({ commit }, data) => {
+  commit(types.SET_FORCE_GRID_MEMBER, data);
+}
+//  获取网格员列表
 export const setGridMemberList = async ({ commit }, data) => {
   const { rows } = await CIM_API.getGridMemberList();
   commit(types.SET_GRID_MEMBER_LIST, rows);

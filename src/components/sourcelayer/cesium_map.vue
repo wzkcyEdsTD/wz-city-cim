@@ -17,8 +17,6 @@
     <div class="force-frames">
       <ForceBuilding ref="forceBuilding" />
     </div>
-    <!-- 模块切换 -->
-    <!-- <LayerHub ref="layerHub" /> -->
     <!-- 功能组件 -->
     <div v-if="mapLoaded && validated">
       <SceneSwitch />
@@ -27,13 +25,13 @@
       <RtmpVideo />
       <Population />
       <Overview ref="overview" />
+      <WalkMan ref="walkMan" />
     </div>
   </div>
 </template>
 
 <script>
 import { ServiceUrl } from "config/server/mapConfig";
-import LayerHub from "components/sourcelayer/layerHub/layerHub";
 import DetailPopup from "components/sourcelayer/commonFrame/Popups/DetailPopup";
 import RoadLine from "components/sourcelayer/extraModel/PolylineTrailLink/RoadLine";
 import RtmpVideo from "components/sourcelayer/extraModel/RtmpVideo/RtmpVideo";
@@ -41,6 +39,7 @@ import Population from "components/sourcelayer/extraModel/Population/Population"
 import SceneSwitch from "components/sourcelayer/commonFrame/SceneSwitch/SceneSwitch";
 import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCircle";
 import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
+import WalkMan from "components/sourcelayer/extraModel/WalkMan/WalkMan";
 import { CenterPoint } from "mock/overview.js";
 import {
   mapConfigInit,
@@ -70,7 +69,6 @@ export default {
     ...mapGetters("map", ["initDataLoaded", "forceTreeLabel"]),
   },
   components: {
-    LayerHub,
     DetailPopup,
     RoadLine,
     RtmpVideo,
@@ -79,6 +77,7 @@ export default {
     VideoCircle,
     Overview,
     ForceBuilding,
+    WalkMan,
   },
   created() {
     //  点位信息 hash
@@ -176,6 +175,7 @@ export default {
         infoBox: false,
         selectionIndicator: false,
         shadows: false,
+        shouldAnimate: true,
       });
       //  地图配置
       mapConfigInit();

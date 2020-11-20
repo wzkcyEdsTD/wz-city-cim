@@ -7,16 +7,37 @@
         <span>网格员</span>
         <span>里程数</span>
       </header>
-      <ul></ul>
+      <ul>
+        <li
+          v-for="(item, i) in gridMemberList"
+          :key="i"
+          @click="doForceGridMember(item)"
+        >
+          <span>{{ i + 1 }}</span>
+          <span>{{ item.name }}</span>
+          <span>{{ item.km }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "gridMemberList",
   data() {
     return {};
+  },
+  computed: {
+    ...mapGetters("map", ["gridMemberList"]),
+  },
+  methods: {
+    ...mapActions("map", ["setForceGridMember"]),
+    doForceGridMember(item) {
+      this.setForceGridMember(item);
+    },
   },
 };
 </script>
@@ -62,6 +83,7 @@ export default {
       > span {
         font-size: 1.5vh;
         &:last-child {
+          font-weight: bold;
           color: #fc5453;
         }
       }
