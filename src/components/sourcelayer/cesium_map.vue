@@ -190,7 +190,7 @@ export default {
       // const mapMvt = mapMvtLayerInit("mapMvt", ServiceUrl.YJMVT);
       const pxsMvt = mapMvtLayerInit("PXS25dMVT", ServiceUrl.PXS25dMVT, false);
       //  水面
-      await mapRiverLayerInit("RIVER", ServiceUrl.STATIC_RIVER);
+      // await mapRiverLayerInit("RIVER", ServiceUrl.STATIC_RIVER);
       //  白模叠加
       await mapBaimoLayerInit(ServiceUrl.WZBaimo);
       //  回调钩子

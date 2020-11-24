@@ -7,15 +7,16 @@
  * @FilePath: \wz-city-culture-tour\src\config\server\mapConfig.js
  */
 const _GRID_SOURCE_HOST_ = "https://ditu.wzcitybrain.com/iserver/services/map-wangge/rest/maps/";
+const _GRID_SOURCE_HOST_OTHER_ = "https://ditu.wzcitybrain.com/iserver/services/map-XZQH/rest/maps/";
 export const ServiceUrl = {
   //  温州全市域白模
   WZBaimo: [{
     KEY: 'WZBaimo_POINT_AROUND',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D/rest/realspace/datas/%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D-3/rest/realspace/datas/pxsfwm@xh3d/config",
     FLOW: true
   }, {
     KEY: 'WZBaimo_JKQ_XH',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D/rest/realspace/datas/%E6%98%9F%E6%B5%B7%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D-3/rest/realspace/datas/%E6%98%9F%E6%B5%B7%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
     FLOW: true
   }],
   //  夜间模型
@@ -69,10 +70,10 @@ export const ServiceUrl = {
   GridSource: [{
     label: "鹿城区",
     children: [
-      { label: "鹿城网格", id: "lc_grid" },
-      { label: "鹿城街镇", id: "lc_town" },
-      { label: "鹿城村社", id: "lc_village" }
-    ].map(v => { return { ...v, url: _GRID_SOURCE_HOST_ + v.label } })
+      { label: "鹿城街镇", id: "lcjz" },
+      { label: "蒲鞋市村社", id: "pxscs" },
+      { label: "蒲鞋市网格", id: "pxswg" },
+    ].map(v => { return { ...v, url: _GRID_SOURCE_HOST_OTHER_ + v.id } })
   }, {
     label: "经济技术开发区",
     children: [

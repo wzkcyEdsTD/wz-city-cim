@@ -1,7 +1,7 @@
 export const getCzmlDataSource = (timestamp) => {
     const czml = [{
         "id": "document",
-        "name": "gridmember_" + timestamp,
+        "name": "gridmember",
         "version": "1.0",
         "clock": {
             "interval": "2012-08-04T03:00:00Z/2012-08-04T03:50:00Z",
@@ -9,7 +9,7 @@ export const getCzmlDataSource = (timestamp) => {
             "multiplier": 4
         }
     }, {
-        "id": "walkman_" + timestamp,
+        "id": "walkman",
         "name": "Red box with black outline",
         "availability": "2012-08-04T03:00:00Z/2012-08-04T03:50:00Z",
         "path": {

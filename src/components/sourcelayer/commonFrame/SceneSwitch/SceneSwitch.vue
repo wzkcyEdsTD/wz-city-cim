@@ -128,7 +128,7 @@ export default {
         "PXS25dMVT"
       ).show = this.cameraMode;
       window.earth.scene.bloomEffect.show = !this.cameraMode;
-      window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
+      // window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
       ServiceUrl.WZBaimo.map(({ KEY }) => {
         window.earth.scene.layers.find(KEY).visible = !this.cameraMode;
       });

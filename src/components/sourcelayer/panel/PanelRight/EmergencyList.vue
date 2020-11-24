@@ -5,6 +5,22 @@
       <span class="back-to-list" v-if="eventForce" @click="backToList"
         >事件列表</span
       >
+      <div class="searchHeader">
+        <div class="button-item">
+          <i class="icon-common icon-search"></i>
+        </div>
+        <el-input
+          v-model="searchText"
+          class="searchFilterInput"
+          placeholder="门牌地址搜索"
+          size="small"
+        />
+        <div class="button-container">
+          <div class="button-item">
+            <i class="icon-common icon-clear" @click="searchClear"></i>
+          </div>
+        </div>
+      </div>
     </header>
     <div class="emergency-list-ul" v-if="!eventForce">
       <header>
@@ -14,7 +30,7 @@
       </header>
       <ul>
         <li
-          v-for="(item, i) in eventList"
+          v-for="(item, i) in fixEventList"
           :key="i"
           :title="item.SUBJECT"
           @click="simulateEmergency(item, i)"
@@ -26,6 +42,7 @@
       </ul>
     </div>
     <div class="emergency-info" v-if="eventForce">
+      <img :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
       <p>
@@ -57,13 +74,19 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "emergencyList",
   data() {
-    return {};
+    return { searchText: "", fixEventList: [] };
   },
   computed: {
     ...mapGetters("map", ["eventList", "eventLog", "eventForce"]),
   },
-  created() {
-    this.getEventList();
+  watch: {
+    searchText(n) {
+      this.fixEventList = this.eventList.filter((v) => ~v.SUBJECT.indexOf(n));
+    },
+  },
+  async created() {
+    await this.getEventList();
+    this.fixEventList = this.eventList;
   },
   methods: {
     ...mapActions("map", ["getEventList", "getEventLog", "setEventForce"]),
@@ -76,11 +99,14 @@ export default {
     backToList() {
       this.setEventForce(undefined);
     },
+    searchClear() {
+      this.searchText = "";
+    },
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .emergency-list {
   height: 26vh;
   .ph-right {
@@ -95,6 +121,51 @@ export default {
       height: 3vh;
       line-height: 3vh;
       padding: 0 1vh;
+    }
+    .searchHeader {
+      display: inline-flex;
+      align-items: center;
+      box-sizing: border-box;
+      border-radius: 2vh;
+      background-color: rgba(0, 0, 255, 0.2);
+      border: 1px solid rgba(0, 0, 255, 0.8);
+      padding: 0 0.6vh;
+      width: 28vh;
+
+      > * {
+        height: 2.6vh;
+        vertical-align: middle;
+        > * {
+          display: block;
+          height: 100%;
+        }
+      }
+
+      .searchFilterInput {
+        flex: 1;
+        .el-input__inner {
+          background: none;
+          border: none;
+          color: white;
+          padding: 0 1vh;
+          height: 2.4vh;
+        }
+      }
+
+      .icon-common {
+        display: block;
+        width: 2.4vh;
+        height: 2.4vh;
+      }
+
+      .icon-clear {
+        .bg-image("/static/images/common/clear");
+        cursor: pointer;
+      }
+
+      .icon-search {
+        .bg-image("/static/images/common/search2");
+      }
     }
   }
   .emergency-progress {
@@ -194,6 +265,14 @@ export default {
   }
   .emergency-info {
     flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    > img {
+      width: 14vh;
+      float: right;
+      cursor: pointer;
+      margin: 0.4vh;
+    }
     > p {
       font-size: 1.6vh;
       line-height: 2.4vh;

@@ -17,6 +17,10 @@ export const setGridMemberList = async ({ commit }, data) => {
   const { rows } = await CIM_API.getGridMemberList();
   commit(types.SET_GRID_MEMBER_LIST, rows);
 }
+//  设置mvt楼栋房间数据
+export const setForceRoom = ({ commit }, data) => {
+  commit(types.SET_FORCE_ROOM, data);
+}
 //  设置mvt楼栋数据
 export const setForceBuilding = ({ commit }, data) => {
   commit(types.SET_FORCE_BUILDING, data);

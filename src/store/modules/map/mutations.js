@@ -17,6 +17,9 @@ const mutations = {
   [types.SET_GRID_MEMBER_LIST](state, data) {
     state.gridMemberList = data;
   },
+  [types.SET_FORCE_ROOM](state, data) {
+    state.forceRoom = data;
+  },
   [types.SET_FORCE_BUILDING](state, data) {
     state.forceBuilding = data;
   },

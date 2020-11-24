@@ -21,7 +21,11 @@
           <li v-for="(value, key, i) in forceBuildFloorRoom" :key="key + i">
             <p>第{{ key }}层</p>
             <ul>
-              <li v-for="(item, room, j) in value" :key="room + j">
+              <li
+                v-for="(item, room, j) in value"
+                :key="room + j"
+                @click="doForceRoom(room, item)"
+              >
                 <span :class="{ active: item.length }"
                   >{{ room }}室
                   <div class="room-info" v-if="item.length">
@@ -58,12 +62,17 @@ export default {
     this.closeFrame();
   },
   methods: {
-    ...mapActions("map", ["setForceBuilding"]),
+    ...mapActions("map", ["setForceBuilding", "setForceRoom"]),
     doForce(obj) {
       this.setForceBuilding(obj);
+      this.setForceRoom(undefined);
     },
     closeFrame() {
       this.setForceBuilding(undefined);
+      this.setForceRoom(undefined);
+    },
+    doForceRoom(room, item) {
+      this.setForceRoom({ room, item, bName: this.forceBuilding.NAME });
     },
   },
 };

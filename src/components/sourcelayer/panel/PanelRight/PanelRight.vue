@@ -1,20 +1,34 @@
 <template>
   <div class="panel panel-right">
-    <video-grid />
+    <video-grid v-show="!eventForce" />
+    <emergency-around v-if="eventForce" />
     <emergency-list />
-    <!-- <relation-chart /> -->
-    <grid-member-list />
+    <grid-member-list v-if="!forceRoom" />
+    <room-info v-if="forceRoom" />
   </div>
 </template>
 
 <script>
 import EmergencyList from "./EmergencyList";
+import EmergencyAround from "./EmergencyAround";
 import VideoGrid from "./VideoGrid";
 import RelationChart from "./RelationChart";
 import GridMemberList from "./GridMemberList";
+import RoomInfo from "./RoomInfo";
+import { mapGetters } from "vuex";
 export default {
   name: "panelRight",
-  components: { EmergencyList, VideoGrid, RelationChart, GridMemberList },
+  components: {
+    EmergencyAround,
+    EmergencyList,
+    VideoGrid,
+    RelationChart,
+    GridMemberList,
+    RoomInfo,
+  },
+  computed: {
+    ...mapGetters("map", ["eventForce", "forceRoom"]),
+  },
 };
 </script>
 

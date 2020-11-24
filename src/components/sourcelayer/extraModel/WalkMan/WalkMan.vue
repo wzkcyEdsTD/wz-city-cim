@@ -35,16 +35,15 @@ export default {
     ...mapActions("map", ["setForceGridMember"]),
 
     initWalk() {
-      const timestamp = +new Date();
-      this.timestamp = timestamp;
-      const czml = getCzmlDataSource(timestamp);
+      this.shutDownRoute();
+      const czml = getCzmlDataSource();
       const viewer = window.earth;
       var dataSourcePromise = Cesium.CzmlDataSource.load(czml);
       viewer.dataSources.add(dataSourcePromise);
       dataSourcePromise.then(() => {
         const entity = window.earth.dataSources
-          .getByName("gridmember_" + this.timestamp)[0]
-          .entities.getById("walkman_" + this.timestamp);
+          .getByName("gridmember")[0]
+          .entities.getById("walkman");
         entity.viewFrom = new Cesium.Cartesian3(100, 0, 100);
         viewer.trackedEntity = entity;
         this.doFollow = true;
@@ -52,11 +51,9 @@ export default {
     },
     doFollowCamera(n) {
       if (n) {
-        const ds = window.earth.dataSources.getByName(
-          "gridmember_" + this.timestamp
-        )[0];
+        const ds = window.earth.dataSources.getByName("gridmember")[0];
         if (ds) {
-          const entity = ds.entities.getById("walkman_" + this.timestamp);
+          const entity = ds.entities.getById("walkman");
           entity.viewFrom = new Cesium.Cartesian3(100, 0, 100);
           window.earth.trackedEntity = entity;
         }
@@ -70,7 +67,7 @@ export default {
     shutDownRoute() {
       window.earth.trackedEntity = undefined;
       window.earth.dataSources.remove(
-        window.earth.dataSources.getByName("gridmember_" + this.timestamp)[0]
+        window.earth.dataSources.getByName("gridmember")[0]
       );
     },
   },

@@ -17,13 +17,13 @@
           <header>突发事件<span /></header>
           <p>{{ eventForce.SUBJECT }}</p>
         </div>
-        <div class="blue-line"></div>
+        <!-- <div class="blue-line"></div>
         <div class="around-people">
           <header>周边实时人口</header>
           <p>范围：500米</p>
           <p>人数：{{ aroundPopulation.data || "-" }}人</p>
           <p>时间：{{ aroundPopulation.task_time || "-" }}</p>
-        </div>
+        </div> -->
       </div>
     </div>
     <div
@@ -44,7 +44,6 @@ import VideoSingle from "./videoSingle";
 import {
   getRtmpVideoList,
   getRtmpVideoURL,
-  getPopulation,
 } from "api/cityBrainAPI";
 import { angle3d, angle25d } from "mock/overview.js";
 const Cesium = window.Cesium;
@@ -55,7 +54,6 @@ export default {
       shallPop: false,
       geometry: { lng: 120.67743, lat: 28.011360000000002 },
       queryRadius: 200,
-      aroundPopulation: {},
       item: {},
       entitiesID: [],
       rtmpOn: true,
@@ -119,7 +117,6 @@ export default {
       // this.doPopup();
       this.drawVideoCircle(this.geometry, this.queryRadius);
       this.cameraMove({ ...this.geometry, queryRadius: this.queryRadius });
-      this.aroundPopulation = await getPopulation(this.geometry);
       this.shallPop = true;
     },
     doPopup() {

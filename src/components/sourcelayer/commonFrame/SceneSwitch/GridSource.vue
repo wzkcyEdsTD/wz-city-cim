@@ -16,6 +16,7 @@
           show-checkbox
           node-key="id"
           default-expand-all
+          :default-checked-keys="['pxscs']"
           @check="checkChange"
         />
       </div>
@@ -31,7 +32,10 @@ import { ServiceUrl } from "config/server/mapConfig";
 export default {
   name: "gridSource",
   data() {
-    return { sourceURLs: ServiceUrl.GridSource, forceNodeKeys: [] };
+    return {
+      sourceURLs: ServiceUrl.GridSource,
+      forceNodeKeys: ["pxscs"],
+    };
   },
   mounted() {
     this.eventRegsiter();
@@ -41,6 +45,7 @@ export default {
       handler() {
         this.doForceNodeChange();
       },
+      immediate: true,
       deep: true,
     },
   },

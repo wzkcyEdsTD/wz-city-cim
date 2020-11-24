@@ -12,16 +12,13 @@ const SW_DATA_NAME = "172.20.83.196_swdata:";
 const SERVER_DEFAULT_DATA = SERVER_HOST + SW_DATA;
 // 医疗专题
 const MEDICAL_TOPIC = [
-  {
-    label: "医疗场所",
-    dataset: "JZJZNL_YLJH_JHCS_LC",
-    // dataset: "JZJZNL_YLJH_JHCS",
-    // withExtraData: "medicalList",
-    // withExtraDataGeometry: "medicalListWithGeometry",
-    // saveExtraDataByGeometry: "setMedicalListWithGeometry",
-    // withExtraKey: "SHORTNAME",
-  },
-  { label: "派出所", dataset: "PoliceStation" },
+  { label: "医疗场所", dataset: "JZJZNL_YLJH_JHCS_LC", smart: true },
+  { label: "派出所", dataset: "PoliceStation", smart: true },
+  { label: "市场商场", dataset: "market_mall" },
+  { label: "小学", dataset: "PrimarySchool" },
+  { label: "初中", dataset: "JuniorHighSchool" },
+  { label: "高中", dataset: "HighSchool" },
+  { label: "娱乐场所", dataset: "entertainment_place" },
 ];
 //  旅游专题
 const TOUR_TOPIC = [
@@ -104,11 +101,6 @@ const SOURCE_TOPIC = [
     label: "农贸市场点",
     dataset: "FarmersMarket_SiQu_P"
   },
-  // {
-  //   label: "农贸市场面",
-  //   polygon: true,
-  //   dataset: "FarmersMarket_SiQu_M"
-  // },
   {
     label: "派出所",
     dataset: "PoliceStation"

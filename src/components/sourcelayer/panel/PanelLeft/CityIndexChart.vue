@@ -22,9 +22,9 @@ export default {
   data() {
     return {
       dataInfo: {
-        事件数: { v: "-", u: "" },
-        人口数: { v: "13", u: "万" },
-        特殊人员: { v: "632", u: "" },
+        事件数: { v: "445", u: "" },
+        人口数: { v: "6.47", u: "万" },
+        特殊人员: { v: "630", u: "" },
         房屋数: { v: "5320", u: "" },
         网格数: { v: "132", u: "" },
         楼栋数: { v: "3.2", u: "万" },
@@ -32,15 +32,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["eventList"]),
+    // ...mapGetters("map", ["eventList"]),
   },
   watch: {
-    eventList: {
-      handler(n) {
-        this.dataInfo = { ...this.dataInfo, 事件数: { v: n.length, u: "" } };
-      },
-      deep: true,
-    },
+    // eventList: {
+    //   handler(n) {
+    //     this.dataInfo = { ...this.dataInfo, 事件数: { v: n.length, u: "" } };
+    //   },
+    //   deep: true,
+    // },
   },
 };
 </script>
