@@ -5,14 +5,14 @@
       <span class="back-to-list" v-if="eventForce" @click="backToList"
         >事件列表</span
       >
-      <div class="searchHeader">
+      <div class="searchHeader" v-if="!eventForce">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
         </div>
         <el-input
           v-model="searchText"
           class="searchFilterInput"
-          placeholder="门牌地址搜索"
+          placeholder="输入事件关键字"
           size="small"
         />
         <div class="button-container">
@@ -42,7 +42,7 @@
       </ul>
     </div>
     <div class="emergency-info" v-if="eventForce">
-      <img :src="eventForce.PHOTOURL" />
+      <img v-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
       <p>

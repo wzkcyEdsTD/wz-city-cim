@@ -122,11 +122,11 @@ export default {
         });
       }
       // //  地图要素开关
-      window.datalayer.show = !this.cameraMode;
+      // window.datalayer.show = !this.cameraMode;
       window.wmts25d.show = this.cameraMode;
-      window.earth.scene.getVectorTilesLayer(
-        "PXS25dMVT"
-      ).show = this.cameraMode;
+      // window.earth.scene.getVectorTilesLayer(
+      //   "PXS25dMVT"
+      // ).show = this.cameraMode;
       window.earth.scene.bloomEffect.show = !this.cameraMode;
       // window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
       ServiceUrl.WZBaimo.map(({ KEY }) => {

@@ -26,7 +26,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import CIM_API from "api/cimAPI";
 export default {
   name: "gridMemberList",
   data() {
@@ -40,8 +40,14 @@ export default {
   },
   methods: {
     ...mapActions("map", ["setForceGridMember", "setGridMemberList"]),
-    doForceGridMember(item) {
-      this.setForceGridMember(item);
+    async doForceGridMember(item) {
+      const routeLinks = await CIM_API.getGridMemberRouteLink(item.NAME);
+      routeLinks.rows.length
+        ? this.setForceGridMember({ ...item, routeLinks: routeLinks.rows })
+        : this.$message({
+            type: "info",
+            message: "无网格员巡逻信息",
+          });
     },
   },
 };

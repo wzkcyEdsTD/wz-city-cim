@@ -1,14 +1,33 @@
 <template>
   <div class="walk-man">
+    <ul
+      class="routeLinks"
+      v-if="
+        forceGridMember &&
+        forceGridMember.routeLinks &&
+        forceGridMember.routeLinks.length
+      "
+    >
+      <li
+        v-for="(item, i) in forceGridMember.routeLinks"
+        :key="i"
+        :class="{ active: i == forceIndex.i }"
+        @click="forceIndex.i = i"
+      >
+        [{{ new Date(item.STARTTIME).toLocaleDateString() }}] 距离:
+        {{ item.DISTANCE }}米
+      </li>
+    </ul>
     <div v-if="forceGridMember" class="walk-man-operation">
       <span @click="doFollow = !doFollow">镜头跟踪</span>
-      <span @click="shutDownGridMember">取消路径</span>
+      <span @click="shutDownGridMember">取消巡逻</span>
     </div>
   </div>
 </template>
 
 <script>
 import { getCzmlDataSource } from "./config";
+import CIM_API from "api/cimAPI";
 import { mapGetters, mapActions } from "vuex";
 import { angle3d } from "mock/overview.js";
 const { heading, pitch } = angle3d;
@@ -17,15 +36,26 @@ export default {
   data() {
     return {
       doFollow: false,
-      timestamp: undefined,
+      forceIndex: undefined,
     };
   },
   computed: {
     ...mapGetters("map", ["forceGridMember"]),
   },
   watch: {
-    forceGridMember(n) {
-      n ? this.initWalk() : this.shutDownRoute();
+    forceGridMember: {
+      handler(n) {
+        n
+          ? (this.forceIndex = { i: 0, name: this.forceGridMember.NAME })
+          : this.shutDownRoute();
+      },
+      deep: true,
+    },
+    forceIndex: {
+      handler(n) {
+        this.fetchRoute();
+      },
+      deep: true,
     },
     doFollow(n) {
       this.doFollowCamera(n);
@@ -33,10 +63,15 @@ export default {
   },
   methods: {
     ...mapActions("map", ["setForceGridMember"]),
-
-    initWalk() {
+    async fetchRoute() {
+      const data = await CIM_API.getGridMemberRoutes(
+        this.forceGridMember.routeLinks[this.forceIndex.i].TRACKRESOURCE
+      );
+      this.initWalk(data);
+    },
+    initWalk(data) {
       this.shutDownRoute();
-      const czml = getCzmlDataSource();
+      const czml = getCzmlDataSource(data);
       const viewer = window.earth;
       var dataSourcePromise = Cesium.CzmlDataSource.load(czml);
       viewer.dataSources.add(dataSourcePromise);
@@ -44,7 +79,7 @@ export default {
         const entity = window.earth.dataSources
           .getByName("gridmember")[0]
           .entities.getById("walkman");
-        entity.viewFrom = new Cesium.Cartesian3(100, 0, 100);
+        entity.viewFrom = new Cesium.Cartesian3(10, -50, 250);
         viewer.trackedEntity = entity;
         this.doFollow = true;
       });
@@ -54,7 +89,7 @@ export default {
         const ds = window.earth.dataSources.getByName("gridmember")[0];
         if (ds) {
           const entity = ds.entities.getById("walkman");
-          entity.viewFrom = new Cesium.Cartesian3(100, 0, 100);
+          entity.viewFrom = new Cesium.Cartesian3(10, -50, 250);
           window.earth.trackedEntity = entity;
         }
       } else {
@@ -75,25 +110,50 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.walk-man-operation {
+.walk-man {
   position: fixed;
   top: 16vh;
   left: 50%;
   transform: translateX(-50%);
-  > span {
-    display: inline-block;
-    padding: 0.6vh 1vh;
+  .routeLinks {
     border-radius: 1vh;
-    box-sizing: border-box;
-    background-color: rgba(255, 255, 255, 0.4);
-    color: #ebf0ff;
-    border: 2px solid #597beb;
-    font-size: 1.8vh;
-    font-weight: bold;
-    vertical-align: middle;
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    margin-bottom: 1vh;
+    > li {
+      color: rgba(255, 255, 255, 0.7);
+      padding: 0 1vh;
+      height: 2.8vh;
+      line-height: 2.8vh;
+      cursor: pointer;
+      &:nth-child(odd) {
+        background-color: rgba(17, 46, 93, 0.8);
+      }
+      &:nth-child(even) {
+        background-color: rgba(29, 77, 155, 0.8);
+      }
+      &.active {
+        font-weight: bold;
+        color: white;
+      }
+    }
+  }
+  .walk-man-operation {
+    text-align: center;
+    > span {
+      display: inline-block;
+      padding: 0.4vh 1vh;
+      border-radius: 1vh;
+      box-sizing: border-box;
+      background-color: rgba(29, 77, 155, 0.8);
+      color: white;
+      border: 1px solid #597beb;
+      font-size: 1.6vh;
+      vertical-align: middle;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(17, 46, 93, 0.8);
+      }
     }
   }
 }

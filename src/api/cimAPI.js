@@ -9,8 +9,10 @@ serverInstanec.defaults.baseURL = BASEURL;
  * @param {*} url
  * @param {*} data
  */
-const getAxios = (url = "", params = {}) => {
-    return serverInstanec.request({ url, params, method: "get" }).then(res => {
+const getAxios = (url = "", params = {}, method = "get") => {
+    const option = { url, method };
+    method == 'get' ? option.params = params : option.data = params;
+    return serverInstanec.request(option).then(res => {
         return res.data ? Promise.resolve(res.data.data) : Promise.reject(res);
     });
 };
@@ -38,9 +40,26 @@ const getAllKindsList = () => {
  * 获取网格员列表
  */
 const getGridMemberList = () => {
-    return getAxios("/staff/getGridMemberList");
+    return getAxios("/grid/getGridMemberList");
+}
+/**
+ * 获取网格员行进路线地址
+ */
+const getGridMemberRouteLink = (name) => {
+    return getAxios("/grid/getGridMemberRouteLink", { name });
+}
+/**
+ * 获取网格员行进路线
+ */
+const getGridMemberRoutes = (url) => {
+    return getAxios("/forward/getGridMemberRoutes", { url }, 'post');
 }
 
 export default {
-    getEventList, getAllKindsList, getEventLog,getGridMemberList
+    getEventList,
+    getAllKindsList,
+    getEventLog,
+    getGridMemberList,
+    getGridMemberRouteLink,
+    getGridMemberRoutes
 }

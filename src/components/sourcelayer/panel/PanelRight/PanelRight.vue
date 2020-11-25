@@ -3,7 +3,7 @@
     <video-grid v-show="!eventForce" />
     <emergency-around v-if="eventForce" />
     <emergency-list />
-    <grid-member-list v-if="!forceRoom" />
+    <grid-member-list v-show="!forceRoom" />
     <room-info v-if="forceRoom" />
   </div>
 </template>
