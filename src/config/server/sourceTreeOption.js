@@ -7,9 +7,14 @@
  * @FilePath: \wz-city-culture-tour\src\config\server\sourceTreeOption.js
  */
 const SERVER_HOST = "https://ditu.wzcitybrain.com/iserver/services";
+//  [DEFAULT]
 const SW_DATA = "/data-SW_DATA/rest/data";
 const SW_DATA_NAME = "172.20.83.196_swdata:";
 const SERVER_DEFAULT_DATA = SERVER_HOST + SW_DATA;
+//  [NEW]
+const N_DATA = "/data-qyry/rest/data";
+const N_DATA_NAME = "pyry:";
+const SERVER_N_DATA = SERVER_HOST + N_DATA;
 // 医疗专题
 const MEDICAL_TOPIC = [
   { label: "医疗场所", dataset: "JZJZNL_YLJH_JHCS_LC", smart: true },
@@ -19,6 +24,8 @@ const MEDICAL_TOPIC = [
   { label: "初中", dataset: "JuniorHighSchool" },
   { label: "高中", dataset: "HighSchool" },
   { label: "娱乐场所", dataset: "entertainment_place" },
+  { label: "企业", dataset: "pxsqyd", isNew: true },
+  { label: "重点人员", dataset: "zdry", isNew: true },
 ];
 //  旅游专题
 const TOUR_TOPIC = [
@@ -190,9 +197,9 @@ export const CESIUM_TREE_SOURCE_OPTION = [{
       ...v,
       id: v.label,
       icon: v.label,
-      url: SERVER_DEFAULT_DATA,
+      url: v.isNew ? SERVER_N_DATA : SERVER_DEFAULT_DATA,
       type: "mvt",
-      newdataset: `${SW_DATA_NAME}${v.dataset}`
+      newdataset: `${v.isNew ? N_DATA_NAME : SW_DATA_NAME}${v.dataset}`
     };
   })
 }]
