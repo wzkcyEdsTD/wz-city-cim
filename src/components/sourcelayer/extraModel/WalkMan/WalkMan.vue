@@ -61,6 +61,16 @@ export default {
       this.doFollowCamera(n);
     },
   },
+  created() {
+    window.billboardMap[
+      "walkMan_route_points"
+    ] = window.earth.scene.primitives.add(
+      new Cesium.PointPrimitiveCollection()
+    );
+    window.labelMap["walkMan_route_labels"] = window.earth.scene.primitives.add(
+      new Cesium.LabelCollection()
+    );
+  },
   methods: {
     ...mapActions("map", ["setForceGridMember"]),
     async fetchRoute() {
@@ -76,12 +86,63 @@ export default {
       var dataSourcePromise = Cesium.CzmlDataSource.load(czml);
       viewer.dataSources.add(dataSourcePromise);
       dataSourcePromise.then(() => {
-        const entity = window.earth.dataSources
-          .getByName("gridmember")[0]
-          .entities.getById("walkman");
-        entity.viewFrom = new Cesium.Cartesian3(10, -50, 250);
-        viewer.trackedEntity = entity;
-        this.doFollow = true;
+        this.doRoutePoints(data);
+        window.earth.flyTo(window.billboardMap["walkMan_route_lines"], {
+          offset: {
+            heading: Cesium.Math.toRadians(0), //左右方向
+            pitch: Cesium.Math.toRadians(-90), //上下方向
+          },
+        });
+      });
+    },
+    doRoutePoints(data) {
+      window.billboardMap["walkMan_route_lines"] = window.earth.entities.add({
+        name: "walkMan_line",
+        id: "walkMan_line",
+        polyline: new Cesium.PolylineGraphics({
+          positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+            data.map((v) => [parseFloat(v.lon), parseFloat(v.lat), 4]).flat(2)
+          ),
+          width: 8,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          material: Cesium.Color.RED,
+          material: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.RED), //体会编码，下面的覆盖上面,material对应了一个实例
+        }),
+      });
+      data.map(({ lon, lat }, i) => {
+        const isStart = i == 0;
+        const isEnd = i == data.length - 1;
+        const isSpecial = isStart || isEnd;
+        const position = Cesium.Cartesian3.fromDegrees(
+          parseFloat(lon),
+          parseFloat(lat),
+          4
+        );
+        window.billboardMap["walkMan_route_points"].add({
+          id: "walkMan_points_" + i,
+          pixelSize: isSpecial ? 12 : 4,
+          color: Cesium.Color.RED,
+          outlineColor: Cesium.Color.GREEN,
+          outlineWidth: isSpecial ? 4 : 2,
+          // disableDepthTestDistance: Number.POSITIVE_INFINITY,
+          position,
+        });
+        isSpecial &&
+          window.labelMap["walkMan_route_labels"].add({
+            id: "walkMan_labels_" + i,
+            text: isStart ? "起点" : "终点",
+            fillColor: Cesium.Color.WHITE,
+            outlineColor: Cesium.Color.BLACK,
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            font: "10px",
+            scale: 1.5,
+            outlineWidth: 6,
+            showBackground: true,
+            backgroundColor: Cesium.Color.fromCssColorString("rgba(0,0,0,0.8)"),
+            pixelOffset: new Cesium.Cartesian2(0, -30),
+            disableDepthTestDistance: Number.POSITIVE_INFINITY,
+            position,
+          });
       });
     },
     doFollowCamera(n) {
@@ -89,7 +150,7 @@ export default {
         const ds = window.earth.dataSources.getByName("gridmember")[0];
         if (ds) {
           const entity = ds.entities.getById("walkman");
-          entity.viewFrom = new Cesium.Cartesian3(10, -50, 250);
+          entity.viewFrom = new Cesium.Cartesian3(10, -50, 1000);
           window.earth.trackedEntity = entity;
         }
       } else {
@@ -100,6 +161,9 @@ export default {
       this.setForceGridMember(undefined);
     },
     shutDownRoute() {
+      window.billboardMap["walkMan_route_points"].removeAll();
+      window.labelMap["walkMan_route_labels"].removeAll();
+      window.earth.entities.remove(window.billboardMap["walkMan_route_lines"]);
       window.earth.trackedEntity = undefined;
       window.earth.dataSources.remove(
         window.earth.dataSources.getByName("gridmember")[0]

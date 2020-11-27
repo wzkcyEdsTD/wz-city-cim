@@ -72,7 +72,12 @@ export default {
       this.setForceRoom(undefined);
     },
     doForceRoom(room, item) {
-      this.setForceRoom({ room, item, bName: this.forceBuilding.NAME });
+      this.setForceRoom({
+        buildid: this.forceBuilding.OBJECTID,
+        room,
+        item,
+        bName: this.forceBuilding.NAME,
+      });
     },
   },
 };

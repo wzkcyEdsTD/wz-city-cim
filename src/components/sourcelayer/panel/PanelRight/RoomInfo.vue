@@ -25,11 +25,11 @@
         <span>联系方式</span>
       </header>
       <ul>
-        <li>
+        <li @click="doForceGridMember">
           <span>1</span>
-          <span>余洁</span>
-          <span>鹿城-蒲鞋市-0036（3561网格）</span>
-          <span>17757702131</span>
+          <span>{{ forceGridMember.NAME }}</span>
+          <span>{{ forceGridMember.ORGNAME }}</span>
+          <span>{{ forceGridMember.CONTACT }}</span>
         </li>
       </ul>
     </div>
@@ -38,17 +38,36 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import BUILD_PEOPLE_GRIDMEMBER from "mock/building/BUILD_PEOPLE_GRIDMEMBER.js";
+import CIM_API from "api/cimAPI";
 export default {
   name: "roomInfo",
   data() {
-    return {};
+    return { forceGridMember: {}, BUILD_PEOPLE_GRIDMEMBER };
   },
   computed: {
     ...mapGetters("map", ["forceRoom"]),
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.forceGridMember = BUILD_PEOPLE_GRIDMEMBER[this.forceRoom.buildid];
+  },
+  methods: {
+    ...mapActions("map", ["setForceGridMember", "setGridMemberList"]),
+    async doForceGridMember() {
+      const routeLinks = await CIM_API.getGridMemberRouteLink(
+        this.forceGridMember.NAME
+      );
+      routeLinks.rows.length
+        ? this.setForceGridMember({
+            ...this.forceGridMember,
+            routeLinks: routeLinks.rows,
+          })
+        : this.$message({
+            type: "info",
+            message: "无网格员巡逻信息",
+          });
+    },
+  },
 };
 </script>
 
@@ -144,6 +163,7 @@ export default {
         box-shadow: 0px 3px 6px 0px #012623;
       }
       > li {
+        cursor: pointer;
         height: 2.8vh;
         line-height: 2.8vh;
         display: flex;

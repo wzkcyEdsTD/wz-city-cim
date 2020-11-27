@@ -59,7 +59,7 @@
           <div>
             <span><img src="/static/images/common/progress-step.png" /></span>
             <span
-              ><p>{{ new Date(item.DEALTIME).toLocaleDateString() }}</p>
+              ><p>{{ new Date(item.DEALTIME).toLocaleString() }}</p>
               <p>{{ item.DEALUSERNAME }}</p></span
             >
           </div>
@@ -71,30 +71,41 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { mockEvents, mockProgress } from "mock/event/mockEvents.js";
 export default {
   name: "emergencyList",
   data() {
-    return { searchText: "", fixEventList: [] };
+    return { searchText: "", fixEventList: [], mockEvents, mockProgress };
   },
   computed: {
     ...mapGetters("map", ["eventList", "eventLog", "eventForce"]),
   },
   watch: {
     searchText(n) {
-      this.fixEventList = this.eventList.filter((v) => ~v.SUBJECT.indexOf(n));
+      this.fixEventList = this.mockEvents
+        .concat(this.eventList)
+        .filter((v) => ~v.SUBJECT.indexOf(n));
     },
   },
   async created() {
     await this.getEventList();
-    this.fixEventList = this.eventList;
+    this.fixEventList = this.mockEvents.concat(this.eventList);
   },
   methods: {
-    ...mapActions("map", ["getEventList", "getEventLog", "setEventForce"]),
+    ...mapActions("map", [
+      "getEventList",
+      "getEventLog",
+      "setEventForce",
+      "setMockEventLog",
+    ]),
     async simulateEmergency(n, i) {
       const event = { ...n, i };
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);
-      await this.getEventLog(event.ID);
+      console.log(n.OCCURORG);
+      this.mockProgress[n.OCCURORG]
+        ? this.setMockEventLog(this.mockProgress[n.OCCURORG])
+        : await this.getEventLog(event.ID);
     },
     backToList() {
       this.setEventForce(undefined);
@@ -215,7 +226,7 @@ export default {
           > span:last-child {
             flex: 1;
             > p {
-              font-size: 1.6vh;
+              font-size: 1.4vh;
               line-height: 2vh;
             }
           }

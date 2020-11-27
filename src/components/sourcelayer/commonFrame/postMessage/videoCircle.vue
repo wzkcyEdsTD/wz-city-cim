@@ -41,10 +41,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import VideoSingle from "./videoSingle";
-import {
-  getRtmpVideoList,
-  getRtmpVideoURL,
-} from "api/cityBrainAPI";
+import { getRtmpVideoList, getRtmpVideoURL } from "api/cityBrainAPI";
 import { angle3d, angle25d } from "mock/overview.js";
 const Cesium = window.Cesium;
 
@@ -157,23 +154,21 @@ export default {
      * @param {geometry!} 没geometry不画
      * @param {queryRadius!} 监控点查询半径
      */
-    async drawVideoCircle({ lng, lat }, queryRadius = 200) {
+    async drawVideoCircle({ lng, lat }, queryRadius = 200, period = 2.0) {
       // 画圈
-      // console.log("[drawVideoCircle]", lng, lat, queryRadius);
-      const circleEntity = new Cesium.Entity({
-        position: Cesium.Cartesian3.fromDegrees(lng, lat, 4),
-        ellipse: {
-          semiMinorAxis: queryRadius,
-          semiMajorAxis: queryRadius,
-          height: 1,
-          material: new Cesium.ImageMaterialProperty({
-            image: "/static/images/common/circle.png",
-            transparent: true,
-          }),
-        },
-      });
-      window.earth.entities.add(circleEntity);
-      this.entitiesID.push(circleEntity.id);
+      window.earth.scene.scanEffect.show = true;
+      window.earth.scene.scanEffect.color = Cesium.Color.fromCssColorString(
+        "rgba(255,255,255,0.3)"
+      );
+      window.earth.scene.scanEffect.mode = Cesium.ScanEffectMode.CIRCLE;
+      window.earth.scene.scanEffect.centerPostion = new Cesium.Cartesian3.fromDegrees(
+        lng,
+        lat,
+        1
+      );
+      window.earth.scene.scanEffect.speed = queryRadius / period;
+      window.earth.scene.scanEffect.period = period;
+      //  监控文字
       const circleLabelEntity = new Cesium.Entity({
         position: Cesium.Cartesian3.fromDegrees(lng, lat, 200),
         label: {
@@ -252,6 +247,7 @@ export default {
      */
     removeVideoCircle() {
       this.closeVideo();
+      window.earth.scene.scanEffect.show = false;
       this.entitiesID.forEach((item) => {
         window.earth.entities.removeById(item);
       });

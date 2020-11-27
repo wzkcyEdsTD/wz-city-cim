@@ -9,7 +9,7 @@
         <el-input
           v-model="searchText"
           class="searchFilterInput"
-          placeholder="输入网格员名称"
+          placeholder="输入网格员或网格名称"
           size="small"
         />
         <div class="button-container">
@@ -56,7 +56,7 @@ export default {
   watch: {
     searchText(n) {
       this.fixGridMemberList = this.gridMemberList.filter(
-        (v) => ~v.NAME.indexOf(n)
+        (v) => ~v.NAME.indexOf(n) || ~v.ORGNAME.indexOf(n)
       );
     },
   },

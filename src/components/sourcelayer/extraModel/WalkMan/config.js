@@ -4,14 +4,14 @@ export const getCzmlDataSource = (data) => {
         "name": "gridmember",
         "version": "1.0",
         "clock": {
-            "interval": "2012-08-04T03:00:00Z/2012-08-04T03:50:00Z",
+            "interval": "2012-08-04T03:00:00Z/2012-08-04T18:00:00Z",
             "currentTime": "2012-08-04T03:00:00Z",
             "multiplier": 4
         }
     }, {
         "id": "walkman",
         "name": "Red box with black outline",
-        "availability": "2012-08-04T03:00:00Z/2012-08-04T03:50:00Z",
+        "availability": "2012-08-04T03:00:00Z/2012-08-04T18:00:00Z",
         "path": {
             "material": {
                 "solidColor": {
@@ -27,7 +27,7 @@ export const getCzmlDataSource = (data) => {
             }],
             "show": [{
                 "interval": "2012-08-04T03:00:00Z/2012-08-04T18:00:00Z",
-                "boolean": true
+                "boolean": false
             }]
         },
         "position": {
@@ -38,7 +38,7 @@ export const getCzmlDataSource = (data) => {
         },
         "model": {
             "gltf": "/static/model/walkman/walk.gltf",
-            "scale": 6.0,
+            "scale": 16.0,
         },
         "orientation": {
             "velocityReference": "#position"
