@@ -50,7 +50,12 @@ export default {
     },
   },
   methods: {
-    eventRegsiter() {},
+    eventRegsiter() {
+      this.$bus.$on("cesium-grid-source-off", () => {
+        this.$refs.tree.setCheckedKeys([]);
+        this.forceNodeKeys = [];
+      });
+    },
     checkChange() {
       this.forceNodeKeys = [...this.$refs.tree.getCheckedKeys()];
     },

@@ -4,7 +4,8 @@
     <emergency-around v-if="eventForce" />
     <emergency-list />
     <grid-member-list v-show="!forceRoom" />
-    <room-info v-if="forceRoom" />
+    <room-info v-if="forceRoom && !~['company', 'key'].indexOf(forceRoom.item[0].type)" />
+    <company-info v-if="forceRoom && forceRoom.item[0].type == 'company'" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import VideoGrid from "./VideoGrid";
 import RelationChart from "./RelationChart";
 import GridMemberList from "./GridMemberList";
 import RoomInfo from "./RoomInfo";
+import CompanyInfo from "./CompanyInfo";
 import { mapGetters } from "vuex";
 export default {
   name: "panelRight",
@@ -25,6 +27,7 @@ export default {
     RelationChart,
     GridMemberList,
     RoomInfo,
+    CompanyInfo,
   },
   computed: {
     ...mapGetters("map", ["eventForce", "forceRoom"]),
@@ -39,7 +42,7 @@ export default {
   background-image: linear-gradient(
     to left,
     rgba(0, 13, 26, 0.84) 0%,
-    rgba(0, 17, 34, 0.4) 100%
+    rgba(0, 17, 34, 0.6) 100%
   );
 }
 </style>

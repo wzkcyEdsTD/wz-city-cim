@@ -150,7 +150,7 @@ export default {
         const ds = window.earth.dataSources.getByName("gridmember")[0];
         if (ds) {
           const entity = ds.entities.getById("walkman");
-          entity.viewFrom = new Cesium.Cartesian3(10, -50, 1000);
+          entity.viewFrom = new Cesium.Cartesian3(10, -50, 500);
           window.earth.trackedEntity = entity;
         }
       } else {

@@ -110,6 +110,10 @@ export default {
           destination: new Cesium.Cartesian3.fromDegrees(x, y, this.height),
           orientation: angle25d,
         });
+        /**
+         * 2.5维，关闭额外图层
+         */
+        this.$bus.$emit("cesium-grid-source-off");
       } else {
         const { x, y } = this.fetchLngLat(window.earth.scene.camera.position);
         window.earth.camera.flyTo({

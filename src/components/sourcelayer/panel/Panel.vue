@@ -21,7 +21,7 @@ export default {
   position: fixed;
   z-index: 5;
   box-sizing: border-box;
-  padding: 4vh 1vh 2vh 1vh;
+  padding: 4vh 1vh 1vh 1vh;
   display: flex;
   width: 36vh;
   top: 5vh;

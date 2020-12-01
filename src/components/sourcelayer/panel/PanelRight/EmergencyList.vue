@@ -187,7 +187,7 @@ export default {
     height: auto;
     padding: 0 1vh;
     border-radius: 1vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.65);
     z-index: 10;
 
     > ul {
