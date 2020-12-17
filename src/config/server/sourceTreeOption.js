@@ -9,7 +9,7 @@
 const SERVER_HOST = "https://ditu.wzcitybrain.com/iserver/services";
 //  [DEFAULT]
 const SW_DATA = "/data-SW_DATA/rest/data";
-const SW_DATA_NAME = "172.20.83.196_swdata:";
+const SW_DATA_NAME = "swdata:";
 const SERVER_DEFAULT_DATA = SERVER_HOST + SW_DATA;
 //  [NEW]
 const N_DATA = "/data-qyry/rest/data";

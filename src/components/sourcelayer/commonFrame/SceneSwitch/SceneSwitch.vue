@@ -32,12 +32,7 @@ import GridSource from "./GridSource";
 import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
 import { mapGetters, mapActions } from "vuex";
-import {
-  CenterPoint,
-  CenterPoint2D,
-  angle3d,
-  angle25d,
-} from "mock/overview.js";
+import { CenterPoint, CenterPoint2D, angle3d, angle25d } from "mock/overview.js";
 
 export default {
   name: "sceneSwitch",
@@ -117,20 +112,14 @@ export default {
       } else {
         const { x, y } = this.fetchLngLat(window.earth.scene.camera.position);
         window.earth.camera.flyTo({
-          destination: new Cesium.Cartesian3.fromDegrees(
-            x,
-            y - 0.022,
-            this.height - 600
-          ),
+          destination: new Cesium.Cartesian3.fromDegrees(x, y - 0.022, this.height - 600),
           orientation: angle3d,
         });
       }
       // //  地图要素开关
       // window.datalayer.show = !this.cameraMode;
       window.wmts25d.show = this.cameraMode;
-      // window.earth.scene.getVectorTilesLayer(
-      //   "PXS25dMVT"
-      // ).show = this.cameraMode;
+      window.earth.scene.getVectorTilesLayer("PXS25dMVT").show = true;
       window.earth.scene.bloomEffect.show = !this.cameraMode;
       // window.earth.scene.layers.find("RIVER").visible = !this.cameraMode;
       ServiceUrl.WZBaimo.map(({ KEY }) => {

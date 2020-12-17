@@ -121,16 +121,14 @@ export default {
     initEntityHandler() {
       window.earth.selectedEntityChanged.addEventListener((entity) => {
         const layerID = "pxs25d@pxs25d";
-        if (!entity.pickResult || entity.pickResult.layerID != layerID) return;
+        if (!entity || !entity.pickResult || entity.pickResult.layerID != layerID) return;
         const properties = entity.pickResult[layerID][0].feature.properties;
-        console.log(properties.OBJECTID)
+        console.log(properties.OBJECTID);
         properties && this.$refs.forceBuilding.doForce(properties);
       });
     },
     initClickHandler() {
-      const handler = new Cesium.ScreenSpaceEventHandler(
-        window.earth.scene.canvas
-      );
+      const handler = new Cesium.ScreenSpaceEventHandler(window.earth.scene.canvas);
       // 监听左键点击事件
       handler.setInputAction((e) => {
         const pick = window.earth.scene.pick(e.position);

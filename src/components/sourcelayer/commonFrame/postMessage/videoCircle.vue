@@ -1,5 +1,5 @@
 <template>
-  <div class="videoCircle" v-if="shallPop">
+  <div class="videoCircle" v-if="shallPop && eventForce">
     <div
       class="vc-popup"
       :style="{ transform: `translate3d(${item.x}px,${item.y + 4}px, 0)` }"
@@ -181,10 +181,7 @@ export default {
           outlineWidth: 4,
           showBackground: true,
           backgroundColor: Cesium.Color(0.165, 0.165, 0.165, 0.1),
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
-            0,
-            10000
-          ),
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000),
           eyeOffset: new Cesium.Cartesian3(0.0, -260.0, 0),
           scaleByDistance: new Cesium.NearFarScalar(5000, 1, 10000, 0.5),
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
@@ -200,11 +197,7 @@ export default {
       data.forEach((item) => {
         const videoPointEntity = new Cesium.Entity({
           id: `videopoint_${item.mp_id}`,
-          position: Cesium.Cartesian3.fromDegrees(
-            Number(item.lng),
-            Number(item.lat),
-            1
-          ),
+          position: Cesium.Cartesian3.fromDegrees(Number(item.lng), Number(item.lat), 1),
           geometry: { lng: item.lng, lat: item.lat },
           billboard: {
             image: "/static/images/map-ico/视频监控.png",
@@ -232,9 +225,7 @@ export default {
           : {
               destination: Cesium.Cartesian3.fromDegrees(
                 lng,
-                lat -
-                  (0.008 +
-                    (0.002 * queryRadius * (queryRadius / 200) * 1.1) / 100),
+                lat - (0.008 + (0.002 * queryRadius * (queryRadius / 200) * 1.1) / 100),
                 700 + queryRadius * (queryRadius / 200) * 1.2
               ),
               orientation: angle3d,
@@ -326,11 +317,7 @@ export default {
       width: 20vh;
       color: white;
       border: 1px solid red;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 0, 0, 0.6),
-        rgba(0, 0, 0, 0.6)
-      );
+      background: linear-gradient(to bottom, rgba(255, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {
@@ -370,11 +357,7 @@ export default {
       left: -22vh;
       color: white;
       border: 1px solid blue;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 81, 255, 0.6),
-        rgba(0, 0, 0, 0.6)
-      );
+      background: linear-gradient(to bottom, rgba(0, 81, 255, 0.6), rgba(0, 0, 0, 0.6));
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {
