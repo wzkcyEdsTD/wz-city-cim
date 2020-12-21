@@ -5,25 +5,12 @@
       :style="{ transform: `translate3d(${item.x}px,${item.y + 4}px, 0)` }"
     >
       <div class="popup-container">
-        <!-- <div class="remove" @click="removeVideoCircle"></div>
-        <div
-          :class="['position', rtmpOn ? 'on' : 'off']"
-          @click="showVideoCircle"
-        ></div>
-        <div class="resource" @click="resourceClick"></div> -->
         <div class="warn-point" />
         <div class="red-line" />
         <div class="warn-popup">
           <header>突发事件<span /></header>
           <p>{{ eventForce.SUBJECT }}</p>
         </div>
-        <!-- <div class="blue-line"></div>
-        <div class="around-people">
-          <header>周边实时人口</header>
-          <p>范围：500米</p>
-          <p>人数：{{ aroundPopulation.data || "-" }}人</p>
-          <p>时间：{{ aroundPopulation.task_time || "-" }}</p>
-        </div> -->
       </div>
     </div>
     <div

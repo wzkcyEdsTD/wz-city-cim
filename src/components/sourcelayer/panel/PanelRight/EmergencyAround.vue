@@ -12,6 +12,10 @@
       <div class="around-source">
         <header>周边500米设施</header>
         <ul>
+          <li>
+            <img src="/static/images/map-ico/视频监控.png" />
+            <i>视频监控</i> <i>{{ rtmpListOther.length }}</i>
+          </li>
           <li v-for="(value, key, i) in sourceAround" :key="key + i">
             <img :src="`/static/images/map-ico/${key}.png`" />
             <i>{{ key }}</i> <i>{{ value }}</i>
@@ -36,7 +40,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["eventForce"]),
+    ...mapGetters("map", ["rtmpListOther", "eventForce"]),
   },
   async mounted() {
     this.fetchPopulationAround();
