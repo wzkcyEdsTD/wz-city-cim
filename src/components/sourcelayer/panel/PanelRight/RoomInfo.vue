@@ -63,7 +63,7 @@ const HASH = {
   EDU: "教育程度",
   PHONE: "联系方式",
   STATUS: "政治面貌",
-  TYPE: "重点类别",
+  TYPE_: "重点类别",
 };
 export default {
   name: "roomInfo",

@@ -112,8 +112,9 @@ export default {
             !floor[f] && (floor[f] = {});
             !floor[f][r] && (floor[f][r] = []);
           });
+          console.log(normals);
           keys.map((v) => {
-            const f = parseInt(v.fieldValues[5]);
+            const f = parseInt(v.fieldValues[20]);
             const r = parseInt(v.fieldValues[15]);
             floor[f] &&
               floor[f][r] &&
@@ -127,6 +128,7 @@ export default {
             const r = parseInt(v.fieldValues[7]);
             floor[f] &&
               floor[f][r] &&
+              !floor[f][r].filter((d) => d.NAME == v.fieldValues[3]).length &&
               floor[f][r].push(this.fixDataFormat(v.fieldNames, v.fieldValues));
           });
           modelBuilding.modelBuildFloorRoom = floor;
@@ -155,7 +157,7 @@ export default {
       return tmp;
     },
     doForceRoom(room, item) {
-      this.setForceRoom({
+      item.length && this.setForceRoom({
         room,
         item,
         bName: this.modelBuilding.name,
