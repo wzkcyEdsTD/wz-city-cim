@@ -1,6 +1,6 @@
 <template>
   <div class="unknown-chart">
-    <header class="ph-left">重点人员分布</header>
+    <header class="ph-left">重点人员统计</header>
     <chart-core chartId="unknown-chart" :option="option" />
   </div>
 </template>
@@ -23,9 +23,10 @@ export default {
     ...mapActions("map", ["getAllKindsList"]),
     updateChartOption(result) {
       const yAxisData = Object.keys(result);
-      const seriesData = yAxisData.map((v) => result[v].rows.length);
+      const seriesData = yAxisData.map((v) => {
+        return { name: v, value: result[v].rows.length };
+      });
       const option = JSON.parse(JSON.stringify(this.option));
-      option.yAxis.data = yAxisData;
       option.series[0].data = seriesData;
       this.option = option;
     },

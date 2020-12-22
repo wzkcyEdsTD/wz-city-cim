@@ -1,82 +1,27 @@
 import echarts from "echarts";
 export default {
-    tooltip: {
-        trigger: "axis",
-        axisPointer: { type: "line", },
+  grid: {
+    top: "10%",
+    right: "5%",
+    left: "5%",
+    bottom: "5%",
+    containLabel: true,
+  },
+  color: ['#2BBDE1', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0'],
+  series: [{
+    type: 'pie',
+    radius: ['20%', '40%'],
+    center: ['50%', '50%'],
+    // 最小角度
+    minAngle: 15,
+    labelLine: {
+      lineStyle: {
+        color: '#e6e6e6'
+      }
     },
-    grid: {
-        top: "10%",
-        right: "5%",
-        left: "5%",
-        bottom: "5%",
-        containLabel: true,
+    label: {
+      formatter: '{b}\n{c}人 {d}%'
     },
-    yAxis: {
-        name: "单位：人",
-        nameTextStyle: {
-            color: "#fff",
-            fontFamily: "DIN",
-            fontSize: 11,
-        },
-        data: [],
-        axisLabel: {
-            textStyle: {
-                color: '#fff'
-            }
-        },
-        axisTick: { show: false },
-        axisLine: { show: false },
-    },
-    xAxis: {
-        axisLine: { show: false },
-        axisTick: { show: false },
-        splitLine: {
-            lineStyle: {
-                type: "dashed",
-                width: 0.5,
-                color: ['#fff']
-            }
-        },
-        axisLabel: {
-            textStyle: {
-
-                color: '#fff'
-            }
-        }
-    },
-    series: [
-        {
-            type: 'bar',
-            itemStyle: {
-                color: new echarts.graphic.LinearGradient(
-                    0, 0, 0, 1,
-                    [
-                        { offset: 0, color: '#83bff6' },
-                        { offset: 0.5, color: '#188df0' },
-                        { offset: 1, color: '#188df0' }
-                    ]
-                )
-            },
-            emphasis: {
-                itemStyle: {
-                    color: new echarts.graphic.LinearGradient(
-                        0, 0, 0, 1,
-                        [
-                            { offset: 0, color: '#2378f7' },
-                            { offset: 0.7, color: '#2378f7' },
-                            { offset: 1, color: '#83bff6' }
-                        ]
-                    )
-                }
-            },
-            label: {
-                show: true,
-                position: 'right',
-                textStyle: {
-                    color: '#fff'
-                }
-            },
-            data: []
-        }
-    ]
+    data: []
+  }]
 };

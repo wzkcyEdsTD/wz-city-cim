@@ -210,6 +210,15 @@ export default {
               }
             }
           }
+          &::-webkit-scrollbar {
+            width: 4px;
+            background: rgba(1, 41, 38, 0.3);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background-color: #2a51fe;
+            box-shadow: 0px 3px 6px 0px #012623;
+          }
         }
       }
     }
