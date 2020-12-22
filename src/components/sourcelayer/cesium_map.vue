@@ -152,10 +152,16 @@ export default {
             });
           }
           if (pick.id.id && ~pick.id.id.indexOf("build_polygon")) {
-            this.$bus.$emit("cesium-3d-pick-model", {
-              x: pick.id.lon,
-              y: pick.id.lat,
-            });
+            const { position } = e;
+            const { x, y } = this.fetchLngLat(
+              window.earth.scene.globe.pick(
+                window.earth.camera.getPickRay(
+                  new Cesium.Cartesian2(position.x, position.y)
+                ),
+                window.earth.scene
+              )
+            );
+            this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
         } else if (typeof pick.id == "string") {
           const [_TYPE_, _SMID_, _NODEID_] = pick.id.split("@");
@@ -176,10 +182,7 @@ export default {
                 window.earth.scene
               )
             );
-            this.$bus.$emit("cesium-3d-pick-model", {
-              x,
-              y,
-            });
+            this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);

@@ -1,6 +1,6 @@
 <template>
   <div class="video-single">
-    <header>{{ name }}<i class="close" @click="closeVideo"></i></header>
+    <header>{{ forceVideo.mp_name }}<i class="close" @click="closeVideo"></i></header>
     <div class="blue-tip" />
     <div class="video-frame">
       <div id="player-con-1" class="frequency-pic type1" />
@@ -9,50 +9,59 @@
 </template>
 <script>
 const Aliplayer = window.Aliplayer;
+import { getRtmpVideoURL } from "api/cityBrainAPI";
+import CIM_API from "api/cimAPI";
 export default {
   data() {
     return {
       video: undefined,
     };
   },
-  props: ["url", "name"],
-  watch: {
-    type: {
-      handler(n) {
-        this.$nextTick(() => {
-          this.initRtmp();
-        });
-      },
-    },
-  },
+  props: ["forceVideo"],
   beforeDestroy() {
     this.video.dispose();
     this.video = undefined;
   },
-  mounted() {
-    this.initRtmp();
+  async mounted() {
+    const data =
+      this.forceVideo.mp_name == "DA8上陡门12组团-9幢"
+        ? await CIM_API.getExtraVideo({ MpID: "122213000100000561003896", FCode: "9" })
+        : await this.openRtmpVideoFrame();
+    console.log(data);
+    this.initRtmp(data);
   },
   methods: {
+    /**
+     * 赋值 开视频
+     * @param {object} item
+     */
+    async openRtmpVideoFrame() {
+      const { mp_name, mp_id } = this.forceVideo;
+      const { data } = await getRtmpVideoURL(mp_id.split("videopoint_")[1]);
+      return {
+        ...this.forceVideo,
+        ...data,
+      };
+    },
     closeVideo() {
       this.$parent.closeVideo();
     },
-    initRtmp() {
-      this.video = undefined;
+    initRtmp({ flv, mp_name }) {
       this.video = new Aliplayer(
         {
           id: "player-con-1",
           width: "100%",
           height: "100%",
-          source: this.url,
           autoplay: true,
-          controlBarVisibility: "hover",
-          useFlashPrism: false,
-          useH5Prism: true,
+          source: flv,
+          muted: true,
         },
-        (player) => {
-          console.log("[h5]播放器创建");
+        function (player) {
+          //先静音然后播放
           player.mute();
           player.play();
+          // player.requestFullScreen();
+          console.log("播放器创建好了！");
         }
       );
     },
@@ -134,11 +143,7 @@ export default {
     flex: 1;
     box-sizing: border-box;
     padding: 1vh;
-    background: linear-gradient(
-      to bottom,
-      rgba(86, 200, 229, 0.6),
-      rgba(0, 0, 0, 0.4)
-    );
+    background: linear-gradient(to bottom, rgba(86, 200, 229, 0.6), rgba(0, 0, 0, 0.4));
     border: 1px rgb(120, 194, 243) solid;
   }
 }

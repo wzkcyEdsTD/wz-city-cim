@@ -29,7 +29,7 @@ export default {
   methods: {
     async fetchVideoList() {
       const { data } = await getRtmpVideoList(this.geometry, this.queryRadius);
-      this.videoList = data.splice(2, 4);
+      this.videoList = data.splice(1, 4);
     },
   },
 };

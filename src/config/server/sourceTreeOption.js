@@ -25,9 +25,9 @@ const TOPIC = [
   { label: "医疗场所", dataset: "JZJZNL_YLJH_JHCS_LC", smart: true },
   { label: "派出所", dataset: "PoliceStation", smart: true },
   { label: "市场商场", dataset: "market_mall" },
-  { label: "小学", dataset: "PrimarySchool" },
-  { label: "初中", dataset: "JuniorHighSchool" },
-  { label: "高中", dataset: "HighSchool" },
+  // { label: "小学", dataset: "PrimarySchool" },
+  // { label: "初中", dataset: "JuniorHighSchool" },
+  // { label: "高中", dataset: "HighSchool" },
   { label: "娱乐场所", dataset: "entertainment_place" },
   { label: "企业", dataset: "pxsqyd", isNew: true },
   { label: "重点人员", dataset: "zdry", isNew: true },
@@ -61,5 +61,9 @@ export const CESIUM_PEOPLE_BUILDING_SOURCE_OPTION = {
   HOME2D: {
     url: SERVER_BUILDFING_DATA,
     newdataset: `${BUILDFING_DATA_NAME}hsb`
+  },
+  NORMAL2D: {
+    url: SERVER_BUILDFING_DATA,
+    newdataset: `${BUILDFING_DATA_NAME}hjb`
   }
 }

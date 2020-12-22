@@ -44,10 +44,7 @@ export default {
       return this.eventList.map((v) => [v.LON, v.LAT, 8]);
     },
     keyPersonHeatList() {
-      return this.keyPersonList.features.map((v) => [
-        ...v.geometry.coordinates,
-        8,
-      ]);
+      return this.keyPersonList.features.map((v) => [...v.geometry.coordinates, 8]);
     },
     normalPersonHeatList() {
       return this.normalPersonList.features.map((v) => [
@@ -66,6 +63,7 @@ export default {
       this.forceKey = this.forceKey == k ? undefined : k;
     },
     doForceHeatMap() {
+      console.log(this.eventHeatList);
       const heatArr =
         this.forceKey == "k3"
           ? this.keyPersonHeatList

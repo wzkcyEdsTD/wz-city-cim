@@ -2,9 +2,7 @@
   <div class="emergency-list">
     <header class="ph-right">
       事件档案
-      <span class="back-to-list" v-if="eventForce" @click="backToList"
-        >事件列表</span
-      >
+      <span class="back-to-list" v-if="eventForce" @click="backToList">事件列表</span>
       <div class="searchHeader" v-if="!eventForce">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
@@ -25,6 +23,7 @@
     <div class="emergency-list-ul" v-if="!eventForce">
       <header>
         <span>网格</span>
+        <!-- <span>序号</span> -->
         <span>事件</span>
         <span>日期</span>
       </header>
@@ -32,11 +31,11 @@
         <li
           v-for="(item, i) in fixEventList"
           :key="i"
-          :title="item.SUBJECT"
           @click="simulateEmergency(item, i)"
         >
-          <span>{{ item.OCCURORG }}</span>
-          <span>{{ item.SUBJECT }}</span>
+          <span :title="item.ORGNAME">{{ item.ORGNAME.split("（").pop().replace(/\）/g,'') }}</span>
+          <!-- <span>{{ i + 1 }}</span> -->
+          <span :title="item.SUBJECT">{{ item.SUBJECT }}</span>
           <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span>
         </li>
       </ul>
@@ -45,10 +44,7 @@
       <img v-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
-      <p>
-        <i>发生时间:</i
-        >{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}
-      </p>
+      <p><i>发生时间:</i>{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}</p>
       <p><i>最后操作用户:</i>{{ eventForce.LASTUSERNAME || "-" }}</p>
     </div>
     <div class="emergency-progress" v-if="eventForce">
@@ -84,7 +80,7 @@ export default {
     searchText(n) {
       this.fixEventList = this.mockEvents
         .concat(this.eventList)
-        .filter((v) => ~v.SUBJECT.indexOf(n));
+        .filter((v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n));
     },
   },
   async created() {
@@ -102,7 +98,6 @@ export default {
       const event = { ...n, i };
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);
-      console.log(n.OCCURORG);
       this.mockProgress[n.OCCURORG]
         ? this.setMockEventLog(this.mockProgress[n.OCCURORG])
         : await this.getEventLog(event.ID);
@@ -354,14 +349,14 @@ export default {
       display: inline-block;
       box-sizing: border-box;
       padding: 0 0.6vh;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       &:first-child {
         width: 8vh;
       }
       &:nth-child(2) {
         flex: 1;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
       }
       &:last-child {
         width: 11vh;
