@@ -15,6 +15,11 @@ const SERVER_DEFAULT_DATA = SERVER_HOST + SW_DATA;
 const N_DATA = "/data-qyry/rest/data";
 const N_DATA_NAME = "pyry:";
 const SERVER_N_DATA = SERVER_HOST + N_DATA;
+//  [BUILDING]
+const BUILDFING_DATA = "/data-pxs1222-2/rest/data";
+const BUILDFING_DATA_NAME = "pxs:";
+const SERVER_BUILDFING_DATA = SERVER_HOST + BUILDFING_DATA;
+
 // 医疗专题
 const TOPIC = [
   { label: "医疗场所", dataset: "JZJZNL_YLJH_JHCS_LC", smart: true },
@@ -43,3 +48,18 @@ export const CESIUM_TREE_SOURCE_OPTION = [{
     };
   })
 }]
+
+export const CESIUM_PEOPLE_BUILDING_SOURCE_OPTION = {
+  PEOPLE2D: {
+    url: SERVER_BUILDFING_DATA,
+    newdataset: `${BUILDFING_DATA_NAME}zdry1222`
+  },
+  BUILDING2D: {
+    url: SERVER_BUILDFING_DATA,
+    newdataset: `${BUILDFING_DATA_NAME}RES_PY_POINTLINK`
+  },
+  HOME2D: {
+    url: SERVER_BUILDFING_DATA,
+    newdataset: `${BUILDFING_DATA_NAME}hsb`
+  }
+}

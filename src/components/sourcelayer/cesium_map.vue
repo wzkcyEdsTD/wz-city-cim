@@ -16,6 +16,7 @@
     <!-- 弹出框 -->
     <div class="force-frames">
       <ForceBuilding ref="forceBuilding" />
+      <ModelBuilding ref="modelBuilding" />
     </div>
     <!-- 功能组件 -->
     <div v-if="mapLoaded && validated">
@@ -39,6 +40,7 @@ import Population from "components/sourcelayer/extraModel/Population/Population"
 import SceneSwitch from "components/sourcelayer/commonFrame/SceneSwitch/SceneSwitch";
 import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCircle";
 import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
+import ModelBuilding from "components/sourcelayer/commonFrame/ModelBuilding/ModelBuilding";
 import WalkMan from "components/sourcelayer/extraModel/WalkMan/WalkMan";
 import { CenterPoint } from "mock/overview.js";
 import {
@@ -77,6 +79,7 @@ export default {
     VideoCircle,
     Overview,
     ForceBuilding,
+    ModelBuilding,
     WalkMan,
   },
   created() {
@@ -148,6 +151,12 @@ export default {
               mp_name: pick.id.name,
             });
           }
+          if (pick.id.id && ~pick.id.id.indexOf("build_polygon")) {
+            this.$bus.$emit("cesium-3d-pick-model", {
+              x: pick.id.lon,
+              y: pick.id.lat,
+            });
+          }
         } else if (typeof pick.id == "string") {
           const [_TYPE_, _SMID_, _NODEID_] = pick.id.split("@");
           //  *****[detailPopup]  资源详情点*****
@@ -157,8 +166,31 @@ export default {
               position: pick.primitive.position,
             });
           }
+          if (pick.primitive.name == "WZBaimo_POINT_AROUND") {
+            const { position } = e;
+            const { x, y } = this.fetchLngLat(
+              window.earth.scene.globe.pick(
+                window.earth.camera.getPickRay(
+                  new Cesium.Cartesian2(position.x, position.y)
+                ),
+                window.earth.scene
+              )
+            );
+            this.$bus.$emit("cesium-3d-pick-model", {
+              x,
+              y,
+            });
+          }
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    },
+    fetchLngLat({ x, y, z }) {
+      const ellipsoid = window.earth.scene.globe.ellipsoid;
+      const cartesian3 = new Cesium.Cartesian3(x, y, z);
+      const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
+      const lat = Cesium.Math.toDegrees(cartographic.latitude);
+      const lng = Cesium.Math.toDegrees(cartographic.longitude);
+      return { x: lng, y: lat };
     },
     /**
      * 事件注册

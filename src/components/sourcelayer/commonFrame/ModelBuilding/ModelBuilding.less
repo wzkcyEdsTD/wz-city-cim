@@ -1,0 +1,205 @@
+.force-building {
+    position: fixed;
+    bottom: 2vh;
+    overflow: hidden;
+    right: 45vh;
+    width: 40vh;
+    color: white;
+    box-sizing: border-box;
+    z-index: 10;
+    border-radius: 1vh;
+    background-color: rgba(0, 0, 0, 0.65);
+
+    ._force_building_ {
+        padding: 1vh;
+        height: 62vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        >header {
+            display: block;
+            position: relative;
+            height: 4vh;
+            line-height: 4vh;
+            font-family: YouSheBiaoTiHei;
+            font-size: 2.8vh;
+            color: #ffffff;
+            text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.64);
+            margin-bottom: 10px;
+            padding-left: 1.6vh;
+            padding-right: 3vh;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            word-break: break-all;
+
+            .close {
+                position: absolute;
+                right: 4px;
+                top: 6px;
+                width: 2.6vh;
+                height: 2.6vh;
+                display: block;
+                .bg-image("/static/images/icons/zoom-in");
+                transform: rotate(-45deg);
+                transition: all 0.1s linear;
+                cursor: pointer;
+
+                &:hover {
+                    transform: rotate(45deg);
+                }
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0.6vh;
+                width: 14vh;
+                height: 1.6vh;
+                z-index: -1;
+                background-image: linear-gradient(90deg,
+                        #2acbfe 0%,
+                        transparent 100%);
+                transform: skewX(-30deg);
+            }
+        }
+
+        .frame-content {
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            &::-webkit-scrollbar {
+                width: 4px;
+                background: rgba(1, 41, 38, 0.3);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #2a51fe;
+                box-shadow: 0px 3px 6px 0px #012623;
+            }
+
+            header {
+                font-family: YouSheBiaoTiHei;
+                font-size: 2.2vh;
+                font-weight: 300;
+                color: #ffffff;
+            }
+
+            .build-info {
+                >p {
+                    text-indent: 2.8vh;
+                    font-size: 1.4vh;
+                    line-height: 1.9vh;
+                }
+            }
+
+            .floor-info {
+                margin-top: 1vh;
+
+                >ul {
+                    >li {
+                        >.floor-num {
+                            background-color: rgba(0, 0, 255, 0.2);
+                            line-height: 3vh;
+                            margin: 0.6vh 0;
+                            font-weight: bold;
+                            text-align: center;
+
+                            >i {
+                                position: relative;
+                                font-style: normal;
+                                font-size: 1.7vh;
+
+                                &:before,
+                                &:after {
+                                    content: '';
+                                    position: absolute;
+                                    top: 50%;
+                                    background: rgba(255, 255, 255, 0.8);
+                                    width: 14vh;
+                                    height: 1px;
+                                }
+
+                                &:before {
+                                    left: 6vh;
+                                    /*调整背景横线的左右距离*/
+                                }
+
+                                &:after {
+                                    right: 6vh;
+                                }
+                            }
+                        }
+
+                        >ul {
+                            >li {
+                                display: inline-block;
+                                vertical-align: middle;
+
+                                >span {
+                                    display: inline-block;
+                                    padding: 0.4vh 1vh;
+                                    margin: 0.6vh;
+                                    position: relative;
+                                    background-color: rgba(49, 49, 49, 0.384);
+                                    color: #c9c9c9;
+                                    border: 2px solid #c9c9c9;
+                                    border-radius: 1vh;
+                                    cursor: pointer;
+                                    overflow: hidden;
+
+                                    &:hover {
+                                        overflow: visible;
+                                    }
+
+                                    &.activeRoom {
+                                        background-color: rgba(0, 0, 255, 0.2);
+                                        color: #597beb;
+                                        border: 2px solid #597beb;
+                                    }
+
+                                    &.activeCompany {
+                                        background-color: rgba(255, 217, 0, 0.2);
+                                        color: gold;
+                                        font-weight: bold;
+                                        border: 2px solid gold;
+                                    }
+
+                                    &.activeKey {
+                                        background-color: rgba(255, 51, 0, 0.2);
+                                        color: rgb(255, 60, 0);
+                                        font-weight: bold;
+                                        border: 2px solid rgb(255, 60, 0);
+                                    }
+
+                                    >.room-info {
+                                        position: absolute;
+                                        bottom: 4vh;
+                                        padding: 1vh;
+                                        width: 9vh;
+                                        background-color: rgba(0, 0, 0, 0.8);
+                                        border-radius: 1vh;
+
+                                        >span {
+                                            margin-bottom: 1vh;
+                                            color: white;
+                                            line-height: 2.2vh;
+                                            font-size: 1.6vh;
+
+                                            &.activeRoomKeyOne {
+                                                color: rgb(255, 60, 0);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

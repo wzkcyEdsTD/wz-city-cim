@@ -29,7 +29,11 @@
 <script>
 import { mapGetters } from "vuex";
 import { getPopulation } from "api/cityBrainAPI";
-import { CESIUM_TREE_SOURCE_OPTION } from "config/server/sourceTreeOption";
+import { destoryBuild, drawBuild } from "./DrawAround/DrawAround";
+import {
+  CESIUM_TREE_SOURCE_OPTION,
+  CESIUM_PEOPLE_BUILDING_SOURCE_OPTION,
+} from "config/server/sourceTreeOption";
 
 export default {
   name: "emergencyAround",
@@ -37,6 +41,7 @@ export default {
     return {
       aroundPopulation: {},
       sourceAround: {},
+      buildAround: [],
     };
   },
   computed: {
@@ -46,12 +51,16 @@ export default {
     this.fetchPopulationAround();
     this.fetchSourceAround();
   },
+  beforeDestroy() {
+    //  摧毁房屋面
+    destoryBuild(this.buildAround);
+  },
   methods: {
     async fetchPopulationAround() {
       const { LON, LAT } = this.eventForce;
       this.aroundPopulation = await getPopulation({ lng: LON, lat: LAT });
     },
-    fetchSourceAround() {
+    async fetchSourceAround() {
       const { LON, LAT } = this.eventForce;
       const geometry = SuperMap.Geometry.Polygon.createRegularPolygon(
         new SuperMap.Geometry.Point(LON, LAT),
@@ -59,6 +68,7 @@ export default {
         30,
         0
       );
+      //  周边分析
       CESIUM_TREE_SOURCE_OPTION[0].children.map(async ({ newdataset, label, url }) => {
         this.sourceAround[label] = await this.fetchFromDataSets(
           geometry,
@@ -66,30 +76,90 @@ export default {
           url
         );
       });
+      //  重点人员分析,反画楼面
+      const { PEOPLE2D, BUILDING2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+      const data = await this.fetchFromZDRYDSets(geometry, PEOPLE2D);
+      const b_data = await this.fetchBlock2DByName(
+        [...new Set(data.map((v) => v.fieldValues[0]))],
+        BUILDING2D
+      );
+      const fix_b_data = b_data.map((v) => {
+        return { points: v.geometry.points, id: "build_polygon_" + v.ID };
+      });
+      this.buildAround = fix_b_data;
+      drawBuild(fix_b_data);
     },
+    /**
+     * 获取数据集点位
+     */
     fetchFromDataSets(geometry, newdataset, url) {
       return new Promise((resolve, reject) => {
-        const getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters(
-          {
-            datasetNames: [newdataset],
-            geometry,
-            fields: ["SMID"],
-          }
-        );
         const getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(
           url,
           {
             eventListeners: {
-              processCompleted: (data) => {
-                data && resolve(data.originResult.totalCount);
-              },
-              processFailed: (err) => {
-                reject(err);
-              },
+              processCompleted: (data) => data && resolve(data.originResult.totalCount),
+              processFailed: (err) => reject(err),
             },
           }
         );
-        getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+        getFeaturesByGeometryService.processAsync(
+          new SuperMap.REST.GetFeaturesByGeometryParameters({
+            datasetNames: [newdataset],
+            geometry,
+            returnCountOnly: true,
+            toIndex: 0,
+          })
+        );
+      });
+    },
+    /**
+     * 获取重点人员点位
+     */
+    fetchFromZDRYDSets(geometry, { newdataset, url }) {
+      return new Promise((resolve, reject) => {
+        const getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(
+          url,
+          {
+            eventListeners: {
+              processCompleted: (data) => data && resolve(data.originResult.features),
+              processFailed: (err) => reject(err),
+            },
+          }
+        );
+        getFeaturesByGeometryService.processAsync(
+          new SuperMap.REST.GetFeaturesByGeometryParameters({
+            datasetNames: [newdataset],
+            geometry,
+            fields: ["BZDZ"],
+            toIndex: -1,
+          })
+        );
+      });
+    },
+    /**
+     * sql查楼面
+     */
+    fetchBlock2DByName(names, { newdataset, url }) {
+      return new Promise((resolve, reject) => {
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+          eventListeners: {
+            processCompleted: (data) => data && resolve(data.originResult.features),
+            processFailed: (err) => reject(err),
+          },
+        });
+        getFeatureBySQLService.processAsync(
+          new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.REST.FilterParameter({
+              attributeFilter: `BUILDING_ADDRESS in (${names
+                .map((v) => `'${v}'`)
+                .join(",")})`,
+            }),
+            toIndex: -1,
+            fields: ["SMID"],
+            datasetNames: [newdataset],
+          })
+        );
       });
     },
   },
