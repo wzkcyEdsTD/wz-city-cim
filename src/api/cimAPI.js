@@ -55,11 +55,19 @@ const getGridMemberRoutes = (url) => {
     return getAxios("/forward/getGridMemberRoutes", { url }, 'post');
 }
 
+/**
+ * 获取额外视频
+ */
+const getExtraVideo = (data) => {
+    return getAxios("/forward/getExtraVideo", data, 'post');
+}
+
 export default {
     getEventList,
     getAllKindsList,
     getEventLog,
     getGridMemberList,
     getGridMemberRouteLink,
-    getGridMemberRoutes
+    getGridMemberRoutes,
+    getExtraVideo
 }

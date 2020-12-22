@@ -15,12 +15,12 @@
     </div>
     <div
       class="transform-video"
-      v-if="forceVideo && forceVideo.flv"
+      v-if="forceVideo"
       :style="{
         transform: `translate3d(${forceVideo.x}px,${forceVideo.y}px, 0)`,
       }"
     >
-      <video-single :url="forceVideo.flv" :name="forceVideo.mp_name" />
+      <video-single :forceVideo="forceVideo" />
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import VideoSingle from "./videoSingle";
-import { getRtmpVideoList, getRtmpVideoURL } from "api/cityBrainAPI";
+import { getRtmpVideoList } from "api/cityBrainAPI";
 import { angle3d, angle25d } from "mock/overview.js";
 const Cesium = window.Cesium;
 
@@ -75,20 +75,10 @@ export default {
       this.$bus.$off("cesium-3d-video-single");
       this.$bus.$on("cesium-3d-video-single", async (item) => {
         this.forceVideo = undefined;
-        await this.openRtmpVideoFrame(item);
+        this.$nextTick(() => {
+          this.forceVideo = item;
+        });
       });
-    },
-    /**
-     * 赋值 开视频
-     * @param {object} item
-     */
-    async openRtmpVideoFrame(item) {
-      const { mp_name, mp_id } = item;
-      const { data } = await getRtmpVideoURL(mp_id.split("videopoint_")[1]);
-      this.forceVideo = {
-        ...item,
-        ...data,
-      };
     },
     /**
      * 关视频
@@ -119,7 +109,7 @@ export default {
           y: pointToWindow.y - $(".vc-popup").height() / 2,
         };
       }
-      if (this.forceVideo && this.forceVideo.flv) {
+      if (this.forceVideo) {
         const forceVideoToWindow = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
           window.earth.scene,
           Cesium.Cartesian3.fromDegrees(

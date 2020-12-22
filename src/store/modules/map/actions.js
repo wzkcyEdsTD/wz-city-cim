@@ -28,7 +28,7 @@ export const setForceBuilding = ({ commit }, data) => {
 //  设置事件列表
 export const getEventList = async ({ commit }, data) => {
   const { rows } = await CIM_API.getEventList();
-  commit(types.SET_EVENT_LIST, rows);
+  commit(types.SET_EVENT_LIST, rows.filter(v=>v.LON && v.LAT));
 }
 //  设置事件流程
 export const getEventLog = async ({ commit }, data) => {

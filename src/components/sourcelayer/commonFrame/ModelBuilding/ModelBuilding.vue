@@ -44,7 +44,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
-const { BUILDING2D, HOME2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+const { BUILDING2D, HOME2D, PEOPLE2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
 export default {
   name: "ModelBuilding",
   data() {
@@ -58,29 +58,38 @@ export default {
   },
   methods: {
     eventRegsiter() {
-      this.$bus.$on("cesium-3d-pick-model", async (geometry) => {
-        console.log(geometry);
-        const data = await this.fetchBuildByPoint(geometry, BUILDING2D);
-        if (data.length) {
-          const modelBuilding = {
-            name: data[0].fieldValues[1],
-            address: data[0].fieldValues[2],
-            modelBuildFloorRoom: {},
-          };
-          const rooms = await this.fetchRoomByBuildUUID(data[0].fieldValues[0], HOME2D);
-          if (rooms.length) {
-            const floor = {};
-            rooms.map((v) => {
-              const f = parseInt(v.fieldValues[5]);
-              const r = parseInt(v.fieldValues[7]);
-              !floor[f] && (floor[f] = {});
-              !floor[f][r] && (floor[f][r] = {});
-            });
-            modelBuilding.modelBuildFloorRoom = floor;
-          }
-          this.modelBuilding = modelBuilding;
-        }
+      this.$bus.$on("cesium-3d-pick-model", (geometry) => {
+        this.doFetchBuild(geometry);
       });
+    },
+    async doFetchBuild(geometry) {
+      //  fetch build
+      const data = await this.fetchBuildByPoint(geometry, BUILDING2D);
+      if (data.length) {
+        const modelBuilding = {
+          name: data[0].fieldValues[1],
+          address: data[0].fieldValues[2],
+          modelBuildFloorRoom: {},
+        };
+        const uuid = data[0].fieldValues[0];
+        const address = data[0].fieldValues[2];
+        //  fetch keys
+        const keys = await this.fetchKeyByBuildUUID(address, PEOPLE2D);
+        //  fetch rooms
+        const rooms = await this.fetchRoomByBuildUUID(uuid, HOME2D);
+        if (rooms.length) {
+          const floor = {};
+          rooms.map((v) => {
+            const f = parseInt(v.fieldValues[5]);
+            const r = parseInt(v.fieldValues[7]);
+            !floor[f] && (floor[f] = {});
+            !floor[f][r] && (floor[f][r] = []);
+          });
+          keys.map((v) => {});
+          modelBuilding.modelBuildFloorRoom = floor;
+        }
+        this.modelBuilding = modelBuilding;
+      }
     },
     /**
      * 获取楼栋信息
@@ -124,7 +133,28 @@ export default {
               attributeFilter: `BUILDID = '${uuid}'`,
             }),
             toIndex: -1,
-            fields: ["FLOOR_NUM", "HOME_NUM"],
+            datasetNames: [newdataset],
+          })
+        );
+      });
+    },
+    /**
+     * 获取重点人员
+     */
+    async fetchKeyByBuildUUID(address, { newdataset, url }) {
+      return new Promise((resolve, reject) => {
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+          eventListeners: {
+            processCompleted: (data) => data && resolve(data.originResult.features),
+            processFailed: (err) => reject(err),
+          },
+        });
+        getFeatureBySQLService.processAsync(
+          new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.REST.FilterParameter({
+              attributeFilter: `BZDZ = '${address}'`,
+            }),
+            toIndex: -1,
             datasetNames: [newdataset],
           })
         );

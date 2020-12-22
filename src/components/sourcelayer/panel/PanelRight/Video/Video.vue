@@ -3,10 +3,7 @@
     <p>{{ mp_name }}</p>
     <div :id="`video_grid_${index}`" class="frequency-pic type1" />
     <div class="refresh-video">
-      <img
-        src="/static/images/mode-ico/switch-ico@2x.png"
-        @click="refreshVideo"
-      />
+      <img src="/static/images/mode-ico/switch-ico@2x.png" @click="refreshVideo" />
     </div>
   </div>
 </template>
@@ -26,7 +23,9 @@ export default {
     this.destroyVideo();
   },
   mounted() {
-    this.getVideoURL();
+    setTimeout(() => {
+      this.getVideoURL();
+    }, this.index * 1500);
   },
   methods: {
     async refreshVideo() {
@@ -58,6 +57,8 @@ export default {
           height: "100%",
           autoplay: true,
           controlBarVisibility: "hover",
+          // useFlashPrism: flash ? true : false,
+          // useH5Prism: flash ? false : true,
           useFlashPrism: false,
           useH5Prism: true,
         },
