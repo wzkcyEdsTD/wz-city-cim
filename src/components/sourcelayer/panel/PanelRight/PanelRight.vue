@@ -1,8 +1,8 @@
 <template>
   <div class="panel panel-right">
     <video-grid v-show="!eventForce" />
-    <emergency-around v-if="eventForce" />
     <emergency-list />
+    <emergency-around v-if="eventForce" />
     <grid-member-list v-show="!forceRoom" />
     <room-info v-if="forceRoom && !~['company', 'key'].indexOf(forceRoom.item[0].type)" />
     <company-info v-if="forceRoom && forceRoom.item[0].type == 'company'" />

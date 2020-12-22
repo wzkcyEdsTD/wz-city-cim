@@ -1,6 +1,6 @@
 <template>
   <div class="city-index-chart">
-    <header class="ph-left">城市运行信息监控</header>
+    <header class="ph-left">蒲鞋市街道基本详情</header>
     <ul class="city-index-ul">
       <li v-for="(value, key, i) in dataInfo" :key="i + key">
         <img :src="`/static/images/panel/left/${key}@2x.png`" />
@@ -22,12 +22,12 @@ export default {
   data() {
     return {
       dataInfo: {
-        事件数: { v: "445", u: "" },
         人口数: { v: "6.9", u: "万" },
         重点人员: { v: "630", u: "" },
-        出租房: { v: "4997", u: "" },
+        事件数: { v: "445", u: "" },  
         网格数: { v: "96", u: "" },
         楼栋数: { v: "1059", u: "" },
+        出租房: { v: "4997", u: "" },
       },
     };
   },
