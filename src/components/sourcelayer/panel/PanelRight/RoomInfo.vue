@@ -6,16 +6,18 @@
     <div class="room-info-content">
       <div class="room-member-info">
         <header>
-          <span>称谓</span>
+          <!-- <span>称谓</span> -->
+          <span>序号</span>
           <span>成员</span>
-          <span>性别</span>
+          <!-- <span>性别</span> -->
           <span>身份证号</span>
         </header>
         <ul>
           <li v-for="(item, i) in forceRoom.item" :key="i">
-            <span>{{ item.RELA || "-" }}</span>
+            <!-- <span>{{ item.RELA || "-" }}</span> -->
+            <span>{{ i + 1 }}</span>
             <span>{{ item.NAME }}</span>
-            <span>{{ item.SEX || "-" }}</span>
+            <!-- <span>{{ item.SEX || "-" }}</span> -->
             <span>{{ item.IDCARD || "-" }}</span>
           </li>
         </ul>
@@ -29,7 +31,7 @@
           </li>
         </ul>
       </div>
-      <div class="relate-grid-member">
+      <!-- <div class="relate-grid-member">
         <header>
           <span>序号</span>
           <span>网格员</span>
@@ -44,7 +46,7 @@
             <span>{{ forceGridMember.CONTACT }}</span>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -89,20 +91,20 @@ export default {
   },
   methods: {
     ...mapActions("map", ["setForceGridMember", "setGridMemberList"]),
-    async doForceGridMember() {
-      const routeLinks = await CIM_API.getGridMemberRouteLink(
-        this.forceGridMember.NAME
-      );
-      routeLinks.rows.length
-        ? this.setForceGridMember({
-            ...this.forceGridMember,
-            routeLinks: routeLinks.rows,
-          })
-        : this.$message({
-            type: "info",
-            message: "无网格员巡逻信息",
-          });
-    },
+    // async doForceGridMember() {
+    //   const routeLinks = await CIM_API.getGridMemberRouteLink(
+    //     this.forceGridMember.NAME
+    //   );
+    //   routeLinks.rows.length
+    //     ? this.setForceGridMember({
+    //         ...this.forceGridMember,
+    //         routeLinks: routeLinks.rows,
+    //       })
+    //     : this.$message({
+    //         type: "info",
+    //         message: "无网格员巡逻信息",
+    //       });
+    // },
   },
 };
 </script>

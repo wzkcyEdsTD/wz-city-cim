@@ -16,7 +16,7 @@ const N_DATA = "/data-qyry/rest/data";
 const N_DATA_NAME = "pyry:";
 const SERVER_N_DATA = SERVER_HOST + N_DATA;
 //  [BUILDING]
-const BUILDFING_DATA = "/data-pxs1222-2/rest/data";
+const BUILDFING_DATA = "/data-pxs1222-3/rest/data";
 const BUILDFING_DATA_NAME = "pxs:";
 const SERVER_BUILDFING_DATA = SERVER_HOST + BUILDFING_DATA;
 

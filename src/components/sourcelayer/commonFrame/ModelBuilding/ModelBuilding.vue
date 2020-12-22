@@ -29,8 +29,32 @@
                 <i>第{{ key }}层</i>
               </div>
               <ul>
-                <li v-for="(item, room, j) in value" :key="room + j">
+                <!-- <li v-for="(item, room, j) in value" :key="room + j">
                   <span>{{ room }}室 </span>
+                </li> -->
+                <li
+                  v-for="(item, room, j) in value"
+                  :key="room + j"
+                  @click="doForceRoom(room, item)"
+                >
+                  <span
+                    :class="{
+                      activeRoom: item.length,
+                      activeCompany: item.length && item[0].type == 'company',
+                      activeKey: item.length && item.filter((v) => v.isKey).length,
+                    }"
+                    >{{ room }}室
+                    <div class="room-info" v-if="item.length">
+                      <span
+                        v-for="(people, k) in item"
+                        :key="k"
+                        :class="{ activeRoomKeyOne: people.isKey }"
+                      >
+                        <p>{{ people.NAME }}</p>
+                        <!-- <p>{{ people.IDCARD }}</p> -->
+                      </span>
+                    </div>
+                  </span>
                 </li>
               </ul>
             </li>
@@ -44,7 +68,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
-const { BUILDING2D, HOME2D, PEOPLE2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+const { BUILDING2D, HOME2D, PEOPLE2D, NORMAL2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
 export default {
   name: "ModelBuilding",
   data() {
@@ -57,6 +81,7 @@ export default {
     this.eventRegsiter();
   },
   methods: {
+    ...mapActions("map", ["setForceRoom"]),
     eventRegsiter() {
       this.$bus.$on("cesium-3d-pick-model", (geometry) => {
         this.doFetchBuild(geometry);
@@ -75,6 +100,8 @@ export default {
         const address = data[0].fieldValues[2];
         //  fetch keys
         const keys = await this.fetchKeyByBuildUUID(address, PEOPLE2D);
+        //  fetch normals
+        const normals = await this.fetchKeyByBuildUUID(address, NORMAL2D);
         //  fetch rooms
         const rooms = await this.fetchRoomByBuildUUID(uuid, HOME2D);
         if (rooms.length) {
@@ -85,11 +112,54 @@ export default {
             !floor[f] && (floor[f] = {});
             !floor[f][r] && (floor[f][r] = []);
           });
-          keys.map((v) => {});
+          keys.map((v) => {
+            const f = parseInt(v.fieldValues[5]);
+            const r = parseInt(v.fieldValues[15]);
+            floor[f] &&
+              floor[f][r] &&
+              floor[f][r].push({
+                ...this.fixDataFormat(v.fieldNames, v.fieldValues),
+                isKey: true,
+              });
+          });
+          normals.map((v) => {
+            const f = parseInt(this.ToCDB(v.fieldValues[6]));
+            const r = parseInt(v.fieldValues[7]);
+            floor[f] &&
+              floor[f][r] &&
+              floor[f][r].push(this.fixDataFormat(v.fieldNames, v.fieldValues));
+          });
           modelBuilding.modelBuildFloorRoom = floor;
         }
         this.modelBuilding = modelBuilding;
       }
+    },
+    //  生成对象
+    fixDataFormat(keys, values) {
+      const obj = {};
+      keys.map((v, i) => {
+        obj[v] = values[i];
+      });
+      return obj;
+    },
+    //  全角转半角
+    ToCDB(str) {
+      var tmp = "";
+      for (var i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) > 65248 && str.charCodeAt(i) < 65375) {
+          tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+        } else {
+          tmp += String.fromCharCode(str.charCodeAt(i));
+        }
+      }
+      return tmp;
+    },
+    doForceRoom(room, item) {
+      this.setForceRoom({
+        room,
+        item,
+        bName: this.modelBuilding.name,
+      });
     },
     /**
      * 获取楼栋信息
@@ -162,6 +232,7 @@ export default {
     },
     closeFrame() {
       this.modelBuilding = undefined;
+      this.setForceRoom(undefined);
     },
   },
 };

@@ -7,7 +7,7 @@
  * @FilePath: \wz-city-culture-tour\src\config\server\mapConfig.js
  */
 const _GRID_SOURCE_HOST_ = "https://ditu.wzcitybrain.com/iserver/services/map-wangge/rest/maps/";
-const _GRID_SOURCE_HOST_OTHER_ = "https://ditu.wzcitybrain.com/iserver/services/map-XZQH/rest/maps/";
+const _GRID_SOURCE_HOST_OTHER_ = "https://ditu.wzcitybrain.com/iserver/services/map-xzqh1222/rest/maps/";
 export const ServiceUrl = {
   //  温州全市域白模
   WZBaimo: [{
