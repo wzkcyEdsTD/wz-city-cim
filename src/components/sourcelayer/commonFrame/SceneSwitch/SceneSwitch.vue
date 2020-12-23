@@ -59,7 +59,7 @@ export default {
   computed: {
     ...mapGetters("map", ["cameraMode"]),
     cameraLabel() {
-      return this.cameraMode ? "三维" : "2.5维";
+      return this.cameraMode ? "立体地图" : "仿真地图";
     },
   },
   watch: {
