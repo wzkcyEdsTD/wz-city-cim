@@ -8,10 +8,6 @@
 -->
 <template>
   <div class="scene-switch">
-    <div class="btn" @click="changeCameraMode">
-      <img src="/static/images/mode-ico/camera-ico@2x.png" />
-      <span>{{ cameraLabel }}</span>
-    </div>
     <div class="btn">
       <RangeSource />
     </div>
@@ -20,6 +16,10 @@
     </div>
     <div class="btn">
       <GridSource />
+    </div>
+    <div class="btn" @click="changeCameraMode">
+      <img src="/static/images/mode-ico/camera-ico@2x.png" />
+      <span>{{ cameraLabel }}</span>
     </div>
     <SearchBox ref="searchBox" />
   </div>
@@ -32,7 +32,12 @@ import GridSource from "./GridSource";
 import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
 import { mapGetters, mapActions } from "vuex";
-import { CenterPoint, CenterPoint2D, angle3d, angle25d } from "mock/overview.js";
+import {
+  CenterPoint,
+  CenterPoint2D,
+  angle3d,
+  angle25d,
+} from "mock/overview.js";
 
 export default {
   name: "sceneSwitch",
@@ -112,7 +117,11 @@ export default {
       } else {
         const { x, y } = this.fetchLngLat(window.earth.scene.camera.position);
         window.earth.camera.flyTo({
-          destination: new Cesium.Cartesian3.fromDegrees(x, y - 0.022, this.height - 600),
+          destination: new Cesium.Cartesian3.fromDegrees(
+            x,
+            y - 0.022,
+            this.height - 600
+          ),
           orientation: angle3d,
         });
       }

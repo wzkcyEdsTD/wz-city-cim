@@ -22,7 +22,7 @@ const router = new Router({
       path: "/sourcelayer", // 医疗
       name: "sourcelayer",
       meta: {
-        title: "基层治理时空态势"
+        title: "基层治理 \"法眼\""
       },
       component: resolve => require(["page/sourcelayer/sourcelayer"], resolve)
     },

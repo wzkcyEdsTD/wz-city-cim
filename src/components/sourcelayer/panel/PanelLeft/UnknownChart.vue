@@ -27,6 +27,7 @@ export default {
         return { name: v, value: result[v].rows.length };
       });
       const option = JSON.parse(JSON.stringify(this.option));
+      option.legend.data = yAxisData;
       option.series[0].data = seriesData;
       this.option = option;
     },

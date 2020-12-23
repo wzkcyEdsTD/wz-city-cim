@@ -18,7 +18,7 @@
           @node-click="doRange"
         />
       </div>
-      <el-button slot="reference">区域选择</el-button>
+      <el-button slot="reference">蒲鞋市街道</el-button>
     </el-popover>
   </div>
 </template>
