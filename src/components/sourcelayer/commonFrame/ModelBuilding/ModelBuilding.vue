@@ -19,7 +19,16 @@
           <p>{{ modelBuilding.address }}</p>
         </div>
         <div class="floor-info">
-          <header>楼层情况</header>
+          <header>
+            <span>楼层情况</span>
+            <div>
+              <span>空置</span>
+              <span class="room">住宅</span>
+              <span class="rent">出租</span>
+              <span class="key">重点</span>
+              <span class="company">企业</span>
+            </div>
+          </header>
           <ul>
             <li
               v-for="(value, key, i) in modelBuilding.modelBuildFloorRoom"
@@ -41,7 +50,8 @@
                     :class="{
                       activeRoom: item.length,
                       activeCompany: item.length && item[0].type == 'company',
-                      activeKey: item.length && item.filter((v) => v.isKey).length,
+                      activeKey:
+                        item.length && item.filter((v) => v.isKey).length,
                     }"
                     >{{ room }}室
                     <div class="room-info" v-if="item.length">
@@ -68,7 +78,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
-const { BUILDING2D, HOME2D, PEOPLE2D, NORMAL2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+const {
+  BUILDING2D,
+  HOME2D,
+  PEOPLE2D,
+  NORMAL2D,
+} = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
 export default {
   name: "ModelBuilding",
   data() {
@@ -156,11 +171,12 @@ export default {
       return tmp;
     },
     doForceRoom(room, item) {
-      item.length && this.setForceRoom({
-        room,
-        item,
-        bName: this.modelBuilding.name,
-      });
+      item.length &&
+        this.setForceRoom({
+          room,
+          item,
+          bName: this.modelBuilding.name,
+        });
     },
     /**
      * 获取楼栋信息
@@ -171,7 +187,8 @@ export default {
           url,
           {
             eventListeners: {
-              processCompleted: (data) => data && resolve(data.originResult.features),
+              processCompleted: (data) =>
+                data && resolve(data.originResult.features),
               processFailed: (err) => reject(err),
             },
           }
@@ -192,12 +209,16 @@ export default {
      */
     async fetchRoomByBuildUUID(uuid, { newdataset, url }) {
       return new Promise((resolve, reject) => {
-        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
-          eventListeners: {
-            processCompleted: (data) => data && resolve(data.originResult.features),
-            processFailed: (err) => reject(err),
-          },
-        });
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(
+          url,
+          {
+            eventListeners: {
+              processCompleted: (data) =>
+                data && resolve(data.originResult.features),
+              processFailed: (err) => reject(err),
+            },
+          }
+        );
         getFeatureBySQLService.processAsync(
           new SuperMap.REST.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.REST.FilterParameter({
@@ -214,12 +235,16 @@ export default {
      */
     async fetchKeyByBuildUUID(address, { newdataset, url }) {
       return new Promise((resolve, reject) => {
-        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
-          eventListeners: {
-            processCompleted: (data) => data && resolve(data.originResult.features),
-            processFailed: (err) => reject(err),
-          },
-        });
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(
+          url,
+          {
+            eventListeners: {
+              processCompleted: (data) =>
+                data && resolve(data.originResult.features),
+              processFailed: (err) => reject(err),
+            },
+          }
+        );
         getFeatureBySQLService.processAsync(
           new SuperMap.REST.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.REST.FilterParameter({

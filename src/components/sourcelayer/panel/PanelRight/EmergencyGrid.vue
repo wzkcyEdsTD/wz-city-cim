@@ -1,192 +1,147 @@
 <template>
-  <div class="grid-member-list">
-    <header class="ph-right">网格员信息</header>
-    <div class="grid-member-list-ul">
-      <header>
-        <span>序号</span>
-        <span>网格员</span>
-        <span>负责网格</span>
-        <span>联系方式</span>
-      </header>
-      <ul>
-        <li
-          v-for="(item, i) in fixGridMemberList"
-          :key="i"
-          @click="doForceGridMember(item)"
-        >
-          <span>{{ i + 1 }}</span>
-          <span>{{ item.NAME }}</span>
-          <span :title="item.ORGNAME">{{
-            item.ORGNAME.substring(
-              item.ORGNAME.indexOf("（") + 1,
-              item.ORGNAME.indexOf("）")
-            )
-          }}</span>
-          <span>{{ item.CONTACT }}</span>
-        </li>
-      </ul>
+  <div class="emergency-grid">
+    <header class="ph-right">网格信息</header>
+    <div class="emergency-grid-table">
+      <table>
+        <thead>
+          <tr>
+            <th>职务</th>
+            <th>姓名</th>
+            <th>联系方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3" class="type">网格</td>
+          </tr>
+          <tr>
+            <td>网格片长</td>
+            <td>{{ gridMsg.WGPZ_NAME || "" }}</td>
+            <td>{{ gridMsg.WGPZ_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>网格指导员</td>
+            <td>{{ gridMsg.WGZDY_NAME || "" }}</td>
+            <td>{{ gridMsg.WGZDY_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>网格协助员</td>
+            <td>{{ gridMsg.WGXZY_NAME || "" }}</td>
+            <td>{{ gridMsg.WGXZY_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>网格长</td>
+            <td>{{ gridMsg.WGZ_NAME || "" }}</td>
+            <td>{{ gridMsg.WGZ_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>专职网格员</td>
+            <td>{{ gridMsg.ZZWGY_NAME || "" }}</td>
+            <td>{{ gridMsg.ZZWGY_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="type">入格</td>
+          </tr>
+          <tr>
+            <td>公安部门入格员</td>
+            <td>{{ gridMsg.BMRGY_GA_NAME || "" }}</td>
+            <td>{{ gridMsg.BMRGY_GA_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>行政执法部门入格员</td>
+            <td>{{ gridMsg.BMRGY_XZZF_NAME || "" }}</td>
+            <td>{{ gridMsg.BMRGY_XZZF_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td>市场监管部门入格员</td>
+            <td>{{ gridMsg.BMRGY_SCJG_NAME || "" }}</td>
+            <td>{{ gridMsg.BMRGY_SCJG_PHONE || "" }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="type">街道</td>
+          </tr>
+          <tr>
+            <td>街道综治办</td>
+            <td>陶敏君</td>
+            <td>18357780618</td>
+          </tr>
+          <tr>
+            <td>街道综治办</td>
+            <td>李伟碧</td>
+            <td>15868753856</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import CIM_API from "api/cimAPI";
+import { MultGridMember } from "./GridMember/mock";
 export default {
   name: "gridMemberList",
   data() {
-    return { searchText: "", fixGridMemberList: [] };
+    return { gridMsg: {}, MultGridMember };
   },
   computed: {
-    ...mapGetters("map", ["gridMemberList", "eventForce"]),
-  },
-  watch: {
-    searchText(n) {
-      this.fixGridMemberList = this.gridMemberList.filter(
-        (v) => ~v.NAME.indexOf(n) || ~v.ORGNAME.indexOf(n)
-      );
-    },
+    ...mapGetters("map", ["eventForce"]),
   },
   async created() {
-    await this.setGridMemberList();
-    this.fixGridMemberList = this.gridMemberList;
-    console.log(this.eventForce);
+    await this.fixGridMsg();
   },
   methods: {
-    ...mapActions("map", ["setForceGridMember", "setGridMemberList"]),
-    async doForceGridMember(item) {
-      const routeLinks = await CIM_API.getGridMemberRouteLink(item.NAME);
-      routeLinks.rows.length
-        ? this.setForceGridMember({ ...item, routeLinks: routeLinks.rows })
-        : this.$message({
-            type: "info",
-            message: "无网格员巡逻信息",
-          });
-    },
-    searchClear() {
-      this.searchText = "";
+    // 网格信息
+    async fixGridMsg() {
+      const gridId = this.eventForce.ORGNAME.substring(
+        this.eventForce.ORGNAME.indexOf("（") + 1,
+        this.eventForce.ORGNAME.indexOf("网")
+      );
+      this.gridMsg = this.MultGridMember[gridId] || this.MultGridMember["3505"];
     },
   },
 };
 </script>
 
 <style lang="less">
-.grid-member-list {
+.emergency-grid {
   flex: 1;
-  .ph-right {
-    .searchHeader {
-      display: inline-flex;
-      align-items: center;
-      box-sizing: border-box;
-      border-radius: 2vh;
-      background-color: rgba(0, 0, 255, 0.2);
-      border: 1px solid rgba(0, 0, 255, 0.8);
-      padding: 0 0.6vh;
-      width: 28vh;
 
-      > * {
-        height: 2.6vh;
-        vertical-align: middle;
-        > * {
-          display: block;
-          height: 100%;
-        }
-      }
-
-      .searchFilterInput {
-        flex: 1;
-        .el-input__inner {
-          background: none;
-          border: none;
-          color: white;
-          padding: 0 1vh;
-          height: 2.4vh;
-        }
-      }
-
-      .icon-common {
-        display: block;
-        width: 2.4vh;
-        height: 2.4vh;
-      }
-
-      .icon-clear {
-        .bg-image("/static/images/common/clear");
-        cursor: pointer;
-      }
-
-      .icon-search {
-        .bg-image("/static/images/common/search2");
-      }
-    }
-  }
-  .grid-member-list-ul {
+  .emergency-grid-table {
     flex: 1;
     color: #fff;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    > header {
-      background-color: rgba(40, 117, 221, 0.5);
-      height: 3.4vh;
-      line-height: 3.4vh;
-      font-size: 1.6vh;
-      display: flex;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      background: rgba(1, 41, 38, 0.3);
     }
-    > ul {
-      flex: 1;
-      overflow-x: hidden;
-      overflow-y: auto;
-      &::-webkit-scrollbar {
-        width: 4px;
-        background: rgba(1, 41, 38, 0.3);
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #2a51fe;
+      box-shadow: 0px 3px 6px 0px #012623;
+    }
+
+    table {
+      th,
+      td {
+        text-align: center;
+        font-size: 1.4vh;
       }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: #2a51fe;
-        box-shadow: 0px 3px 6px 0px #012623;
+      th {
+        padding: 6px;
+        background-color: rgba(40, 117, 221, 0.5);
       }
-      > li {
-        height: 2.8vh;
-        line-height: 2.8vh;
-        display: flex;
-        cursor: pointer;
-        &:nth-child(odd) {
-          background-color: rgba(17, 46, 93, 0.4);
-        }
-        &:nth-child(even) {
-          background-color: rgba(29, 77, 155, 0.4);
-        }
-        > span {
-          font-size: 1.5vh;
-          &:last-child {
-            font-weight: bold;
-            // color: #fc5453;
-          }
-        }
+
+      td {
+        padding: 6px 4px;
       }
-    }
-    span {
-      display: inline-block;
-      box-sizing: border-box;
-      padding: 0 0.6vh;
-      &:first-child {
-        width: 6vh;
-      }
-      &:nth-child(2) {
-        width: 8vh;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-      &:nth-child(3) {
-        flex: 1;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-      &:last-child {
-        width: 12vh;
+
+      .type {
+        background-color: rgba(33, 115, 70, 0.5);
       }
     }
   }

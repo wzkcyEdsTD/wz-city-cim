@@ -20,7 +20,7 @@ export default {
   },
   grid: {
     top: "20%",
-    right: "3%",
+    right: "6%",
     left: "3%",
     bottom: "5%",
     containLabel: true,
@@ -34,11 +34,10 @@ export default {
       },
     },
     axisLabel: {
-      interval: 0,
-      rotate: 45,
+      interval: 5,
       color: "#fff",
       fontFamily: "DIN",
-      fontSize: 11,
+      fontSize: 10,
     },
     axisTick: {
       show: false,

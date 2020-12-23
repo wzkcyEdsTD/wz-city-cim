@@ -193,6 +193,7 @@ export default {
      * @param {object} geometry
      */
     cameraMove({ lng, lat, queryRadius }) {
+      console.log(this.cameraMode)
       window.earth.scene.camera.flyTo(
         this.cameraMode
           ? {
@@ -202,8 +203,8 @@ export default {
           : {
               destination: Cesium.Cartesian3.fromDegrees(
                 lng,
-                lat - (0.008 + (0.002 * queryRadius * (queryRadius / 200) * 1.1) / 100),
-                700 + queryRadius * (queryRadius / 200) * 1.2
+                lat - (0.002 + (0.0015 * queryRadius * (queryRadius / 200) * 1.1) / 100),
+                200 + queryRadius * (queryRadius / 200) * 1.1
               ),
               orientation: angle3d,
             }
@@ -244,11 +245,11 @@ export default {
 
 <style lang="less" scoped>
 .transform-video {
-  width: 35vh;
-  height: 23vh;
+  width: 40vh;
+  height: 27vh;
   position: fixed;
-  top: 7vh;
-  left: -39vh;
+  top: 9vh;
+  left: -44vh;
   z-index: 3;
 }
 .vc-popup {

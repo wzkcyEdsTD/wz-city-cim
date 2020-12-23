@@ -1,5 +1,15 @@
 import echarts from "echarts";
 export default {
+  title: {
+    text: '630 人',
+    top: '40%',
+    left: "center",
+    textStyle: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '400'
+    }
+  },
   grid: {
     top: "10%",
     right: "3%",
@@ -30,11 +40,11 @@ export default {
     radius: ['20%', '37%'],
     center: ['50%', '43%'],
     // 最小角度
-    minAngle: 15,
+    minAngle: 10,
     label: {
       show: true,
       position: 'outside',
-      formatter: '{a|{b} {d}%}\n{hr|}',
+      formatter: '{a|{b} {c}人}\n{hr|}',
       rich: {
         a: {
           color: '#fff',

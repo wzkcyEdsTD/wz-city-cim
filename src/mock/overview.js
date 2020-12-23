@@ -37,7 +37,7 @@ const CenterPoint2D = {
 
 const angle3d = {
     heading: 0,
-    pitch: -0.5124541444178274,
+    pitch: -0.6124541444178274,
     roll: 0
 }
 

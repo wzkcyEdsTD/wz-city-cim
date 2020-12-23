@@ -54,7 +54,7 @@ export default {
   },
   beforeDestroy() {
     //  摧毁房屋面
-    //  destoryBuild(this.buildAround);
+     destoryBuild(this.buildAround);
   },
   methods: {
     async fetchPopulationAround() {
