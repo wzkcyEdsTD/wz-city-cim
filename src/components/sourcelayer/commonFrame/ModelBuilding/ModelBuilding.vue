@@ -112,7 +112,6 @@ export default {
             !floor[f] && (floor[f] = {});
             !floor[f][r] && (floor[f][r] = []);
           });
-          console.log(normals);
           keys.map((v) => {
             const f = parseInt(v.fieldValues[20]);
             const r = parseInt(v.fieldValues[15]);
@@ -124,8 +123,8 @@ export default {
               });
           });
           normals.map((v) => {
-            const f = parseInt(this.ToCDB(v.fieldValues[6]));
-            const r = parseInt(v.fieldValues[7]);
+            const f = parseInt(v.fieldValues[5]);
+            const r = parseInt(v.fieldValues[6]);
             floor[f] &&
               floor[f][r] &&
               !floor[f][r].filter((d) => d.NAME == v.fieldValues[3]).length &&

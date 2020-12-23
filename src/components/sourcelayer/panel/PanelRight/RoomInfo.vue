@@ -18,7 +18,7 @@
             <span>{{ i + 1 }}</span>
             <span>{{ item.NAME }}</span>
             <!-- <span>{{ item.SEX || "-" }}</span> -->
-            <span>{{ item.IDCARD || "-" }}</span>
+            <span>{{ item.IDCARDNO || "-" }}</span>
           </li>
         </ul>
       </div>
