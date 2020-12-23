@@ -2,7 +2,9 @@
   <div class="emergency-list">
     <header class="ph-right">
       事件档案
-      <span class="back-to-list" v-if="eventForce" @click="backToList">事件列表</span>
+      <span class="back-to-list" v-if="eventForce" @click="backToList"
+        >事件列表</span
+      >
       <div class="searchHeader" v-if="!eventForce">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
@@ -33,7 +35,9 @@
           :key="i"
           @click="simulateEmergency(item, i)"
         >
-          <span :title="item.ORGNAME">{{ item.ORGNAME.split("（").pop().replace(/\）/g,'') }}</span>
+          <span :title="item.ORGNAME">{{
+            item.ORGNAME.split("（").pop().replace(/\）/g, "")
+          }}</span>
           <!-- <span>{{ i + 1 }}</span> -->
           <span :title="item.SUBJECT">{{ item.SUBJECT }}</span>
           <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span>
@@ -41,23 +45,38 @@
       </ul>
     </div>
     <div class="emergency-info" v-if="eventForce">
-      <img v-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
+      <img
+        v-if="eventLogID == 52175497"
+        src="/static/images/event/example.png"
+      />
+      <img v-else-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
-      <p><i>发生时间:</i>{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}</p>
+      <p>
+        <i>发生时间:</i
+        >{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}
+      </p>
       <p><i>最后操作用户:</i>{{ eventForce.LASTUSERNAME || "-" }}</p>
     </div>
     <div class="emergency-progress" v-if="eventForce">
       <header>事件流程</header>
       <ul>
-        <li v-for="(item, i) in eventLog" :key="i">
+        <li
+          v-for="(item, i) in fixEventLog"
+          :key="i"
+          v-if="
+            item.ID != 52175497 ||
+            (item.ID == 52175497 &&
+              !~['受理', '结案', '新增'].indexOf(item.DEALDESCRIPTION.trim()))
+          "
+        >
           <div>{{ item.DEALDESCRIPTION }}</div>
           <div>
             <span><img src="/static/images/common/progress-step.png" /></span>
             <span
               ><p>{{ new Date(item.DEALTIME).toLocaleString() }}</p>
-              <p>{{ item.DEALUSERNAME }}</p></span
-            >
+              <p>{{ item.DEALUSERNAME }}</p>
+            </span>
           </div>
         </li>
       </ul>
@@ -71,7 +90,14 @@ import { mockEvents, mockProgress } from "mock/event/mockEvents.js";
 export default {
   name: "emergencyList",
   data() {
-    return { searchText: "", fixEventList: [], mockEvents, mockProgress };
+    return {
+      searchText: "",
+      fixEventList: [],
+      mockEvents,
+      mockProgress,
+      fixEventLog: [],
+      eventLogID: null,
+    };
   },
   computed: {
     ...mapGetters("map", ["eventList", "eventLog", "eventForce"]),
@@ -81,6 +107,14 @@ export default {
       this.fixEventList = this.mockEvents
         .concat(this.eventList)
         .filter((v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n));
+    },
+    eventLog(n) {
+      const that = this;
+      const list = JSON.parse(JSON.stringify(n));
+      console.log(this.eventLogID);
+      this.fixEventLog = list.map((v) => {
+        return { ...v, ID: that.eventLogID };
+      });
     },
   },
   async created() {
@@ -98,6 +132,7 @@ export default {
       const event = { ...n, i };
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);
+      this.eventLogID = event.ID;
       this.mockProgress[n.OCCURORG]
         ? this.setMockEventLog(this.mockProgress[n.OCCURORG])
         : await this.getEventLog(event.ID);

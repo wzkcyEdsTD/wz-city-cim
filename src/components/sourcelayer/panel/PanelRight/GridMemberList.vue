@@ -34,7 +34,12 @@
         >
           <span>{{ i + 1 }}</span>
           <span>{{ item.NAME }}</span>
-          <span :title="item.ORGNAME">{{ item.ORGNAME }}</span>
+          <span :title="item.ORGNAME">{{
+            item.ORGNAME.substring(
+              item.ORGNAME.indexOf("（") + 1,
+              item.ORGNAME.indexOf("）")
+            )
+          }}</span>
           <span>{{ item.CONTACT }}</span>
         </li>
       </ul>
@@ -186,7 +191,7 @@ export default {
         width: 6vh;
       }
       &:nth-child(2) {
-        width: 7vh;
+        width: 8vh;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

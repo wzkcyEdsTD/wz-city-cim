@@ -27,10 +27,10 @@ export default {
     return {
       forceKey: undefined,
       blocks: [
-        { label: "管辖重点区", k: "k1" },
-        { label: "人口集聚区", k: "k2" },
+        { label: "管辖重点", k: "k1" },
+        { label: "人口集聚", k: "k2" },
         { label: "重点人员密集区", k: "k3", ava: true },
-        { label: "事件高热区", k: "k4" },
+        { label: "事件高发区", k: "k4" },
       ],
       //  重点人员
       keyPersonList,
