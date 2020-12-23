@@ -3,8 +3,11 @@
     <video-grid v-show="!eventForce" />
     <emergency-list />
     <emergency-around v-if="eventForce" />
-    <grid-member-list v-show="!forceRoom" />
-    <room-info v-if="forceRoom && !~['company', 'key'].indexOf(forceRoom.item[0].type)" />
+    <emergency-grid v-if="eventForce" />
+    <grid-member-list v-show="!forceRoom && !eventForce" />
+    <room-info
+      v-if="forceRoom && !~['company', 'key'].indexOf(forceRoom.item[0].type)"
+    />
     <company-info v-if="forceRoom && forceRoom.item[0].type == 'company'" />
   </div>
 </template>
@@ -12,6 +15,7 @@
 <script>
 import EmergencyList from "./EmergencyList";
 import EmergencyAround from "./EmergencyAround";
+import EmergencyGrid from "./EmergencyGrid";
 import VideoGrid from "./VideoGrid";
 import RelationChart from "./RelationChart";
 import GridMemberList from "./GridMemberList";
@@ -23,6 +27,7 @@ export default {
   components: {
     EmergencyAround,
     EmergencyList,
+    EmergencyGrid,
     VideoGrid,
     RelationChart,
     GridMemberList,

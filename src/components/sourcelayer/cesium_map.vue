@@ -65,6 +65,7 @@ export default {
       validated: true,
       isInfoFrame: false,
       authFailshallPop: false,
+      sourceURLs: ServiceUrl.GridSource,
     };
   },
   computed: {
@@ -99,6 +100,7 @@ export default {
       this.mapLoaded = true;
       this.initPostRender();
       this.initClickHandler();
+      this.initZoomHandler();
       this.initEntityHandler();
     });
     this.eventRegsiter();
@@ -124,14 +126,21 @@ export default {
     initEntityHandler() {
       window.earth.selectedEntityChanged.addEventListener((entity) => {
         const layerID = "pxs25d@pxs25d";
-        if (!entity || !entity.pickResult || entity.pickResult.layerID != layerID) return;
+        if (
+          !entity ||
+          !entity.pickResult ||
+          entity.pickResult.layerID != layerID
+        )
+          return;
         const properties = entity.pickResult[layerID][0].feature.properties;
         console.log(properties.OBJECTID);
         properties && this.$refs.forceBuilding.doForce(properties);
       });
     },
     initClickHandler() {
-      const handler = new Cesium.ScreenSpaceEventHandler(window.earth.scene.canvas);
+      const handler = new Cesium.ScreenSpaceEventHandler(
+        window.earth.scene.canvas
+      );
       // 监听左键点击事件
       handler.setInputAction((e) => {
         const pick = window.earth.scene.pick(e.position);
@@ -187,6 +196,47 @@ export default {
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     },
+
+    // 监听缩放
+    initZoomHandler() {
+      this.changeGrid();
+      window.earth.scene.camera.moveEnd.addEventListener(() => {
+        this.changeGrid();
+      });
+    },
+
+    // 根据高度获取网格Id
+    getIdFromHeight(height) {
+      return height > 2500
+        ? "lcjz"
+        : height <= 2500 && height > 1000
+        ? "pxscs"
+        : "pxswg";
+    },
+
+    // 网格
+    changeGrid() {
+      const height = Math.ceil(
+        window.earth.scene.camera.positionCartographic.height
+      );
+      const curId = this.getIdFromHeight(height);
+      this.sourceURLs.map((d) => {
+        d.children.map(({ id, url }) => {
+          if (id == curId) {
+            window.gridMap[id]
+              ? (window.gridMap[id].show = true)
+              : (window.gridMap[
+                  id
+                ] = window.earth.imageryLayers.addImageryProvider(
+                  new Cesium.SuperMapImageryProvider({ url, name: id })
+                ));
+          } else {
+            window.gridMap[id] && (window.gridMap[id].show = false);
+          }
+        });
+      });
+    },
+
     fetchLngLat({ x, y, z }) {
       const ellipsoid = window.earth.scene.globe.ellipsoid;
       const cartesian3 = new Cesium.Cartesian3(x, y, z);

@@ -14,9 +14,9 @@
     <div class="btn">
       <InfoSource />
     </div>
-    <div class="btn">
+    <!-- <div class="btn">
       <GridSource />
-    </div>
+    </div> -->
     <div class="btn" @click="changeCameraMode">
       <img src="/static/images/mode-ico/camera-ico@2x.png" />
       <span>{{ cameraLabel }}</span>

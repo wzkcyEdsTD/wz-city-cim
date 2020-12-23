@@ -49,7 +49,7 @@ export default {
   },
   async mounted() {
     this.fetchPopulationAround();
-    // this.fetchSourceAround();
+    this.fetchSourceAround();
     this.$bus.$emit("cesium-3d-panel-bottom");
   },
   beforeDestroy() {

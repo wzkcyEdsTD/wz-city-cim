@@ -53,15 +53,7 @@
     <div class="emergency-progress" v-if="eventForce">
       <header>事件流程</header>
       <ul>
-        <li
-          v-for="(item, i) in fixEventLog"
-          :key="i"
-          v-show="
-            item.ID != 52175497 ||
-            (item.ID == 52175497 &&
-              !~['受理', '结案', '新增'].indexOf(item.DEALDESCRIPTION.trim()))
-          "
-        >
+        <li v-for="(item, i) in fixEventLog" :key="i">
           <div>{{ item.DEALDESCRIPTION }}</div>
           <div>
             <span><img src="/static/images/common/progress-step.png" /></span>

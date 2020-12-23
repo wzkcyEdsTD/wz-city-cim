@@ -1,6 +1,6 @@
 <template>
   <div class="emergency-chart">
-    <header class="ph-left">近30日事件整体趋势</header>
+    <header class="ph-left">近30天事件整体趋势</header>
     <chart-core chartId="emergency-chart" :option="option" />
   </div>
 </template>
