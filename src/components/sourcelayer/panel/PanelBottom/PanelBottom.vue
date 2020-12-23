@@ -4,7 +4,7 @@
     <ul class="panel-bottom-ul">
       <li
         :class="{ active: item.k == forceKey }"
-        v-for="(item, i) in blocks"
+        v-for="(item, i) in block_extra.concat(blocks)"
         :key="i + item.k"
         @click="doBlockAnalyse(item)"
       >
@@ -17,21 +17,26 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { switchHeatMap, doHeatMap } from "./HeatMap";
+import { switchHeatMap, doHeatMap, doBlockKey } from "./HeatMap";
 import keyPersonList from "mock/PXS_KEY_PERSONS";
 import normalPersonList from "mock/PXS_NORMAL_PERSONS";
-
+import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
+import {
+  destoryBuild,
+  drawBuild,
+} from "components/sourcelayer/panel/PanelRight/DrawAround/DrawAround";
 export default {
   name: "panelBottom",
   data() {
     return {
       forceKey: undefined,
+      block_extra: [{ label: "管辖重点", k: "k1" }],
       blocks: [
-        { label: "管辖重点", k: "k1" },
         { label: "人口集聚", k: "k2" },
         { label: "重点人员密集区", k: "k3", ava: true },
         { label: "事件高发区", k: "k4" },
       ],
+      buildAround: [],
       //  重点人员
       keyPersonList,
       //  户籍人口
@@ -58,12 +63,29 @@ export default {
       this.doForceHeatMap();
     },
   },
+  mounted() {
+    this.eventRegsiter();
+  },
   methods: {
+    eventRegsiter() {
+      this.$bus.$on("cesium-3d-panel-bottom", () => {
+        this.forceKey = "k1";
+      });
+    },
     doBlockAnalyse({ k }) {
       this.forceKey = this.forceKey == k ? undefined : k;
     },
-    doForceHeatMap() {
-      console.log(this.eventHeatList);
+    async doForceHeatMap() {
+      if (this.forceKey == "k1") {
+        const data = await doBlockKey(CESIUM_PEOPLE_BUILDING_SOURCE_OPTION.BUILDING2D);
+        const fix_b_data = data.map((v) => {
+          return { points: v.geometry.points, id: "build_polygon_" + v.ID };
+        });
+        this.buildAround = fix_b_data;
+        drawBuild(fix_b_data);
+      } else {
+        this.buildAround && destoryBuild(this.buildAround);
+      }
       const heatArr =
         this.forceKey == "k3"
           ? this.keyPersonHeatList

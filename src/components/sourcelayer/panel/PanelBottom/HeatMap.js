@@ -46,3 +46,27 @@ export const doHeatMap = (forceKey, heatArr) => {
     heatMap.setWGS84Data(valueMin, valueMax, data)
     window.heatMap[forceKey] = heatMap;
 }
+
+/**
+ * 盖重点人员面
+ * @param {*} param0 
+ */
+export const doBlockKey = async ({ newdataset, url }) => {
+    return new Promise((resolve, reject) => {
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+            eventListeners: {
+                processCompleted: (data) => data && resolve(data.originResult.features),
+                processFailed: (err) => reject(err),
+            },
+        });
+        getFeatureBySQLService.processAsync(
+            new SuperMap.REST.GetFeaturesBySQLParameters({
+                queryParameter: new SuperMap.REST.FilterParameter({
+                    attributeFilter: `ZDRY = '1'`,
+                }),
+                toIndex: -1,
+                datasetNames: [newdataset],
+            })
+        );
+    });
+}

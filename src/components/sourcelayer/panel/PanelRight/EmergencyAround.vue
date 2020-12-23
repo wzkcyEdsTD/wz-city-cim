@@ -49,11 +49,12 @@ export default {
   },
   async mounted() {
     this.fetchPopulationAround();
-    this.fetchSourceAround();
+    // this.fetchSourceAround();
+    this.$bus.$emit("cesium-3d-panel-bottom");
   },
   beforeDestroy() {
     //  摧毁房屋面
-    destoryBuild(this.buildAround);
+    //  destoryBuild(this.buildAround);
   },
   methods: {
     async fetchPopulationAround() {
