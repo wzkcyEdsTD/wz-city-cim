@@ -73,6 +73,9 @@ const mutations = {
   },
   [types.SET_FORCE_TRUE_TOPIC_LABEL_ID](state, data) {
     state.forceTrueTopicLabelId = data;
+  },
+  [types.SET_GRID_MODE](state, data) {
+    state.gridMode = data;
   }
 };
 

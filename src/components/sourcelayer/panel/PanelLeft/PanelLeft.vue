@@ -1,5 +1,6 @@
 <template>
   <div class="panel panel-left">
+    <header class="panel-header">蒲鞋市街道</header>
     <city-index-chart />
     <emergency-chart />
     <unknown-chart />
@@ -24,5 +25,15 @@ export default {
     rgba(0, 13, 26, 0.84) 0%,
     rgba(0, 17, 34, 0.55) 100%
   );
+  padding-top: 2vh;
+
+  .panel-header {
+    font-family: YouSheBiaoTiHei;
+    font-size: 3.6vh;
+    color: white;
+    height: 4vh;
+    line-height: 4vh;
+    padding-left: 2vh;
+  }
 }
 </style>

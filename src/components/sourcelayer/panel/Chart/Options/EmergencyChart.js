@@ -6,9 +6,19 @@ export default {
       type: "line",
     },
   },
+  title: {
+    text: '近30天事件变化趋势',
+    textStyle: {
+      align: 'center',
+      color: '#fff',
+      fontSize: 14,
+    },
+    top: '2%',
+    left: '3%',
+  },
   legend: {
     show: true,
-    top: 0,
+    top: "15%",
     right: 0,
     icon: "path://M978.919,520.951a5,5,0,1,1,5-5A5.006,5.006,0,0,1,978.919,520.951Zm0-8a3,3,0,1,0,3,3A3,3,0,0,0,978.919,512.951Z",
     itemWidth: 11,
@@ -19,7 +29,7 @@ export default {
     },
   },
   grid: {
-    top: "20%",
+    top: "30%",
     right: "6%",
     left: "3%",
     bottom: "5%",

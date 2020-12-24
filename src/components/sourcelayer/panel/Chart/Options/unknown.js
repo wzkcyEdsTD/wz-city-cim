@@ -2,20 +2,13 @@ import echarts from "echarts";
 export default {
   title: {
     text: '630 人',
-    top: '40%',
+    top: '37%',
     left: "center",
     textStyle: {
       color: '#fff',
       fontSize: 16,
       fontWeight: '400'
     }
-  },
-  grid: {
-    top: "10%",
-    right: "3%",
-    left: "3%",
-    bottom: "5%",
-    containLabel: true,
   },
   tooltip: {
     trigger: 'item',
@@ -37,8 +30,8 @@ export default {
   color: ['#8CEA52', '#0ADBAC', '#05EFFD', '#0257F7', '#02B8F7', '#C3D300'],
   series: [{
     type: 'pie',
-    radius: ['20%', '37%'],
-    center: ['50%', '43%'],
+    radius: ['28%', '55%'],
+    center: ['50%', '41%'],
     // 最小角度
     minAngle: 10,
     label: {

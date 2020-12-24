@@ -36,6 +36,9 @@ const state = {
   forceRoom: undefined,
   //  grid
   gridMemberList: [],
-  forceGridMember: undefined
+  forceGridMember: undefined,
+
+  // 网格显示
+  gridMode: true
 };
 export default state;

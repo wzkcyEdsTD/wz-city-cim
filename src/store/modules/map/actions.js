@@ -88,3 +88,7 @@ export const SetForceTrueTopicLabels = ({ commit }, data) => {
 export const SetForceTrueTopicLabelId = ({ commit }, data) => {
   commit(types.SET_FORCE_TRUE_TOPIC_LABEL_ID, data);
 };
+// 设置网格显示隐藏
+export const SetGridMode = ({ commit }, data) => {
+  commit(types.SET_GRID_MODE, data);
+};

@@ -114,17 +114,8 @@ export default {
          * 2.5维，关闭额外图层
          */
         this.$bus.$emit("cesium-grid-source-off");
-      } else {
-        const { x, y } = this.fetchLngLat(window.earth.scene.camera.position);
-        window.earth.camera.flyTo({
-          destination: new Cesium.Cartesian3.fromDegrees(
-            x,
-            y - 0.022,
-            this.height - 600
-          ),
-          orientation: angle3d,
-        });
       }
+
       // //  地图要素开关
       // window.datalayer.show = !this.cameraMode;
       window.wmts25d.show = this.cameraMode;

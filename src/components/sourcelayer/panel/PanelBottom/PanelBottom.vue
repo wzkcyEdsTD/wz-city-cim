@@ -2,6 +2,10 @@
   <div class="panel-bottom">
     <header>高热区分析</header>
     <ul class="panel-bottom-ul">
+      <li :class="{ active: gridMode }" @click="doGridMap">
+        <img :src="`/static/images/block/网格管理@2x.png`" />
+        <p>网格管理</p>
+      </li>
       <li
         :class="{ active: item.k == forceKey }"
         v-for="(item, i) in block_extra.concat(blocks)"
@@ -16,7 +20,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { ServiceUrl } from "config/server/mapConfig";
+import { mapGetters, mapActions } from "vuex";
 import { switchHeatMap, doHeatMap, doBlockKey } from "./HeatMap";
 import keyPersonList from "mock/PXS_KEY_PERSONS";
 import normalPersonList from "mock/PXS_NORMAL_PERSONS";
@@ -41,15 +46,19 @@ export default {
       keyPersonList,
       //  户籍人口
       normalPersonList,
+      sourceURLs: ServiceUrl.GridSource,
     };
   },
   computed: {
-    ...mapGetters("map", ["eventList"]),
+    ...mapGetters("map", ["eventList", "gridMode"]),
     eventHeatList() {
       return this.eventList.map((v) => [v.LON, v.LAT, 8]);
     },
     keyPersonHeatList() {
-      return this.keyPersonList.features.map((v) => [...v.geometry.coordinates, 8]);
+      return this.keyPersonList.features.map((v) => [
+        ...v.geometry.coordinates,
+        8,
+      ]);
     },
     normalPersonHeatList() {
       return this.normalPersonList.features.map((v) => [
@@ -67,6 +76,7 @@ export default {
     this.eventRegsiter();
   },
   methods: {
+    ...mapActions("map", ["SetGridMode"]),
     eventRegsiter() {
       this.$bus.$on("cesium-3d-panel-bottom", () => {
         this.forceKey = "k1";
@@ -77,7 +87,9 @@ export default {
     },
     async doForceHeatMap() {
       if (this.forceKey == "k1") {
-        const data = await doBlockKey(CESIUM_PEOPLE_BUILDING_SOURCE_OPTION.BUILDING2D);
+        const data = await doBlockKey(
+          CESIUM_PEOPLE_BUILDING_SOURCE_OPTION.BUILDING2D
+        );
         const fix_b_data = data.map((v) => {
           return { points: v.geometry.points, id: "build_polygon_" + v.ID };
         });
@@ -93,6 +105,31 @@ export default {
           ? this.normalPersonHeatList
           : this.eventHeatList;
       switchHeatMap(this.blocks, this.forceKey, heatArr);
+    },
+
+    // 根据高度获取网格Id
+    getIdFromHeight(height) {
+      return height > 2500
+        ? "lcjz"
+        : height <= 2500 && height > 1000
+        ? "pxscs"
+        : "";
+    },
+
+    doGridMap() {
+      this.SetGridMode(!this.gridMode);
+      const id = "pxswg";
+      const url =
+        "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg";
+      if (!this.gridMode) {
+        window.gridMap[id] && (window.gridMap[id].show = false);
+      } else {
+        window.gridMap[id]
+          ? (window.gridMap[id].show = true)
+          : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
+              new Cesium.SuperMapImageryProvider({ url, name: id })
+            ));
+      }
     },
   },
 };

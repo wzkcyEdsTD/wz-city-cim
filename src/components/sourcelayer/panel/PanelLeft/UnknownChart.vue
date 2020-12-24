@@ -1,6 +1,6 @@
 <template>
   <div class="unknown-chart">
-    <header class="ph-left">重点人员统计</header>
+    <header class="ph-left">重点人员</header>
     <chart-core chartId="unknown-chart" :option="option" />
   </div>
 </template>

@@ -31,3 +31,4 @@ export const forceBuilding = state => state.forceBuilding;
 export const forceRoom = state => state.forceRoom;
 export const gridMemberList = state => state.gridMemberList;
 export const forceGridMember = state => state.forceGridMember;
+export const gridMode = state => state.gridMode;

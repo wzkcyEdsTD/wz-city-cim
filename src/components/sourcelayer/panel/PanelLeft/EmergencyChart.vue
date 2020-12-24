@@ -1,6 +1,20 @@
 <template>
   <div class="emergency-chart">
-    <header class="ph-left">近30天事件整体趋势</header>
+    <header class="ph-left">事件情况</header>
+    <div class="emergency-chart-num">
+      <div>
+        今日事件数：
+        <span>
+          {{ eventToday }}
+        </span>
+      </div>
+      <div>
+        近30天事件数：
+        <span>
+          {{ eventTotal }}
+        </span>
+      </div>
+    </div>
     <chart-core chartId="emergency-chart" :option="option" />
   </div>
 </template>
@@ -12,7 +26,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "emergencyChart",
   data() {
-    return { option, month: 12 };
+    return { option, month: 12, eventToday: 0, eventTotal: 0 };
   },
   watch: {
     eventList: {
@@ -34,8 +48,10 @@ export default {
           const d = new Date(v.OCCURDATE).toLocaleDateString();
           !dateHash[d] && (dateHash[d] = 0);
           dateHash[d] += 1;
+          this.eventTotal++;
         }
       });
+      this.eventToday = dateHash["2020/12/25"];
       const xAxisData = Object.keys(dateHash)
         .map((v) => parseInt(v.split("/")[1]) * 100 + parseInt(v.split("/")[2]))
         .sort((a, b) => a - b);
@@ -68,6 +84,20 @@ export default {
 
 <style lang="less" scoped>
 .emergency-chart {
-  height: 24vh;
+  height: 30vh;
+
+  .emergency-chart-num {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 6px;
+    font-size: 1.4vh;
+    color: #fff;
+
+    > div > span {
+      font-size: 1.8vh;
+      font-weight: bold;
+      color: #17bce5;
+    }
+  }
 }
 </style>

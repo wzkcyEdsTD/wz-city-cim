@@ -27,6 +27,7 @@
       <Population />
       <Overview ref="overview" />
       <WalkMan ref="walkMan" />
+      <Reset ref="reset" />
     </div>
   </div>
 </template>
@@ -42,6 +43,7 @@ import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCir
 import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
 import ModelBuilding from "components/sourcelayer/commonFrame/ModelBuilding/ModelBuilding";
 import WalkMan from "components/sourcelayer/extraModel/WalkMan/WalkMan";
+import Reset from "components/sourcelayer/commonFrame/Reset/Reset";
 import { CenterPoint } from "mock/overview.js";
 import {
   mapConfigInit,
@@ -52,7 +54,7 @@ import {
   mapWmtsLayerInit,
 } from "components/sourcelayer/cesium_map_init";
 import { doValidation } from "api/validation/validation";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Overview from "./extraModel/Overview/Overview.vue";
 const Cesium = window.Cesium;
 
@@ -69,7 +71,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["initDataLoaded", "forceTreeLabel"]),
+    ...mapGetters("map", ["initDataLoaded", "forceTreeLabel", "gridMode"]),
   },
   components: {
     DetailPopup,
@@ -82,6 +84,7 @@ export default {
     ForceBuilding,
     ModelBuilding,
     WalkMan,
+    Reset,
   },
   created() {
     //  点位信息 hash
@@ -104,8 +107,41 @@ export default {
       this.initEntityHandler();
     });
     this.eventRegsiter();
+
+    this.initFirstEvent();
   },
   methods: {
+    ...mapActions("map", [
+      "getEventList",
+      "getEventLog",
+      "setEventForce",
+      "setMockEventLog",
+    ]),
+
+    // 初始展示今日事件
+    initFirstEvent() {
+      const event = {
+        D: 1,
+        ID: 52175497,
+        ISSUECONTENT:
+          "网格员巡查上陡门12组团发现有十余人聚集，据悉该人员为一一鞋业员工，一一鞋业公司拖欠员工工资，目前已上报社区及街道",
+        ISSUEID: 52175497,
+        LASTUSERNAME: "潘小柳",
+        LAT: 28.005000000000003,
+        LON: 120.69,
+        MAINCHARACTERS: null,
+        OCCURDATE: "2020-12-24T16:00:00.000Z",
+        OCCURORG: 20013479,
+        OCCURORGINTERNALCODE: "1.1.14.3.87.5.5.",
+        ORGNAME: "鹿城-蒲鞋市-0019（3505网格）",
+        PHOTOURL:
+          "http://172.17.229.229:20000/tqOssManager/getObjectByUri/szzb-gxcc/zjgrid/jpg/2020/12/9/151451431664.jpg",
+        SUBJECT: "上陡门住宅区11组团有人员聚集",
+        i: 0,
+      };
+      this.$bus.$emit("emergency-simulate-first", event);
+    },
+
     initPostRender() {
       window.earth.scene.postRender.addEventListener(() => {
         if (!window.earth || !this.mapLoaded || !this.validated) return;
@@ -211,7 +247,7 @@ export default {
         ? "lcjz"
         : height <= 2500 && height > 1000
         ? "pxscs"
-        : "pxswg";
+        : "";
     },
 
     // 网格
@@ -230,11 +266,22 @@ export default {
                 ] = window.earth.imageryLayers.addImageryProvider(
                   new Cesium.SuperMapImageryProvider({ url, name: id })
                 ));
-          } else {
+          } else if (id != "pxswg") {
             window.gridMap[id] && (window.gridMap[id].show = false);
           }
         });
       });
+
+      if (this.gridMode) {
+        const id = "pxswg";
+        const url =
+          "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg";
+        window.gridMap[id]
+          ? (window.gridMap[id].show = true)
+          : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
+              new Cesium.SuperMapImageryProvider({ url, name: id })
+            ));
+      }
     },
 
     fetchLngLat({ x, y, z }) {

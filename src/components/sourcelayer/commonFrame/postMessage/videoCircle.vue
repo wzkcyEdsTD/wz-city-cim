@@ -1,8 +1,12 @@
 <template>
-  <div class="videoCircle" v-if="shallPop && eventForce">
+  <div
+    class="videoCircle"
+    v-if="(shallPop && eventForce) || (shallPop && firstEventForce)"
+  >
     <div
       class="vc-popup"
       :style="{ transform: `translate3d(${item.x}px,${item.y + 4}px, 0)` }"
+      v-if="eventForce"
     >
       <div class="popup-container">
         <div class="warn-point" />
@@ -10,6 +14,20 @@
         <div class="warn-popup">
           <header>突发事件<span /></header>
           <p>{{ eventForce.SUBJECT }}</p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="vc-popup"
+      :style="{ transform: `translate3d(${item.x}px,${item.y + 4}px, 0)` }"
+      v-else
+    >
+      <div class="popup-container">
+        <div class="warn-point" />
+        <div class="red-line" />
+        <div class="warn-popup">
+          <header>突发事件<span /></header>
+          <p>{{ firstEventForce.SUBJECT }}</p>
         </div>
       </div>
     </div>
@@ -42,6 +60,7 @@ export default {
       entitiesID: [],
       rtmpOn: true,
       forceVideo: undefined,
+      firstEventForce: undefined,
     };
   },
   computed: {
@@ -71,12 +90,24 @@ export default {
           this.doDraw();
         });
       });
+      
       // 穿透事件监控视频点
       this.$bus.$off("cesium-3d-video-single");
       this.$bus.$on("cesium-3d-video-single", async (item) => {
         this.forceVideo = undefined;
         this.$nextTick(() => {
           this.forceVideo = item;
+        });
+      });
+
+      // 初始展示今日事件
+      this.$bus.$off("emergency-simulate-first");
+      this.$bus.$on("emergency-simulate-first", (data) => {
+        const { LON, LAT } = data;
+        this.geometry = { lng: LON, lat: LAT };
+        this.$nextTick(() => {
+          this.firstEventForce = data;
+          this.shallPop = true;
         });
       });
     },

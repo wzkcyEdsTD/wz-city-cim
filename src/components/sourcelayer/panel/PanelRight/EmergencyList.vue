@@ -2,7 +2,9 @@
   <div class="emergency-list">
     <header class="ph-right">
       事件档案
-      <span class="back-to-list" v-if="eventForce" @click="backToList">事件列表</span>
+      <span class="back-to-list" v-if="eventForce" @click="backToList"
+        >事件列表</span
+      >
       <div class="searchHeader" v-if="!eventForce">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
@@ -25,7 +27,8 @@
         <span>网格</span>
         <!-- <span>序号</span> -->
         <span>事件</span>
-        <span>日期</span>
+        <!-- 2020/12/24 暂时 -->
+        <!-- <span>日期</span> -->
       </header>
       <ul>
         <li
@@ -38,16 +41,22 @@
           }}</span>
           <!-- <span>{{ i + 1 }}</span> -->
           <span :title="item.SUBJECT">{{ item.SUBJECT }}</span>
-          <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span>
+          <!-- <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span> -->
         </li>
       </ul>
     </div>
     <div class="emergency-info" v-if="eventForce">
-      <img v-if="eventLogID == 52175497" src="/static/images/event/example.png" />
+      <img
+        v-if="eventLogID == 52175497"
+        src="/static/images/event/example.png"
+      />
       <img v-else-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
-      <p><i>发生时间:</i>{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}</p>
+      <p>
+        <i>发生时间:</i
+        >{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}
+      </p>
       <p><i>最后操作用户:</i>{{ eventForce.LASTUSERNAME || "-" }}</p>
     </div>
     <div class="emergency-progress" v-if="eventForce">
@@ -93,6 +102,7 @@ export default {
         .filter((v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n));
     },
     eventLog(n) {
+      console.log(n);
       const that = this;
       const list = JSON.parse(JSON.stringify(n));
       console.log(this.eventLogID);
@@ -113,6 +123,7 @@ export default {
       "setMockEventLog",
     ]),
     async simulateEmergency(n, i) {
+      console.log(n, i);
       const event = { ...n, i };
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);
@@ -359,7 +370,8 @@ export default {
         > span {
           font-size: 1.5vh;
           &:last-child {
-            color: #fc5453;
+            // 2020/12/24 暂时
+            // color: #fc5453;
           }
         }
       }
