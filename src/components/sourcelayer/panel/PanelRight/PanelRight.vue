@@ -3,12 +3,12 @@
     <video-grid v-show="!eventForce" />
     <emergency-list />
     <emergency-around v-if="eventForce" />
-    <emergency-grid v-if="eventForce" />
     <grid-member-list v-show="!forceRoom && !eventForce" />
     <room-info
       v-if="forceRoom && !~['company', 'key'].indexOf(forceRoom.item[0].type)"
     />
     <company-info v-if="forceRoom && forceRoom.item[0].type == 'company'" />
+    <emergency-grid v-if="eventForce" />
   </div>
 </template>
 

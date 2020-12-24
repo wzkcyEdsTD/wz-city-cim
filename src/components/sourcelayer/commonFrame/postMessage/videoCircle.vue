@@ -158,7 +158,10 @@ export default {
           outlineWidth: 4,
           showBackground: true,
           backgroundColor: Cesium.Color(0.165, 0.165, 0.165, 0.1),
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000),
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
+            0,
+            10000
+          ),
           eyeOffset: new Cesium.Cartesian3(0.0, -260.0, 0),
           scaleByDistance: new Cesium.NearFarScalar(5000, 1, 10000, 0.5),
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
@@ -174,7 +177,11 @@ export default {
       data.forEach((item) => {
         const videoPointEntity = new Cesium.Entity({
           id: `videopoint_${item.mp_id}`,
-          position: Cesium.Cartesian3.fromDegrees(Number(item.lng), Number(item.lat), 1),
+          position: Cesium.Cartesian3.fromDegrees(
+            Number(item.lng),
+            Number(item.lat),
+            1
+          ),
           geometry: { lng: item.lng, lat: item.lat },
           billboard: {
             image: "/static/images/map-ico/视频监控.png",
@@ -193,7 +200,7 @@ export default {
      * @param {object} geometry
      */
     cameraMove({ lng, lat, queryRadius }) {
-      console.log(this.cameraMode)
+      console.log(this.cameraMode);
       window.earth.scene.camera.flyTo(
         this.cameraMode
           ? {
@@ -202,9 +209,11 @@ export default {
             }
           : {
               destination: Cesium.Cartesian3.fromDegrees(
-                lng,
-                lat - (0.002 + (0.0015 * queryRadius * (queryRadius / 200) * 1.1) / 100),
-                200 + queryRadius * (queryRadius / 200) * 1.1
+                lng + 0.001,
+                lat -
+                  (0.0013 +
+                    (0.001 * queryRadius * (queryRadius / 200) * 1.1) / 100),
+                200 + queryRadius * (queryRadius / 200) * 0.5
               ),
               orientation: angle3d,
             }
@@ -295,7 +304,11 @@ export default {
       width: 20vh;
       color: white;
       border: 1px solid red;
-      background: linear-gradient(to bottom, rgba(255, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 0, 0, 0.6),
+        rgba(0, 0, 0, 0.6)
+      );
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {
@@ -335,7 +348,11 @@ export default {
       left: -22vh;
       color: white;
       border: 1px solid blue;
-      background: linear-gradient(to bottom, rgba(0, 81, 255, 0.6), rgba(0, 0, 0, 0.6));
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 81, 255, 0.6),
+        rgba(0, 0, 0, 0.6)
+      );
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {

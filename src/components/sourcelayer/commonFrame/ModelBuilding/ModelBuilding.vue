@@ -46,7 +46,51 @@
                   :key="room + j"
                   @click="doForceRoom(room, item)"
                 >
+                  <!-- 101室企业便利店 -->
                   <span
+                    v-if="
+                      modelBuilding.address ==
+                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团7幢' &&
+                      room == '101'
+                    "
+                    class="activeCompany"
+                    >{{ room }}室
+                    <div class="room-info">
+                      <span>
+                        <p>便利店</p>
+                      </span>
+                    </div>
+                  </span>
+                  <span
+                    v-else-if="
+                      (modelBuilding.address ==
+                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团7幢' &&
+                        ~['203', '401'].indexOf(room)) ||
+                      (modelBuilding.address ==
+                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团8幢' &&
+                        ~['102', '301', '403'].indexOf(room)) ||
+                      (modelBuilding.address ==
+                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团9幢' &&
+                        ~['103', '201', '402'].indexOf(room)) ||
+                      (modelBuilding.address ==
+                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团10幢' &&
+                        ~['201', '302', '401'].indexOf(room))
+                    "
+                    class="activeRent"
+                    >{{ room }}室
+                    <div class="room-info" v-if="item.length">
+                      <span
+                        v-for="(people, k) in item"
+                        :key="k"
+                        :class="{ activeRoomKeyOne: people.isKey }"
+                      >
+                        <p>{{ people.NAME }}</p>
+                        <!-- <p>{{ people.IDCARD }}</p> -->
+                      </span>
+                    </div>
+                  </span>
+                  <span
+                    v-else
                     :class="{
                       activeRoom: item.length,
                       activeCompany: item.length && item[0].type == 'company',
@@ -148,6 +192,8 @@ export default {
           modelBuilding.modelBuildFloorRoom = floor;
         }
         this.modelBuilding = modelBuilding;
+
+        console.log(modelBuilding);
       }
     },
     //  生成对象

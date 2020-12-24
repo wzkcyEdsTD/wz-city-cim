@@ -80,7 +80,15 @@ export default {
     },
     async searchFilter() {
       if (!this.searchText) return;
-      const { records } = await getAddressList(this.searchText);
+      // 搜索查询服务
+      const data = await this.sqlQuery(this.searchText);
+      const records = data.map((item) => {
+        return {
+          lat: item.geometry.y,
+          lng: item.geometry.x,
+          result: item.attributes.DOOR_ADDRESS,
+        };
+      });
       this.searchResult = records;
       this.toogleVisible(true);
     },
@@ -93,7 +101,7 @@ export default {
           roll: 0.0,
         },
         maximumHeight: 450,
-        duration : 1
+        duration: 1,
       });
       window.earth.entities.removeById(this.iconId);
       const addressLocationEntity = new Cesium.Entity({
@@ -120,6 +128,34 @@ export default {
         },
       });
       window.earth.entities.add(addressLocationEntity);
+    },
+
+    // 服务SQL
+    async sqlQuery(text) {
+      return new Promise((resolve, reject) => {
+        const url =
+          "https://ditu.wzcitybrain.com/iserver/services/data-pxs1222-3/rest/data";
+        const getFeatureParam = new SuperMap.REST.FilterParameter({
+          attributeFilter: `DOOR_ADDRESS like '%${text}%'`,
+        });
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(
+          url,
+          {
+            eventListeners: {
+              processCompleted: async (res) =>
+                res.result && resolve(res.result.features),
+              processFailed: (msg) => reject(msg),
+            },
+          }
+        );
+        getFeatureBySQLService.processAsync(
+          new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            toIndex: -1,
+            datasetNames: [`pxs:gatesite`],
+          })
+        );
+      });
     },
   },
 };

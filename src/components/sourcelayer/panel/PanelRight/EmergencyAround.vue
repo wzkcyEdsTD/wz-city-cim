@@ -54,7 +54,7 @@ export default {
   },
   beforeDestroy() {
     //  摧毁房屋面
-     destoryBuild(this.buildAround);
+    //  destoryBuild(this.buildAround);
   },
   methods: {
     async fetchPopulationAround() {
@@ -77,18 +77,6 @@ export default {
           url
         );
       });
-      //  重点人员分析,反画楼面
-      const { PEOPLE2D, BUILDING2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
-      const data = await this.fetchFromZDRYDSets(geometry, PEOPLE2D);
-      const b_data = await this.fetchBlock2DByName(
-        [...new Set(data.map((v) => v.fieldValues[0]))],
-        BUILDING2D
-      );
-      const fix_b_data = b_data.map((v) => {
-        return { points: v.geometry.points, id: "build_polygon_" + v.ID };
-      });
-      this.buildAround = fix_b_data;
-      drawBuild(fix_b_data);
     },
     /**
      * 获取数据集点位
