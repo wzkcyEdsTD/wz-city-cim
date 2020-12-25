@@ -2,6 +2,11 @@
   <div class="traffic-header">
     <!-- <span>城市交通实况</span>
     <span>CITY TRAFFIC CONDITION</span> -->
+
+    <div class="logo">
+      <img src="/static/images/common/logo.png" />
+      <span>温州设计集团</span>
+    </div>
   </div>
 </template>
 
@@ -31,6 +36,24 @@ export default {
   position: fixed;
   top: 0;
   z-index: 4;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 2vh;
+    top: 2.3vh;
+    color: #cfd0d1;
+    img {
+      height: 2.6vh;
+    }
+    span {
+      font-size: 1.8vh;
+      letter-spacing: 0.1vh;
+      padding-left: 0.8vh;
+    }
+  }
+
   > span {
     position: fixed;
     left: 50%;

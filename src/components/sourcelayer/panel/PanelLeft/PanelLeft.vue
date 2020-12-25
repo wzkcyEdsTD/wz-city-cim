@@ -1,8 +1,8 @@
 <template>
   <div class="panel panel-left">
     <header class="panel-header">蒲鞋市街道</header>
-    <city-index-chart />
     <emergency-chart />
+    <city-index-chart />
     <unknown-chart />
   </div>
 </template>

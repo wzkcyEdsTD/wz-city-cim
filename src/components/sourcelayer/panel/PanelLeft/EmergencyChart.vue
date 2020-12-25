@@ -93,10 +93,13 @@ export default {
     font-size: 1.4vh;
     color: #fff;
 
-    > div > span {
-      font-size: 1.8vh;
-      font-weight: bold;
-      color: #17bce5;
+    > div {
+      font-size: 1.6vh;
+      > span {
+        font-size: 1.8vh;
+        font-weight: bold;
+        color: #17bce5;
+      }
     }
   }
 }

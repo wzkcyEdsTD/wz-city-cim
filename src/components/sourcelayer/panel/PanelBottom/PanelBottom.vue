@@ -1,6 +1,6 @@
 <template>
   <div class="panel-bottom">
-    <header>高热区分析</header>
+    <!-- <header>高热区分析</header> -->
     <ul class="panel-bottom-ul">
       <li :class="{ active: gridMode }" @click="doGridMap">
         <img :src="`/static/images/block/网格管理@2x.png`" />

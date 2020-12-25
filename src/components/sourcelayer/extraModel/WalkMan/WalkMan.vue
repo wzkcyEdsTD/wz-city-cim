@@ -29,7 +29,7 @@
 import { getCzmlDataSource } from "./config";
 import CIM_API from "api/cimAPI";
 import { mapGetters, mapActions } from "vuex";
-import { angle3d } from "mock/overview.js";
+import { CenterPoint, angle3d } from "mock/overview.js";
 const { heading, pitch } = angle3d;
 export default {
   name: "walkMan",
@@ -159,6 +159,8 @@ export default {
     },
     shutDownGridMember() {
       this.setForceGridMember(undefined);
+
+      window.earth.scene.camera.flyTo(CenterPoint);
     },
     shutDownRoute() {
       window.billboardMap["walkMan_route_points"].removeAll();
