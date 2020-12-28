@@ -10,7 +10,7 @@ export const destoryBuild = (names) =>
  * @param {*} arr 
  */
 export const drawBuild = (arr) => {
-    arr.map(({ points, id }) => window.earth.entities.add({
+    arr.map(({ points, center, id }) => window.earth.entities.add({
         polygon: {
             hierarchy: Cesium.Cartesian3.fromDegreesArray(points.map(v => [v.x, v.y]).flat()),
             material: new Cesium.Color(240 / 255, 10 / 255, 0 / 255, 0.2),
@@ -19,8 +19,8 @@ export const drawBuild = (arr) => {
             outlineColor: new Cesium.Color(240 / 255, 10 / 255, 0 / 255, 0.3),
 
         },
-        lon: points[0].x,
-        lat: points[0].y,
+        lon: center.x,
+        lat: center.y,
         id,
         classificationType: Cesium.ClassificationType.BOTH,
     }))

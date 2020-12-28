@@ -29,7 +29,6 @@
 <script>
 import { mapGetters } from "vuex";
 import { getPopulation } from "api/cityBrainAPI";
-import { destoryBuild, drawBuild } from "./DrawAround/DrawAround";
 import {
   CESIUM_TREE_SOURCE_OPTION,
   CESIUM_PEOPLE_BUILDING_SOURCE_OPTION,
@@ -51,10 +50,6 @@ export default {
     this.fetchPopulationAround();
     this.fetchSourceAround();
     this.$bus.$emit("cesium-3d-panel-bottom");
-  },
-  beforeDestroy() {
-    //  摧毁房屋面
-    //  destoryBuild(this.buildAround);
   },
   methods: {
     async fetchPopulationAround() {

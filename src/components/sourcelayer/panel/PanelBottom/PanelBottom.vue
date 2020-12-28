@@ -55,10 +55,7 @@ export default {
       return this.eventList.map((v) => [v.LON, v.LAT, 8]);
     },
     keyPersonHeatList() {
-      return this.keyPersonList.features.map((v) => [
-        ...v.geometry.coordinates,
-        8,
-      ]);
+      return this.keyPersonList.features.map((v) => [...v.geometry.coordinates, 8]);
     },
     normalPersonHeatList() {
       return this.normalPersonList.features.map((v) => [
@@ -87,11 +84,13 @@ export default {
     },
     async doForceHeatMap() {
       if (this.forceKey == "k1") {
-        const data = await doBlockKey(
-          CESIUM_PEOPLE_BUILDING_SOURCE_OPTION.BUILDING2D
-        );
+        const data = await doBlockKey(CESIUM_PEOPLE_BUILDING_SOURCE_OPTION.BUILDING2D);
         const fix_b_data = data.map((v) => {
-          return { points: v.geometry.points, id: "build_polygon_" + v.ID };
+          return {
+            points: v.geometry.points,
+            center: v.geometry.center,
+            id: "build_polygon_" + v.ID,
+          };
         });
         this.buildAround = fix_b_data;
         drawBuild(fix_b_data);
@@ -109,11 +108,7 @@ export default {
 
     // 根据高度获取网格Id
     getIdFromHeight(height) {
-      return height > 2500
-        ? "lcjz"
-        : height <= 2500 && height > 1000
-        ? "pxscs"
-        : "";
+      return height > 2500 ? "lcjz" : height <= 2500 && height > 1000 ? "pxscs" : "";
     },
 
     doGridMap() {

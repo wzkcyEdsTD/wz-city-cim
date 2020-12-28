@@ -94,8 +94,7 @@
                     :class="{
                       activeRoom: item.length,
                       activeCompany: item.length && item[0].type == 'company',
-                      activeKey:
-                        item.length && item.filter((v) => v.isKey).length,
+                      activeKey: item.length && item.filter((v) => v.isKey).length,
                     }"
                     >{{ room }}室
                     <div class="room-info" v-if="item.length">
@@ -122,12 +121,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
-const {
-  BUILDING2D,
-  HOME2D,
-  PEOPLE2D,
-  NORMAL2D,
-} = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+const { BUILDING2D, HOME2D, PEOPLE2D, NORMAL2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
 export default {
   name: "ModelBuilding",
   data() {
@@ -150,6 +144,7 @@ export default {
       //  fetch build
       const data = await this.fetchBuildByPoint(geometry, BUILDING2D);
       if (data.length) {
+        this.highLightBuilding(data[0]);
         const modelBuilding = {
           name: data[0].fieldValues[1],
           address: data[0].fieldValues[2],
@@ -192,8 +187,6 @@ export default {
           modelBuilding.modelBuildFloorRoom = floor;
         }
         this.modelBuilding = modelBuilding;
-
-        console.log(modelBuilding);
       }
     },
     //  生成对象
@@ -216,6 +209,32 @@ export default {
       }
       return tmp;
     },
+    //  高亮楼栋
+    highLightBuilding({ geometry }) {
+      const id = "highLight_region";
+      const { points, center } = geometry;
+      let alp = 0.2,
+        num = 0;
+      window.earth.entities.removeById(id);
+      window.earth.entities.add({
+        polygon: {
+          hierarchy: Cesium.Cartesian3.fromDegreesArray(
+            points.map((v) => [v.x, v.y]).flat()
+          ),
+          material: new Cesium.ImageMaterialProperty({
+            color: new Cesium.CallbackProperty(() => {
+              num % 2 === 0 ? (alp -= 0.002) : (alp += 0.002);
+              alp <= 0.1 || alp >= 0.3 ? num++ : undefined;
+              return Cesium.Color.GOLD.withAlpha(alp/2);
+            }, false),
+          }),
+        },
+        lon: center.x,
+        lat: center.y,
+        id,
+        classificationType: Cesium.ClassificationType.BOTH,
+      });
+    },
     doForceRoom(room, item) {
       item.length &&
         this.setForceRoom({
@@ -233,8 +252,7 @@ export default {
           url,
           {
             eventListeners: {
-              processCompleted: (data) =>
-                data && resolve(data.originResult.features),
+              processCompleted: (data) => data && resolve(data.originResult.features),
               processFailed: (err) => reject(err),
             },
           }
@@ -255,16 +273,12 @@ export default {
      */
     async fetchRoomByBuildUUID(uuid, { newdataset, url }) {
       return new Promise((resolve, reject) => {
-        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(
-          url,
-          {
-            eventListeners: {
-              processCompleted: (data) =>
-                data && resolve(data.originResult.features),
-              processFailed: (err) => reject(err),
-            },
-          }
-        );
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+          eventListeners: {
+            processCompleted: (data) => data && resolve(data.originResult.features),
+            processFailed: (err) => reject(err),
+          },
+        });
         getFeatureBySQLService.processAsync(
           new SuperMap.REST.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.REST.FilterParameter({
@@ -281,16 +295,12 @@ export default {
      */
     async fetchKeyByBuildUUID(address, { newdataset, url }) {
       return new Promise((resolve, reject) => {
-        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(
-          url,
-          {
-            eventListeners: {
-              processCompleted: (data) =>
-                data && resolve(data.originResult.features),
-              processFailed: (err) => reject(err),
-            },
-          }
-        );
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+          eventListeners: {
+            processCompleted: (data) => data && resolve(data.originResult.features),
+            processFailed: (err) => reject(err),
+          },
+        });
         getFeatureBySQLService.processAsync(
           new SuperMap.REST.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.REST.FilterParameter({
@@ -305,6 +315,7 @@ export default {
     closeFrame() {
       this.modelBuilding = undefined;
       this.setForceRoom(undefined);
+      window.earth.entities.removeById("highLight_region");
     },
   },
 };

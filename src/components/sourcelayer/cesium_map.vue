@@ -159,7 +159,11 @@ export default {
               mp_name: pick.id.name,
             });
           }
-          if (pick.id.id && ~pick.id.id.indexOf("build_polygon")) {
+          if (
+            pick.id.id &&
+            (~pick.id.id.indexOf("build_polygon") ||
+              ~pick.id.id.indexOf("highLight_region"))
+          ) {
             const { x, y } = this.fetchLngLat(e.position);
             this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
