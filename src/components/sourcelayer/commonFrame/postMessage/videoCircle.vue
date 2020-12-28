@@ -72,6 +72,7 @@ export default {
     eventForce: {
       handler(n) {
         !n && this.removeVideoCircle();
+        !n && this.initEmergency();
       },
       deep: true,
     },

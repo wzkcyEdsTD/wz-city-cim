@@ -32,12 +32,7 @@ import GridSource from "./GridSource";
 import InfoSource from "./InfoSource";
 import { ServiceUrl } from "config/server/mapConfig";
 import { mapGetters, mapActions } from "vuex";
-import {
-  CenterPoint,
-  CenterPoint2D,
-  angle3d,
-  angle25d,
-} from "mock/overview.js";
+import { CenterPoint, CenterPoint2D, angle3d, angle25d } from "mock/overview.js";
 
 export default {
   name: "sceneSwitch",
@@ -92,20 +87,9 @@ export default {
      *  false 3d
      */
     cameraMove() {
-      const viewer = window.earth;
       //  视角计算
       if (this.cameraMode) {
-        const { x, y } = this.fetchLngLat(
-          viewer.scene.globe.pick(
-            viewer.camera.getPickRay(
-              new Cesium.Cartesian2(
-                document.body.clientWidth / 2,
-                document.body.clientHeight / 2
-              )
-            ),
-            viewer.scene
-          )
-        );
+        const { x, y } = this.fetchLngLat();
         window.earth.camera.flyTo({
           destination: new Cesium.Cartesian3.fromDegrees(x, y, this.height),
           orientation: angle25d,
@@ -126,8 +110,17 @@ export default {
         window.earth.scene.layers.find(KEY).visible = !this.cameraMode;
       });
     },
-    fetchLngLat({ x, y, z }) {
+    fetchLngLat() {
       const viewer = window.earth;
+      const { x, y, z } = viewer.scene.globe.pick(
+        viewer.camera.getPickRay(
+          new Cesium.Cartesian2(
+            document.body.clientWidth / 2,
+            document.body.clientHeight / 2
+          )
+        ),
+        viewer.scene
+      );
       const ellipsoid = viewer.scene.globe.ellipsoid;
       const cartesian3 = new Cesium.Cartesian3(x, y, z);
       const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
