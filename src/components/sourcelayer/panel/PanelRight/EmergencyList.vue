@@ -2,9 +2,7 @@
   <div class="emergency-list">
     <header class="ph-right">
       事件档案
-      <span class="back-to-list" v-if="eventForce" @click="backToList"
-        >事件列表</span
-      >
+      <span class="back-to-list" v-if="eventForce" @click="backToList">事件列表</span>
       <div class="searchHeader" v-if="!eventForce">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
@@ -46,17 +44,11 @@
       </ul>
     </div>
     <div class="emergency-info" v-if="eventForce">
-      <img
-        v-if="eventLogID == 52175497"
-        src="/static/images/event/example.png"
-      />
+      <img v-if="eventLogID == 52175497" src="/static/images/event/example.png" />
       <img v-else-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
       <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
       <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
-      <p>
-        <i>发生时间:</i
-        >{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}
-      </p>
+      <p><i>发生时间:</i>{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}</p>
       <p><i>最后操作用户:</i>{{ eventForce.LASTUSERNAME || "-" }}</p>
     </div>
     <div class="emergency-progress" v-if="eventForce">
@@ -79,15 +71,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { mockEvents, mockProgress } from "mock/event/mockEvents.js";
 export default {
   name: "emergencyList",
   data() {
     return {
       searchText: "",
       fixEventList: [],
-      mockEvents,
-      mockProgress,
       fixEventLog: [],
       eventLogID: null,
     };
@@ -97,9 +86,9 @@ export default {
   },
   watch: {
     searchText(n) {
-      this.fixEventList = this.mockEvents
-        .concat(this.eventList)
-        .filter((v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n));
+      this.fixEventList = this.eventList.filter(
+        (v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n)
+      );
     },
     eventLog(n) {
       console.log(n);
@@ -113,7 +102,7 @@ export default {
   },
   async created() {
     await this.getEventList();
-    this.fixEventList = this.mockEvents.concat(this.eventList);
+    this.fixEventList = this.eventList;
   },
   methods: {
     ...mapActions("map", [
@@ -128,9 +117,7 @@ export default {
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);
       this.eventLogID = event.ID;
-      this.mockProgress[n.OCCURORG]
-        ? this.setMockEventLog(this.mockProgress[n.OCCURORG])
-        : await this.getEventLog(event.ID);
+      await this.getEventLog(event.ID);
     },
     backToList() {
       this.setEventForce(undefined);

@@ -48,6 +48,7 @@ import { mapGetters, mapActions } from "vuex";
 import VideoSingle from "./videoSingle";
 import { getRtmpVideoList } from "api/cityBrainAPI";
 import { angle3d, angle25d } from "mock/overview.js";
+import { mockEvents } from "mock/event/mockEvents.js";
 const Cesium = window.Cesium;
 
 export default {
@@ -59,6 +60,7 @@ export default {
       item: {},
       entitiesID: [],
       rtmpOn: true,
+      mockEvents,
       forceVideo: undefined,
       firstEventForce: undefined,
     };
@@ -77,6 +79,7 @@ export default {
   components: { VideoSingle },
   mounted() {
     this.eventRegsiter();
+    this.initEmergency();
   },
   methods: {
     ...mapActions("map", ["SetRtmpListOther"]),
@@ -90,7 +93,7 @@ export default {
           this.doDraw();
         });
       });
-      
+
       // 穿透事件监控视频点
       this.$bus.$off("cesium-3d-video-single");
       this.$bus.$on("cesium-3d-video-single", async (item) => {
@@ -99,16 +102,13 @@ export default {
           this.forceVideo = item;
         });
       });
-
-      // 初始展示今日事件
-      this.$bus.$off("emergency-simulate-first");
-      this.$bus.$on("emergency-simulate-first", (data) => {
-        const { LON, LAT } = data;
-        this.geometry = { lng: LON, lat: LAT };
-        this.$nextTick(() => {
-          this.firstEventForce = data;
-          this.shallPop = true;
-        });
+    },
+    initEmergency() {
+      const { LON, LAT } = this.mockEvents;
+      this.geometry = { lng: LON, lat: LAT };
+      this.$nextTick(() => {
+        this.firstEventForce = this.mockEvents;
+        this.shallPop = true;
       });
     },
     /**
@@ -189,10 +189,7 @@ export default {
           outlineWidth: 4,
           showBackground: true,
           backgroundColor: Cesium.Color(0.165, 0.165, 0.165, 0.1),
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
-            0,
-            10000
-          ),
+          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 10000),
           eyeOffset: new Cesium.Cartesian3(0.0, -260.0, 0),
           scaleByDistance: new Cesium.NearFarScalar(5000, 1, 10000, 0.5),
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
@@ -208,11 +205,7 @@ export default {
       data.forEach((item) => {
         const videoPointEntity = new Cesium.Entity({
           id: `videopoint_${item.mp_id}`,
-          position: Cesium.Cartesian3.fromDegrees(
-            Number(item.lng),
-            Number(item.lat),
-            1
-          ),
+          position: Cesium.Cartesian3.fromDegrees(Number(item.lng), Number(item.lat), 1),
           geometry: { lng: item.lng, lat: item.lat },
           billboard: {
             image: "/static/images/map-ico/视频监控.png",
@@ -241,9 +234,7 @@ export default {
           : {
               destination: Cesium.Cartesian3.fromDegrees(
                 lng + 0.001,
-                lat -
-                  (0.0013 +
-                    (0.001 * queryRadius * (queryRadius / 200) * 1.1) / 100),
+                lat - (0.0013 + (0.001 * queryRadius * (queryRadius / 200) * 1.1) / 100),
                 200 + queryRadius * (queryRadius / 200) * 0.5
               ),
               orientation: angle3d,
@@ -335,11 +326,7 @@ export default {
       width: 20vh;
       color: white;
       border: 1px solid red;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 0, 0, 0.6),
-        rgba(0, 0, 0, 0.6)
-      );
+      background: linear-gradient(to bottom, rgba(255, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {
@@ -379,11 +366,7 @@ export default {
       left: -22vh;
       color: white;
       border: 1px solid blue;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 81, 255, 0.6),
-        rgba(0, 0, 0, 0.6)
-      );
+      background: linear-gradient(to bottom, rgba(0, 81, 255, 0.6), rgba(0, 0, 0, 0.6));
       padding: 1vh 2vh 2vh;
       text-align: left;
       > header {
