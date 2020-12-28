@@ -68,6 +68,7 @@ export default {
       isInfoFrame: false,
       authFailshallPop: false,
       sourceURLs: ServiceUrl.GridSource,
+      sourceURLPxs: ServiceUrl.GridPxs,
     };
   },
   computed: {
@@ -109,12 +110,7 @@ export default {
     this.eventRegsiter();
   },
   methods: {
-    ...mapActions("map", [
-      "getEventList",
-      "getEventLog",
-      "setEventForce",
-      "setMockEventLog",
-    ]),
+    ...mapActions("map", ["getEventList", "getEventLog", "setEventForce"]),
 
     initPostRender() {
       window.earth.scene.postRender.addEventListener(() => {
@@ -136,21 +132,14 @@ export default {
     initEntityHandler() {
       window.earth.selectedEntityChanged.addEventListener((entity) => {
         const layerID = "pxs25d@pxs25d";
-        if (
-          !entity ||
-          !entity.pickResult ||
-          entity.pickResult.layerID != layerID
-        )
-          return;
+        if (!entity || !entity.pickResult || entity.pickResult.layerID != layerID) return;
         const properties = entity.pickResult[layerID][0].feature.properties;
         console.log(properties.OBJECTID);
         properties && this.$refs.forceBuilding.doForce(properties);
       });
     },
     initClickHandler() {
-      const handler = new Cesium.ScreenSpaceEventHandler(
-        window.earth.scene.canvas
-      );
+      const handler = new Cesium.ScreenSpaceEventHandler(window.earth.scene.canvas);
       // 监听左键点击事件
       handler.setInputAction((e) => {
         const pick = window.earth.scene.pick(e.position);
@@ -171,15 +160,7 @@ export default {
             });
           }
           if (pick.id.id && ~pick.id.id.indexOf("build_polygon")) {
-            const { position } = e;
-            const { x, y } = this.fetchLngLat(
-              window.earth.scene.globe.pick(
-                window.earth.camera.getPickRay(
-                  new Cesium.Cartesian2(position.x, position.y)
-                ),
-                window.earth.scene
-              )
-            );
+            const { x, y } = this.fetchLngLat(e.position);
             this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
         } else if (typeof pick.id == "string") {
@@ -192,15 +173,7 @@ export default {
             });
           }
           if (pick.primitive.name == "WZBaimo_POINT_AROUND") {
-            const { position } = e;
-            const { x, y } = this.fetchLngLat(
-              window.earth.scene.globe.pick(
-                window.earth.camera.getPickRay(
-                  new Cesium.Cartesian2(position.x, position.y)
-                ),
-                window.earth.scene
-              )
-            );
+            const { x, y } = this.fetchLngLat(e.position);
             this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
         }
@@ -217,27 +190,19 @@ export default {
 
     // 根据高度获取网格Id
     getIdFromHeight(height) {
-      return height > 2500
-        ? "lcjz"
-        : height <= 2500 && height > 1000
-        ? "pxscs"
-        : "";
+      return height > 2500 ? "lcjz" : height <= 2500 && height > 1000 ? "pxscs" : "";
     },
 
     // 网格
     changeGrid() {
-      const height = Math.ceil(
-        window.earth.scene.camera.positionCartographic.height
-      );
+      const height = Math.ceil(window.earth.scene.camera.positionCartographic.height);
       const curId = this.getIdFromHeight(height);
       this.sourceURLs.map((d) => {
         d.children.map(({ id, url }) => {
           if (id == curId) {
             window.gridMap[id]
               ? (window.gridMap[id].show = true)
-              : (window.gridMap[
-                  id
-                ] = window.earth.imageryLayers.addImageryProvider(
+              : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
                   new Cesium.SuperMapImageryProvider({ url, name: id })
                 ));
           } else if (id != "pxswg") {
@@ -245,20 +210,23 @@ export default {
           }
         });
       });
-
       if (this.gridMode) {
         const id = "pxswg";
-        const url =
-          "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg";
         window.gridMap[id]
           ? (window.gridMap[id].show = true)
           : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
-              new Cesium.SuperMapImageryProvider({ url, name: id })
+              new Cesium.SuperMapImageryProvider({ url: this.sourceURLPxs, name: id })
             ));
       }
     },
-
-    fetchLngLat({ x, y, z }) {
+    /**
+     * @param {object} position 位置信息
+     */
+    fetchLngLat(position) {
+      const { x, y, z } = window.earth.scene.globe.pick(
+        window.earth.camera.getPickRay(new Cesium.Cartesian2(position.x, position.y)),
+        window.earth.scene
+      );
       const ellipsoid = window.earth.scene.globe.ellipsoid;
       const cartesian3 = new Cesium.Cartesian3(x, y, z);
       const cartographic = ellipsoid.cartesianToCartographic(cartesian3);

@@ -35,10 +35,6 @@ export const getEventLog = async ({ commit }, data) => {
   const { rows } = await CIM_API.getEventLog(data);
   commit(types.SET_EVENT_LOG, rows);
 }
-//  设置事件流程[mock]
-export const setMockEventLog = async ({ commit }, rows) => {
-  commit(types.SET_EVENT_LOG, rows);
-}
 //  设置事件点
 export const setEventForce = ({ commit }, data) => {
   commit(types.SET_EVENT_FORCE, data);

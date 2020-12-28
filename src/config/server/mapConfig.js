@@ -64,6 +64,8 @@ export const ServiceUrl = {
   SWImage: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-YX2019SW/rest/realspace/datas/YX_2019_SW",
   //  大数据底图
   DataImage: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DSJCGS2000SW/rest/realspace/datas/DSJ_CGS2000_SW",
+  //  蒲鞋市网格
+  GridPxs : "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg",
   //  网格图
   GridSource: [{
     label: "鹿城区",

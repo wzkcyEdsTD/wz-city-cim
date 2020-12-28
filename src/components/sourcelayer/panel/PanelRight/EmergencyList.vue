@@ -109,7 +109,6 @@ export default {
       "getEventList",
       "getEventLog",
       "setEventForce",
-      "setMockEventLog",
     ]),
     async simulateEmergency(n, i) {
       console.log(n, i);
