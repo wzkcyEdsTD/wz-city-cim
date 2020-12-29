@@ -16,46 +16,46 @@
           </tr>
           <tr>
             <td>网格片长</td>
-            <td>{{ gridMsg.WGPZ_NAME || "" }}</td>
-            <td>{{ gridMsg.WGPZ_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_PZ || "" }}</td>
+            <td>{{ gridMsg.GRID_PZ_C || "" }}</td>
           </tr>
           <tr>
             <td>网格指导员</td>
-            <td>{{ gridMsg.WGZDY_NAME || "" }}</td>
-            <td>{{ gridMsg.WGZDY_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_ZDY || "" }}</td>
+            <td>{{ gridMsg.GRID_ZDY_C || "" }}</td>
           </tr>
           <tr>
             <td>网格协助员</td>
-            <td>{{ gridMsg.WGXZY_NAME || "" }}</td>
-            <td>{{ gridMsg.WGXZY_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_XZY || "" }}</td>
+            <td>{{ gridMsg.GRID_XZY_C || "" }}</td>
           </tr>
           <tr>
             <td>网格长</td>
-            <td>{{ gridMsg.WGZ_NAME || "" }}</td>
-            <td>{{ gridMsg.WGZ_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_WGZ || "" }}</td>
+            <td>{{ gridMsg.GRID_WGZ_C || "" }}</td>
           </tr>
           <tr>
             <td>专职网格员</td>
-            <td>{{ gridMsg.ZZWGY_NAME || "" }}</td>
-            <td>{{ gridMsg.ZZWGY_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_ZZWGY || "" }}</td>
+            <td>{{ gridMsg.GRID_ZZWGY_C || "" }}</td>
           </tr>
           <tr>
             <td colspan="3" class="type">入格</td>
           </tr>
           <tr>
             <td>公安部门入格员</td>
-            <td>{{ gridMsg.BMRGY_GA_NAME || "" }}</td>
-            <td>{{ gridMsg.BMRGY_GA_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_GA || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_GA_C || "" }}</td>
           </tr>
           <tr>
             <td>行政执法部门入格员</td>
-            <td>{{ gridMsg.BMRGY_XZZF_NAME || "" }}</td>
-            <td>{{ gridMsg.BMRGY_XZZF_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_XZ || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_XZ_C || "" }}</td>
           </tr>
           <tr>
             <td>市场监管部门入格员</td>
-            <td>{{ gridMsg.BMRGY_SCJG_NAME || "" }}</td>
-            <td>{{ gridMsg.BMRGY_SCJG_PHONE || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_SC || "" }}</td>
+            <td>{{ gridMsg.GRID_RG_SC_C || "" }}</td>
           </tr>
           <tr>
             <td colspan="3" class="type">街道</td>
@@ -78,26 +78,29 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { MultGridMember } from "./GridMember/mock";
+import CIM_API from "api/cimAPI";
 export default {
   name: "gridMemberList",
   data() {
-    return { gridMsg: {}, MultGridMember };
+    return { gridMsg: {} };
   },
   computed: {
     ...mapGetters("map", ["eventForce"]),
   },
   async created() {
-    await this.fixGridMsg();
+    const grid = this.fixGridMsg();
+    console.log(grid);
+    const { rows } = await CIM_API.getGridManagerByGrid(grid);
+    this.gridMsg = rows[0];
+    console.log(this.gridMsg);
   },
   methods: {
     // 网格信息
-    async fixGridMsg() {
-      const gridId = this.eventForce.ORGNAME.substring(
+    fixGridMsg() {
+      return this.eventForce.ORGNAME.substring(
         this.eventForce.ORGNAME.indexOf("（") + 1,
         this.eventForce.ORGNAME.indexOf("网")
       );
-      this.gridMsg = this.MultGridMember[gridId] || this.MultGridMember["3505"];
     },
   },
 };

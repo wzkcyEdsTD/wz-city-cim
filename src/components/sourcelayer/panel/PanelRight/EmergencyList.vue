@@ -91,10 +91,8 @@ export default {
       );
     },
     eventLog(n) {
-      console.log(n);
       const that = this;
       const list = JSON.parse(JSON.stringify(n));
-      console.log(this.eventLogID);
       this.fixEventLog = list.map((v) => {
         return { ...v, ID: that.eventLogID };
       });
@@ -105,13 +103,8 @@ export default {
     this.fixEventList = this.eventList;
   },
   methods: {
-    ...mapActions("map", [
-      "getEventList",
-      "getEventLog",
-      "setEventForce",
-    ]),
+    ...mapActions("map", ["getEventList", "getEventLog", "setEventForce"]),
     async simulateEmergency(n, i) {
-      console.log(n, i);
       const event = { ...n, i };
       this.setEventForce(event);
       this.$bus.$emit("emergency-simulate", event);

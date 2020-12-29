@@ -1,6 +1,6 @@
 import axios from "axios";
-// const BASEURL = ~window.location.host.indexOf('localhost') ? "http://localhost:3000" : "http://10.36.198.161:3000";
-const BASEURL = "http://10.36.198.161:3000";
+const BASEURL = ~window.location.host.indexOf('localhost') ? "http://localhost:3000" : "http://10.36.198.161:3000";
+// const BASEURL = "http://10.36.198.161:3000";
 const serverInstanec = axios.create();
 serverInstanec.defaults.baseURL = BASEURL;
 
@@ -43,6 +43,13 @@ const getGridMemberList = () => {
     return getAxios("/grid/getGridMemberList");
 }
 /**
+ * 通过网格id获取网格管理信息
+ * @param {*} grid 
+ */
+const getGridManagerByGrid = (grid) => {
+    return getAxios("/grid/getGridManagerByGrid", { grid })
+}
+/**
  * 获取网格员行进路线地址
  */
 const getGridMemberRouteLink = (name) => {
@@ -67,6 +74,7 @@ export default {
     getAllKindsList,
     getEventLog,
     getGridMemberList,
+    getGridManagerByGrid,
     getGridMemberRouteLink,
     getGridMemberRoutes,
     getExtraVideo
