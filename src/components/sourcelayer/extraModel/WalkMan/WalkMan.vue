@@ -3,9 +3,7 @@
     <ul
       class="routeLinks"
       v-if="
-        forceGridMember &&
-        forceGridMember.routeLinks &&
-        forceGridMember.routeLinks.length
+        forceGridMember && forceGridMember.routeLinks && forceGridMember.routeLinks.length
       "
     >
       <li
@@ -14,8 +12,7 @@
         :class="{ active: i == forceIndex.i }"
         @click="forceIndex.i = i"
       >
-        [{{ new Date(item.STARTTIME).toLocaleDateString() }}] 距离:
-        {{ item.DISTANCE }}米
+        [{{ new Date(item.STARTTIME).toLocaleDateString() }}] 距离: {{ item.DISTANCE }}米
       </li>
     </ul>
     <div v-if="forceGridMember" class="walk-man-operation">
@@ -62,9 +59,7 @@ export default {
     },
   },
   created() {
-    window.billboardMap[
-      "walkMan_route_points"
-    ] = window.earth.scene.primitives.add(
+    window.billboardMap["walkMan_route_points"] = window.earth.scene.primitives.add(
       new Cesium.PointPrimitiveCollection()
     );
     window.labelMap["walkMan_route_labels"] = window.earth.scene.primitives.add(
@@ -159,7 +154,6 @@ export default {
     },
     shutDownGridMember() {
       this.setForceGridMember(undefined);
-
       window.earth.scene.camera.flyTo(CenterPoint);
     },
     shutDownRoute() {

@@ -34,7 +34,7 @@
             <td>{{ gridMsg.GRID_WGZ || "" }}</td>
             <td>{{ gridMsg.GRID_WGZ_C || "" }}</td>
           </tr>
-          <tr>
+          <tr class="force-grid" @click="doForceGridMember(gridMsg.GRID_ZZWGY)">
             <td>专职网格员</td>
             <td>{{ gridMsg.GRID_ZZWGY || "" }}</td>
             <td>{{ gridMsg.GRID_ZZWGY_C || "" }}</td>
@@ -95,12 +95,22 @@ export default {
     console.log(this.gridMsg);
   },
   methods: {
+    ...mapActions("map", ["setForceGridMember"]),
     // 网格信息
     fixGridMsg() {
       return this.eventForce.ORGNAME.substring(
         this.eventForce.ORGNAME.indexOf("（") + 1,
         this.eventForce.ORGNAME.indexOf("网")
       );
+    },
+    async doForceGridMember(NAME) {
+      const routeLinks = await CIM_API.getGridMemberRouteLink(NAME);
+      routeLinks.rows.length
+        ? this.setForceGridMember({ NAME, routeLinks: routeLinks.rows })
+        : this.$message({
+            type: "info",
+            message: "无网格员巡逻信息",
+          });
     },
   },
 };
@@ -128,6 +138,12 @@ export default {
     }
 
     table {
+      .force-grid {
+        cursor: pointer;
+        &:hover{
+          text-decoration-line: underline;
+        }
+      }
       th,
       td {
         text-align: center;
