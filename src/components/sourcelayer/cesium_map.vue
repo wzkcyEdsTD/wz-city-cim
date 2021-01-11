@@ -265,7 +265,7 @@ export default {
       window.wmts25d.show = false;
       //  地图注记
       // const mapMvt = mapMvtLayerInit("mapMvt", ServiceUrl.YJMVT);
-      const pxsMvt = mapMvtLayerInit("PXS25dMVT", ServiceUrl.PXS25dMVT, true);
+      // const pxsMvt = mapMvtLayerInit("PXS25dMVT", ServiceUrl.PXS25dMVT, true);
       //  水面
       // await mapRiverLayerInit("RIVER", ServiceUrl.STATIC_RIVER);
       //  白模叠加
