@@ -69,10 +69,11 @@ export default {
       authFailshallPop: false,
       sourceURLs: ServiceUrl.GridSource,
       sourceURLPxs: ServiceUrl.GridPxs,
+      sourceURLMvt: ServiceUrl.mvt25Image,
     };
   },
   computed: {
-    ...mapGetters("map", ["initDataLoaded", "forceTreeLabel", "gridMode"]),
+    ...mapGetters("map", ["initDataLoaded", "forceTreeLabel", "gridMode", "cameraMode"]),
   },
   components: {
     DetailPopup,
@@ -194,7 +195,7 @@ export default {
 
     // 根据高度获取网格Id
     getIdFromHeight(height) {
-      return height > 2500 ? "lcjz" : height <= 2500 && height > 1000 ? "pxscs" : "";
+      return height > 2500 ? "lcjz" : height <= 2500 && height > 1000 ? "pxscs" : "mvt25";
     },
 
     // 网格
@@ -221,6 +222,23 @@ export default {
           : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
               new Cesium.SuperMapImageryProvider({ url: this.sourceURLPxs, name: id })
             ));
+      }
+      if (curId == "mvt25") {
+        if (this.cameraMode) {
+          if (window.gridMap[curId]) {
+            window.gridMap[curId].show = true;
+          } else {
+            window.gridMap[curId] = window.earth.imageryLayers.addImageryProvider(
+              new Cesium.SuperMapImageryProvider({ url: this.sourceURLMvt, name: curId })
+            );
+          }
+        } else {
+          if (window.gridMap["mvt25"]) {
+            window.gridMap["mvt25"].show = false;
+          }
+        }
+      } else {
+        if (window.gridMap["mvt25"]) window.gridMap["mvt25"].show = false;
       }
     },
     /**
