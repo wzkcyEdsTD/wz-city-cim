@@ -72,7 +72,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["initDataLoaded", "forceTreeLabel", "gridMode"]),
+    ...mapGetters("map", [
+      "initDataLoaded",
+      "forceTreeLabel",
+      "gridMode",
+      "cameraMode",
+    ]),
   },
   components: {
     DetailPopup,
@@ -132,14 +137,21 @@ export default {
     initEntityHandler() {
       window.earth.selectedEntityChanged.addEventListener((entity) => {
         const layerID = "pxs25d@pxs25d";
-        if (!entity || !entity.pickResult || entity.pickResult.layerID != layerID) return;
+        if (
+          !entity ||
+          !entity.pickResult ||
+          entity.pickResult.layerID != layerID
+        )
+          return;
         const properties = entity.pickResult[layerID][0].feature.properties;
         console.log(properties.OBJECTID);
         properties && this.$refs.forceBuilding.doForce(properties);
       });
     },
     initClickHandler() {
-      const handler = new Cesium.ScreenSpaceEventHandler(window.earth.scene.canvas);
+      const handler = new Cesium.ScreenSpaceEventHandler(
+        window.earth.scene.canvas
+      );
       // 监听左键点击事件
       handler.setInputAction((e) => {
         const pick = window.earth.scene.pick(e.position);
@@ -194,19 +206,27 @@ export default {
 
     // 根据高度获取网格Id
     getIdFromHeight(height) {
-      return height > 2500 ? "lcjz" : height <= 2500 && height > 1000 ? "pxscs" : "";
+      return height > 2500
+        ? "lcjz"
+        : height <= 2500 && height > 1000
+        ? "pxscs"
+        : "";
     },
 
     // 网格
     changeGrid() {
-      const height = Math.ceil(window.earth.scene.camera.positionCartographic.height);
+      const height = Math.ceil(
+        window.earth.scene.camera.positionCartographic.height
+      );
       const curId = this.getIdFromHeight(height);
       this.sourceURLs.map((d) => {
         d.children.map(({ id, url }) => {
           if (id == curId) {
             window.gridMap[id]
               ? (window.gridMap[id].show = true)
-              : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
+              : (window.gridMap[
+                  id
+                ] = window.earth.imageryLayers.addImageryProvider(
                   new Cesium.SuperMapImageryProvider({ url, name: id })
                 ));
           } else if (id != "pxswg") {
@@ -214,13 +234,34 @@ export default {
           }
         });
       });
+
       if (this.gridMode) {
         const id = "pxswg";
         window.gridMap[id]
           ? (window.gridMap[id].show = true)
           : (window.gridMap[id] = window.earth.imageryLayers.addImageryProvider(
-              new Cesium.SuperMapImageryProvider({ url: this.sourceURLPxs, name: id })
+              new Cesium.SuperMapImageryProvider({
+                url: this.sourceURLPxs,
+                name: id,
+              })
             ));
+      }
+
+      // 仿真地图下，高度小于1000显示
+      const layerId = "addressGrid";
+      if (this.cameraMode && height <= 1000) {
+        window.gridMap[layerId]
+          ? (window.gridMap[layerId].show = true)
+          : (window.gridMap[
+              layerId
+            ] = window.earth.imageryLayers.addImageryProvider(
+              new Cesium.SuperMapImageryProvider({
+                url: ServiceUrl.GridAddress,
+                name: layerId,
+              })
+            ));
+      } else {
+        window.gridMap[layerId] && (window.gridMap[layerId].show = false);
       }
     },
     /**
@@ -228,7 +269,9 @@ export default {
      */
     fetchLngLat(position) {
       const { x, y, z } = window.earth.scene.globe.pick(
-        window.earth.camera.getPickRay(new Cesium.Cartesian2(position.x, position.y)),
+        window.earth.camera.getPickRay(
+          new Cesium.Cartesian2(position.x, position.y)
+        ),
         window.earth.scene
       );
       const ellipsoid = window.earth.scene.globe.ellipsoid;

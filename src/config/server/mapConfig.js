@@ -65,7 +65,11 @@ export const ServiceUrl = {
   //  大数据底图
   DataImage: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DSJCGS2000SW/rest/realspace/datas/DSJ_CGS2000_SW",
   //  蒲鞋市网格
-  GridPxs : "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg",
+  GridPxs: "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg",
+
+  // 地名地址点位
+  GridAddress: "http://10.36.234.83:8090/iserver/services/map-pxsaddr/rest/maps/ADDRESS",
+
   //  网格图
   GridSource: [{
     label: "鹿城区",
@@ -77,10 +81,6 @@ export const ServiceUrl = {
         label: "蒲鞋市村社",
         id: "pxscs"
       },
-      // {
-      //   label: "蒲鞋市网格",
-      //   id: "pxswg"
-      // },
     ].map(v => {
       return {
         ...v,
