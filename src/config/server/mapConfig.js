@@ -22,39 +22,39 @@ export const ServiceUrl = {
   }],
   //  夜间模型
   WZBaimo_OBJ: [{
-    KEY: 'WZBaimo_POINT_AROUND',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-BaiMo/rest/realspace/datas/BaiMo/config",
-    FLOW: true
-  },
-  {
-    KEY: 'WZBaimo_POINT_JZ',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/JZ/config",
-    FLOW: false
-  },
-  {
-    KEY: 'WZBaimo_POINT_QT',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/QT/config",
-    FLOW: false,
-    d: 2200
-  },
-  {
-    KEY: 'WZBaimo_POINT_DX',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/DX/config",
-    FLOW: false,
-    d: 2400
-  },
-  {
-    KEY: 'WZBaimo_POINT_DL',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/DL/config",
-    FLOW: false,
-    d: 3000
-  },
-  {
-    KEY: 'WZBaimo_POINT_ZB',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/ZB/config",
-    FLOW: false,
-    d: 2200
-  }
+      KEY: 'WZBaimo_POINT_AROUND',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-BaiMo/rest/realspace/datas/BaiMo/config",
+      FLOW: true
+    },
+    {
+      KEY: 'WZBaimo_POINT_JZ',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/JZ/config",
+      FLOW: false
+    },
+    {
+      KEY: 'WZBaimo_POINT_QT',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/QT/config",
+      FLOW: false,
+      d: 2200
+    },
+    {
+      KEY: 'WZBaimo_POINT_DX',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/DX/config",
+      FLOW: false,
+      d: 2400
+    },
+    {
+      KEY: 'WZBaimo_POINT_DL',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/DL/config",
+      FLOW: false,
+      d: 3000
+    },
+    {
+      KEY: 'WZBaimo_POINT_ZB',
+      URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/ZB/config",
+      FLOW: false,
+      d: 2200
+    }
   ],
   //  动态水面模型
   RIVER: "https://ditu.wzcitybrain.com/iserver/services/3D-River_CityBrain/rest/realspace/datas/River_CityBrain/config",
@@ -64,21 +64,19 @@ export const ServiceUrl = {
   SWImage: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-YX2019SW/rest/realspace/datas/YX_2019_SW",
   //  大数据底图
   DataImage: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-DSJCGS2000SW/rest/realspace/datas/DSJ_CGS2000_SW",
-  //  2.5 标注
-  mvt25Image: "http://10.36.234.83:8090/iserver/services/map-pxsaddr/rest/maps/ADDRESS",
   //  蒲鞋市网格
-  GridPxs: "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg",
+  GridPxs : "http://10.36.234.83:8090/iserver/services/map-xzqh1222/rest/maps/pxswg",
   //  网格图
   GridSource: [{
     label: "鹿城区",
     children: [{
-      label: "鹿城街镇",
-      id: "lcjz"
-    },
-    {
-      label: "蒲鞋市村社",
-      id: "pxscs"
-    },
+        label: "鹿城街镇",
+        id: "lcjz"
+      },
+      {
+        label: "蒲鞋市村社",
+        id: "pxscs"
+      },
       // {
       //   label: "蒲鞋市网格",
       //   id: "pxswg"
@@ -92,17 +90,17 @@ export const ServiceUrl = {
   }, {
     label: "经济技术开发区",
     children: [{
-      label: "经开网格",
-      id: "jk_grid"
-    },
-    {
-      label: "经开街镇",
-      id: "jk_town"
-    },
-    {
-      label: "经开村社",
-      id: "jk_village"
-    }
+        label: "经开网格",
+        id: "jk_grid"
+      },
+      {
+        label: "经开街镇",
+        id: "jk_town"
+      },
+      {
+        label: "经开村社",
+        id: "jk_village"
+      }
     ].map(v => {
       return {
         ...v,
@@ -122,69 +120,69 @@ export const ServiceUrl = {
   //  全市区精模
   WZMODEL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-JMLC20121/rest/realspace/datas/JM_LC_2012_1/config",
   SCENE_WZMODEL: [{
-    key: "ZGDYP_ZB",
-    d: 1400,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_ZB/config"
-  },
-  {
-    key: "ZGDYP_DL",
-    d: 5500,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_DL/config"
-  },
-  {
-    key: "ZGDYP_QT",
-    d: 1400,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_QT/config"
-  },
-  {
-    key: "ZGDYP_SX",
-    d: 1400,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_SX/config"
-  },
-  {
-    key: "ZGDYP_JZ",
-    d: 5500,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_JZ/config"
-  },
-  {
-    key: "ZGDYP_DX",
-    d: 5500,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_DX/config"
-  },
-  {
-    key: "MaxShijuJZ",
-    d: 5500,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/MaxShijuJZ/config"
-  },
-  {
-    key: "MaxShijuQT",
-    d: 1400,
-    url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/MaxShijuQT/config"
-  },
+      key: "ZGDYP_ZB",
+      d: 1400,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_ZB/config"
+    },
+    {
+      key: "ZGDYP_DL",
+      d: 5500,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_DL/config"
+    },
+    {
+      key: "ZGDYP_QT",
+      d: 1400,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_QT/config"
+    },
+    {
+      key: "ZGDYP_SX",
+      d: 1400,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_SX/config"
+    },
+    {
+      key: "ZGDYP_JZ",
+      d: 5500,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_JZ/config"
+    },
+    {
+      key: "ZGDYP_DX",
+      d: 5500,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/ZGDYP_DX/config"
+    },
+    {
+      key: "MaxShijuJZ",
+      d: 5500,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/MaxShijuJZ/config"
+    },
+    {
+      key: "MaxShijuQT",
+      d: 1400,
+      url: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb3/rest/realspace/datas/MaxShijuQT/config"
+    },
   ],
   ROAD_LAMP: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-LightModel/rest/realspace/datas/LightModel/config"
 };
 
 export const ImagesURL = [{
-  year: 2019,
-  url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YJYX2019CGCS2000/rest/maps/YJ_YX_2019_CGCS2000"
-},
-{
-  year: 2018,
-  url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YX2018CGC2000/rest/maps/YX_2018_CGC2000"
-},
-{
-  year: 2017,
-  url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-Layers/rest/maps/Layers"
-},
-{
-  year: 2014,
-  url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YX2014CGC2000/rest/maps/YX_2014_CGC2000"
-},
-{
-  year: 2012,
-  url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-Layers2/rest/maps/Layers"
-},
+    year: 2019,
+    url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YJYX2019CGCS2000/rest/maps/YJ_YX_2019_CGCS2000"
+  },
+  {
+    year: 2018,
+    url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YX2018CGC2000/rest/maps/YX_2018_CGC2000"
+  },
+  {
+    year: 2017,
+    url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-Layers/rest/maps/Layers"
+  },
+  {
+    year: 2014,
+    url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-YX2014CGC2000/rest/maps/YX_2014_CGC2000"
+  },
+  {
+    year: 2012,
+    url: "https://sourceserver.wzcitybrain.com/iserver/services/map-agscachev2-Layers2/rest/maps/Layers"
+  },
 ]
 
 export const ExtraSourceURL = {

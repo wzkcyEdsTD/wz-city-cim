@@ -60,7 +60,6 @@ export default {
   watch: {
     cameraMode(n) {
       this.cameraMove();
-      this.showMvt25d(n);
     },
   },
   methods: {
@@ -81,9 +80,6 @@ export default {
       } else {
         this.gridImage.show = false;
       }
-    },
-    showMvt25d(n) {
-      if (window.gridMap["mvt25"]) window.gridMap["mvt25"].show = n;
     },
     /**
      * @param {boolean} cameraMode
