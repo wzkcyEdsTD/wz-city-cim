@@ -1,12 +1,17 @@
 <template>
   <div class="reset">
     <img src="/static/images/mode-ico/reset-ico@2x.png" @click="cameraReset" />
-    <div style="width:80px;height:30px;background-color:#fff;top:30vh" @click="cameraReset2">走你</div>
+    <div
+      style="width: 80px; height: 30px; background-color: #fff; top: 30vh"
+      @click="cameraReset2"
+    >
+      走你
+    </div>
   </div>
 </template>
 
 <script>
-import { angle25d } from "mock/overview.js";
+import { angle3d,angle25d } from "mock/overview.js";
 export default {
   methods: {
     // 复位
@@ -26,6 +31,16 @@ export default {
         },
       });
     },
+
+    // cameraReset2() {
+    //   const { x, y } = this.fetchLngLat();
+    //   const height = window.earth.scene.camera.positionCartographic.height;
+    //   window.earth.camera.flyTo({
+    //     destination: new Cesium.Cartesian3.fromDegrees(x, y, height),
+    //     orientation: angle25d,
+    //   });
+       
+    // },
 
     cameraReset() {
       const { x, y } = this.fetchLngLat();

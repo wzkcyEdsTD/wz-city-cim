@@ -75,13 +75,14 @@ export default {
 
     showhidemap(active){
       const LAYERA = window.earth.scene.layers.find("WZBaimo_POINT_AROUND2");
-      const LAYERC = window.earth.scene.layers.find("WZBaimo_POINT_CENTER");
+      // const LAYERC = window.earth.scene.layers.find("WZBaimo_POINT_CENTER");
+      console.log(active)
       if (active==1) {
-        LAYERA.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
-        LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+        LAYERA.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(82,85,93,1)");
+        // LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
       }else{
         LAYERA.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
-        LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
+        // LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
       }
     }
   },

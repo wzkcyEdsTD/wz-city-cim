@@ -22,14 +22,14 @@ export const ServiceUrl = {
   },
   {
     KEY: 'WZBaimo_POINT_AROUND2',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-BaiMoLuChengEraShiZhengFu/rest/realspace/datas/BaiMo_LuCheng_EraShiZhengFu/config",
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-baimoluchengdeletepuxie/rest/realspace/datas/baimoluchengdeletepuxie/config",
     FLOW: true
   },
-  {
-    KEY: 'WZBaimo_POINT_CENTER',
-    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-ShiZhengFuModel/rest/realspace/datas/ShiZhengFu_Model/config",
-    FLOW: true
-  }
+  // {
+  //   KEY: 'WZBaimo_POINT_CENTER',
+  //   URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-ShiZhengFuModel/rest/realspace/datas/ShiZhengFu_Model/config",
+  //   FLOW: true
+  // }
 ],
   //  夜间模型
   WZBaimo_OBJ: [{
