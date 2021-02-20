@@ -19,7 +19,18 @@ export const ServiceUrl = {
     KEY: 'WZBaimo_JKQ_XH',
     URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D-3/rest/realspace/datas/%E6%98%9F%E6%B5%B7%E6%88%BF%E5%B1%8B%E9%9D%A2@xh3d/config",
     FLOW: true
-  }],
+  },
+  {
+    KEY: 'WZBaimo_POINT_AROUND2',
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-BaiMoLuChengEraShiZhengFu/rest/realspace/datas/BaiMo_LuCheng_EraShiZhengFu/config",
+    FLOW: true
+  },
+  {
+    KEY: 'WZBaimo_POINT_CENTER',
+    URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb-ShiZhengFuModel/rest/realspace/datas/ShiZhengFu_Model/config",
+    FLOW: true
+  }
+],
   //  夜间模型
   WZBaimo_OBJ: [{
       KEY: 'WZBaimo_POINT_AROUND',
@@ -54,7 +65,7 @@ export const ServiceUrl = {
       URL: "https://ditu.wzcitybrain.com/iserver/services/3D-mongodb4/rest/realspace/datas/ZB/config",
       FLOW: false,
       d: 2200
-    }
+    },
   ],
   //  动态水面模型
   RIVER: "https://ditu.wzcitybrain.com/iserver/services/3D-River_CityBrain/rest/realspace/datas/River_CityBrain/config",

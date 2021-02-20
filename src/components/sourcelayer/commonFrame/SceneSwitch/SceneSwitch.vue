@@ -21,6 +21,9 @@
       <img src="/static/images/mode-ico/camera-ico@2x.png" />
       <span>{{ cameraLabel }}</span>
     </div>
+    <div class="btn" @click="selectOldArea('上陡门十二组团')">
+      <span>老旧小区线路</span>
+    </div>
     <SearchBox ref="searchBox" />
   </div>
 </template>
@@ -63,9 +66,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("map", ["SetNightMode", "SetCameraMode"]),
+    ...mapActions("map", ["SetNightMode", "SetCameraMode","setForceGridOldArea"]),
     changeCameraMode() {
       this.SetCameraMode(!this.cameraMode);
+    },
+
+    selectOldArea(name){
+      this.setForceGridOldArea(name);
     },
     doGridImage() {
       if (this.gridImageShow) {

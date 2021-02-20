@@ -91,6 +91,7 @@ export default {
       });
     },
     doRoutePoints(data) {
+     
       window.billboardMap["walkMan_route_lines"] = window.earth.entities.add({
         name: "walkMan_line",
         id: "walkMan_line",

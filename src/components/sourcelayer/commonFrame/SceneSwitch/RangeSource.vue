@@ -58,11 +58,32 @@ export default {
   methods: {
     eventRegsiter() {},
     doRange(node) {
-      window.earth.scene.camera.flyTo({
-        ...this.camera[node.id],
-        maximumHeight: 450,
-      });
+      if(node.label=="鹿城区")
+      {
+        window.earth.scene.camera.flyTo(CenterPoint);
+        this.showhidemap(1);
+      }else{
+        window.earth.scene.camera.flyTo({
+          ...this.camera[node.id],
+          maximumHeight: 450,
+        });
+        if (node.id=="jd_pxs") {
+          this.showhidemap(0);
+        }
+      }
     },
+
+    showhidemap(active){
+      const LAYERA = window.earth.scene.layers.find("WZBaimo_POINT_AROUND2");
+      const LAYERC = window.earth.scene.layers.find("WZBaimo_POINT_CENTER");
+      if (active==1) {
+        LAYERA.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+        LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+      }else{
+        LAYERA.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
+        LAYERC.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
+      }
+    }
   },
 };
 </script>

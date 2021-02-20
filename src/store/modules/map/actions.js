@@ -12,6 +12,11 @@ import CIM_API from "api/cimAPI";
 export const setForceGridMember = ({ commit }, data) => {
   commit(types.SET_FORCE_GRID_MEMBER, data);
 }
+
+//  设置老旧小区
+export const setForceGridOldArea = ({ commit }, data) => {
+  commit(types.SET_FORCE_GRID_OLDAREA, data);
+}
 //  获取网格员列表
 export const setGridMemberList = async ({ commit }, data) => {
   const { rows } = await CIM_API.getGridMemberList();

@@ -37,6 +37,7 @@ const state = {
   //  grid
   gridMemberList: [],
   forceGridMember: undefined,
+  forceGridOldArea: undefined,
 
   // 网格显示
   gridMode: true

@@ -146,6 +146,7 @@ export const mapRoadLampLayerTurn = (boolean) => {
 export const mapBaimoLayerInit = (arrURL) => {
     return new Promise((resolve, reject) => {
         arrURL.map(({ KEY, URL }, index) => {
+            console.log(URL);
             const baimoPromise = window.earth.scene.addS3MTilesLayerByScp(URL, {
                 name: KEY,
             });
@@ -153,7 +154,11 @@ export const mapBaimoLayerInit = (arrURL) => {
                 const LAYER = window.earth.scene.layers.find(KEY);
                 LAYER.indexedDBSetting.isGeoTilesRootNodeSave = true;
                 LAYER.residentRootTile = true;
-                LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+                if(KEY=="WZBaimo_POINT_AROUND2"||KEY=="WZBaimo_POINT_CENTER"){
+                    LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
+                }else{
+                    LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+                }
                 const hyp = new Cesium.HypsometricSetting();
                 const colorTable = new Cesium.ColorTable();
                 hyp.MaxVisibleValue = 300;

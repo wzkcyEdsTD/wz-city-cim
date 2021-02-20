@@ -1,6 +1,7 @@
 <template>
   <div class="reset">
     <img src="/static/images/mode-ico/reset-ico@2x.png" @click="cameraReset" />
+    <div style="width:80px;height:30px;background-color:#fff;top:30vh" @click="cameraReset2">走你</div>
   </div>
 </template>
 
@@ -9,6 +10,23 @@ import { angle25d } from "mock/overview.js";
 export default {
   methods: {
     // 复位
+    cameraReset2() {
+      const { x, y } = this.fetchLngLat();
+      const height = window.earth.scene.camera.positionCartographic.height;
+      window.earth.camera.flyTo({
+        destination:new Cesium.Cartesian3.fromDegrees(
+          x,
+          y,
+          window.earth.scene.camera.positionCartographic.height
+        ),
+        orientation: {
+          heading:  window.earth.scene.camera.heading,
+          pitch: window.earth.scene.camera.pitch-0.1,
+          roll: window.earth.scene.camera.roll,
+        },
+      });
+    },
+
     cameraReset() {
       const { x, y } = this.fetchLngLat();
       const height = window.earth.scene.camera.positionCartographic.height;

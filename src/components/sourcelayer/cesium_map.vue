@@ -27,6 +27,7 @@
       <Population />
       <Overview ref="overview" />
       <WalkMan ref="walkMan" />
+      <OldAreaLine ref="oldArea" />
       <Reset ref="reset" />
     </div>
   </div>
@@ -43,8 +44,10 @@ import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCir
 import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
 import ModelBuilding from "components/sourcelayer/commonFrame/ModelBuilding/ModelBuilding";
 import WalkMan from "components/sourcelayer/extraModel/WalkMan/WalkMan";
+import OldAreaLine from "components/sourcelayer/extraModel/OldAreaLine/OldAreaLine";
 import Reset from "components/sourcelayer/commonFrame/Reset/Reset";
 import { CenterPoint } from "mock/overview.js";
+//import rtinfo from "components/sourcelayer/extraModel/OldAreaLine/routerline.json";
 import {
   mapConfigInit,
   mapImageLayerInit,
@@ -69,6 +72,7 @@ export default {
       authFailshallPop: false,
       sourceURLs: ServiceUrl.GridSource,
       sourceURLPxs: ServiceUrl.GridPxs,
+      //rtinfo
     };
   },
   computed: {
@@ -90,6 +94,7 @@ export default {
     ForceBuilding,
     ModelBuilding,
     WalkMan,
+    OldAreaLine,
     Reset,
   },
   created() {
@@ -113,6 +118,35 @@ export default {
       this.initEntityHandler();
     });
     this.eventRegsiter();
+
+    // this.rtinfo.map((item, index) => {
+    
+    //   // var lastPoint = new Cesium.Cartesian3.fromDegrees(Number(item.STARTX),Number(item.STARTY));
+    //   // var nextPoint = new Cesium.Cartesian3.fromDegrees(Number(item.ENDX),Number(item.ENDY));
+    //   // var x = (parseFloat(item.STARTX)+parseFloat(item.STARTY))/2;
+    //   // var y = (parseFloat(item.ENDX)+parseFloat(item.ENDY))/2;
+    //   // window.earth.entities.add({
+    //   //   position: Cesium.Cartesian3.fromDegrees(Number(item.STARTX), Number(item.STARTY), 4),
+    //   //   polyline
+    //   // })
+
+    //   //var positions = [parseFloat(item.STARTX),parseFloat(item.STARTY),50,parseFloat(item.ENDX),parseFloat(item.ENDY),50];
+    //   //console.log(positions);
+    //   // window.earth.entities.add({
+    //   //   polyline:new Cesium.PolylineGraphics({
+    //   //       show:true,
+    //   //       positions:Cesium.Cartesian3.fromDegreesArrayHeights(positions),
+    //   //       width:20,
+    //   //       height:20,
+    //   //       disableDepthTestDistance: Number.POSITIVE_INFINITY,
+    //   //       material:new Cesium.ImageMaterialProperty({
+    //   //         image:'/static/images/map-ico/arrow.png',
+    //   //         repeat : new Cesium.Cartesian2(1, 1),
+    //   //         transparent:true
+    //   //     })
+    //   //   })
+    //   // })
+    // });
   },
   methods: {
     ...mapActions("map", ["getEventList", "getEventLog", "setEventForce"]),

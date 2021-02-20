@@ -14,6 +14,9 @@ const mutations = {
   [types.SET_FORCE_GRID_MEMBER](state, data) {
     state.forceGridMember = data;
   },
+  [types.SET_FORCE_GRID_OLDAREA](state, data) {
+    state.forceGridOldArea = data;
+  },
   [types.SET_GRID_MEMBER_LIST](state, data) {
     state.gridMemberList = data;
   },
