@@ -1,7 +1,6 @@
 <template>
   <div class="reset">
     <img src="/static/images/mode-ico/reset-ico@2x.png" @click="cameraReset" />
-    <div style="width:80px;height:30px;background-color:#fff;top:30vh" @click="cameraReset2">走你</div>
   </div>
 </template>
 
