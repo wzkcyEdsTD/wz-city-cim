@@ -65,5 +65,9 @@ export const CESIUM_PEOPLE_BUILDING_SOURCE_OPTION = {
   NORMAL2D: {
     url: SERVER_BUILDFING_DATA,
     newdataset: `${BUILDFING_DATA_NAME}hjb`
+  },
+  CZF2D: {
+    url: SERVER_BUILDFING_DATA,
+    newdataset: `${BUILDFING_DATA_NAME}pxsczf`
   }
 }

@@ -154,27 +154,35 @@ export const mapBaimoLayerInit = (arrURL) => {
                 const LAYER = window.earth.scene.layers.find(KEY);
                 LAYER.indexedDBSetting.isGeoTilesRootNodeSave = true;
                 LAYER.residentRootTile = true;
-                if(KEY=="WZBaimo_POINT_AROUND2"||KEY=="WZBaimo_POINT_CENTER"){
+                if(KEY=="WZBaimo_POINT_AROUND2"||KEY=="WZBaimo_POINT_CENTER"||KEY=="WZBaimo_POINT_AROUND"){
                     LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 0)");
+                    if(KEY=="WZBaimo_POINT_AROUND")
+                    {
+                        LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+                    }
+                    const hyp = new Cesium.HypsometricSetting();
+                    const colorTable = new Cesium.ColorTable();
+                    hyp.MaxVisibleValue = 300;
+                    hyp.MinVisibleValue = 0;
+                    colorTable.insert(300, new Cesium.Color(1, 1, 1));
+                    colorTable.insert(160, new Cesium.Color(0.95, 0.95, 0.95));
+                    colorTable.insert(76, new Cesium.Color(0.7, 0.7, 0.7));
+                    colorTable.insert(0, new Cesium.Color(20 / 255, 28 / 255, 64 / 255));
+                    hyp.ColorTable = colorTable;
+                    hyp.DisplayMode = Cesium.HypsometricSettingEnum.DisplayMode.FACE;
+                    hyp.Opacity = 1;
+                    LAYER.hypsometricSetting = {
+                        hypsometricSetting: hyp,
+                        analysisMode:
+                            Cesium.HypsometricSettingEnum.AnalysisRegionMode.ARM_ALL,
+                    };
                 }else{
-                    LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+                    LAYER.visible = false;
                 }
-                const hyp = new Cesium.HypsometricSetting();
-                const colorTable = new Cesium.ColorTable();
-                hyp.MaxVisibleValue = 300;
-                hyp.MinVisibleValue = 0;
-                colorTable.insert(300, new Cesium.Color(1, 1, 1));
-                colorTable.insert(160, new Cesium.Color(0.95, 0.95, 0.95));
-                colorTable.insert(76, new Cesium.Color(0.7, 0.7, 0.7));
-                colorTable.insert(0, new Cesium.Color(20 / 255, 28 / 255, 64 / 255));
-                hyp.ColorTable = colorTable;
-                hyp.DisplayMode = Cesium.HypsometricSettingEnum.DisplayMode.FACE;
-                hyp.Opacity = 1;
-                LAYER.hypsometricSetting = {
-                    hypsometricSetting: hyp,
-                    analysisMode:
-                        Cesium.HypsometricSettingEnum.AnalysisRegionMode.ARM_ALL,
-                };
+                // else{
+                //     LAYER.style3D.fillForeColor = new Cesium.Color.fromCssColorString("rgba(137,137,137, 1)");
+                // }
+
                 index == arrURL.length - 1 && resolve(true)
             });
         });

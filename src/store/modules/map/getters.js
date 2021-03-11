@@ -21,6 +21,7 @@ export const forceIndex = state => state.forceIndex;
 export const forceTime = state => state.forceTime;
 export const nightMode = state => state.nightMode;
 export const cameraMode = state => state.cameraMode;
+export const mapMode = state => state.mapMode;
 export const forceTreeLabel = state => state.forceTreeLabel
 export const forceTrueTopicLabels = state => state.forceTrueTopicLabels;
 export const forceTrueTopicLabelId = state => state.forceTrueTopicLabelId;
@@ -33,3 +34,6 @@ export const gridMemberList = state => state.gridMemberList;
 export const forceGridMember = state => state.forceGridMember;
 export const forceGridOldArea = state => state.forceGridOldArea;
 export const gridMode = state => state.gridMode;
+export const companyList = state => state.companyList;
+export const alarmList = state => state.alarmList;
+export const eventListMode = state => state.eventListMode;

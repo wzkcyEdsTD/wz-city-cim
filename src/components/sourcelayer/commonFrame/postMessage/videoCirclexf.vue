@@ -1,20 +1,15 @@
 <template>
   <div
-    class="videoCircle"
-    v-if="(shallPop && eventForce) || (shallPop && firstEventForce)"
+    class="videoCirclexf"
+    v-if="shallPop&&alarmList.length>0"
   >
     <div
-      class="vc-popup txt123"
+      class="vc-popup"
       :style="{ transform: `translate3d(${item.x}px,${item.y + 4}px, 0)` }"
       v-if="eventForce"
     >
       <div class="popup-container">
         <div class="warn-point" />
-        <div class="red-line" />
-        <div class="warn-popup">
-          <header>突发事件<span /></header>
-          <p>{{ eventForce.SUBJECT }}</p>
-        </div>
       </div>
     </div>
     <div
@@ -24,11 +19,6 @@
     >
       <div class="popup-container">
         <div class="warn-point" />
-        <div class="red-line" />
-        <div class="warn-popup">
-          <header>突发事件<span /></header>
-          <p>{{ firstEventForce.SUBJECT }}</p>
-        </div>
       </div>
     </div>
     <div
@@ -66,13 +56,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("map", ["rtmpListOther", "eventForce", "cameraMode"]),
+    ...mapGetters("map", ["rtmpListOther", "eventForce", "cameraMode","alarmList"]),
   },
   watch: {
-    eventForce: {
+    alarmList: {
       handler(n) {
-        !n && this.removeVideoCircle();
-        !n && this.initEmergency();
+        !n.length && this.removeVideoCircle();
+        !n.length && this.initEmergency();
       },
       deep: true,
     },
@@ -86,9 +76,10 @@ export default {
     ...mapActions("map", ["SetRtmpListOther"]),
     eventRegsiter() {
       const that = this;
-      this.$bus.$off("emergency-simulate");
-      this.$bus.$on("emergency-simulate", ({ LON, LAT }) => {
+      this.$bus.$off("emergency-simulatexf");
+      this.$bus.$on("emergency-simulatexf", ({ LON, LAT }) => {
         this.geometry = { lng: LON, lat: LAT };
+        console.log(this.geometry);
         this.removeVideoCircle();
         this.$nextTick(() => {
           this.doDraw();
@@ -96,9 +87,9 @@ export default {
       });
 
       // 穿透事件监控视频点
-      this.$bus.$off("cesium-3d-video-single");
-      this.$bus.$on("cesium-3d-video-single", async (item) => {
-        console.log(item);
+      this.$bus.$off("cesium-3d-video-singlexf");
+      this.$bus.$on("cesium-3d-video-singlexf", async (item) => {
+         console.log(item);
         this.forceVideo = undefined;
         this.$nextTick(() => {
           this.forceVideo = item;
@@ -127,6 +118,7 @@ export default {
       this.shallPop = true;
     },
     doPopup() {
+      this.shallPop = true;
       let position = Cesium.Cartesian3.fromDegrees(
         this.geometry.lng,
         this.geometry.lat,
@@ -206,7 +198,7 @@ export default {
       this.SetRtmpListOther(data);
       data.forEach((item) => {
         const videoPointEntity = new Cesium.Entity({
-          id: `videopoint_${item.mp_id}`,
+          id: `videopointxf_${item.mp_id}`,
           position: Cesium.Cartesian3.fromDegrees(Number(item.lng), Number(item.lat), 1),
           geometry: { lng: item.lng, lat: item.lat },
           billboard: {

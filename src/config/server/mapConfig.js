@@ -14,6 +14,12 @@ export const ServiceUrl = {
   WZBaimo: [{
     KEY: 'WZBaimo_POINT_AROUND',
     URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D-3/rest/realspace/datas/pxsfwm@xh3d/config",
+    //URL:"http://172.20.83.223:8098/iserver/services/3D-mongodb-maxcimpuxieshi/rest/realspace/datas/max_cim_puxieshi/config",
+    FLOW: true
+  },{
+    KEY: 'WZjm_POINT_AROUND',
+    //URL: "https://ditu.wzcitybrain.com/iserver/services/3D-SDJD3D-3/rest/realspace/datas/pxsfwm@xh3d/config",
+    URL:"http://172.20.83.223:8098/iserver/services/3D-mongodb-maxcimpuxieshi/rest/realspace/datas/max_cim_puxieshi/config",
     FLOW: true
   }, {
     KEY: 'WZBaimo_JKQ_XH',

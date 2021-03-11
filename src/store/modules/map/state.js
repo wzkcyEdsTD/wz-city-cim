@@ -21,6 +21,7 @@ const state = {
   nightMode: true,
   //  相机转动
   cameraMode: false,
+  mapMode: false,
   //  指标下表
   forceIndex: '医疗专题',
   //  tab下标
@@ -31,6 +32,9 @@ const state = {
   eventList: [],
   eventLog: [],
   eventForce: undefined,
+  eventListMode: 0,
+  companyList:[],
+  alarmList:[],
   //  building
   forceBuilding: undefined,
   forceRoom: undefined,

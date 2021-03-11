@@ -1,9 +1,9 @@
 <template>
-  <div class="emergency-list">
+  <div class="company-list">
     <header class="ph-right">
-      事件档案
-      <span class="back-to-list" v-if="eventForce" @click="backToList">事件列表</span>
-      <div class="searchHeader" v-if="!eventForce">
+      企业信息
+      <span class="back-to-list" v-if="alarmList.length" @click="backToList">企业列表</span>
+      <div class="searchHeader" v-if="!(alarmList.length)">
         <div class="button-item">
           <i class="icon-common icon-search"></i>
         </div>
@@ -19,139 +19,62 @@
           </div>
         </div>
       </div>
-      <div class="cgcompany" @click="excmode()"  v-if="!eventForce">消防秒响应</div>
+      <div class="cgcompany" @click="excmode()" v-if="!alarmList.length">事件档案</div>
     </header>
-    <div class="emergency-list-ul" v-if="!eventForce">
-      <header>
-        <span>网格</span>
+    <div class="emergency-list-ul" v-if="!alarmList.length">
+      <header>      
         <!-- <span>序号</span> -->
-        <span>事件</span>
+        <span>负责人</span>
+        <span>联系方式</span>
+        <span>地点</span>
         <!-- 2020/12/24 暂时 -->
         <!-- <span>日期</span> -->
       </header>
       <ul>
         <li
-          v-for="(item, i) in fixEventList"
+          v-for="(item, i) in filtercompanylist"
           :key="i"
           @click="simulateEmergency(item, i)"
-        >
-          <span :title="item.ORGNAME">{{
-            item.ORGNAME.split("（").pop().replace(/\）/g, "")
-          }}</span>
-          <!-- <span>{{ i + 1 }}</span> -->
-          <span :title="item.SUBJECT">{{ item.SUBJECT }}</span>
-          <!-- <span>{{ new Date(item.OCCURDATE).toLocaleDateString() }}</span> -->
+        >     
+          <span>{{item.contact == ''?"无":item.contact}}</span>
+          <span>{{item.contactTel == ''?"无":item.contactTel}}</span>
+          <span>{{item.companyName}}</span>
         </li>
       </ul>
     </div>
-    <div class="emergency-info" v-if="eventForce">
-      <img v-if="eventLogID == 52175497" src="/static/images/event/example.png" />
-      <img v-else-if="eventForce.PHOTOURL" :src="eventForce.PHOTOURL" />
-      <p><i>事件名称:</i>{{ eventForce.SUBJECT }}</p>
-      <p><i>事件简述:</i>{{ eventForce.ISSUECONTENT || "-" }}</p>
-      <p><i>发生时间:</i>{{ new Date(eventForce.OCCURDATE).toLocaleDateString() }}</p>
-      <p><i>最后操作用户:</i>{{ eventForce.LASTUSERNAME || "-" }}</p>
-      <!-- <div class="row-address">
-        <img src="http://59.202.41.43:20050/tqOssManager/getObjectByUri/szzb-gxcc/cooperation/jpg/2021/3/5/131720677582.jpg" />
-      </div>
-      <div class="row-address">
-        <div>巡查发现 纬二路与经四路交叉口东侧交通护栏破损</div> 
-      </div>
-      <div class="row-address">
-        <span class="field">地址：</span>
-        <span>纬二路与经四路交叉口</span>
-      </div>
-
-      <div class="row">
-        <section>
-          <span class="field">事件状态：</span>
-          <span>已办结</span>
-        </section>
-
-        <section>
-          <span class="field">事件类型：</span>
-          <span>城市管理</span>
-        </section>
-      </div>
-
-      <div class="sketch">
-        <span class="field">事件简述：</span>
-        <div>纬二路与经四路交叉口东侧交通护栏破损 存在安全隐患 请有关部门及时处理</div>
-      </div>
-
-      <div class="row">
-        <span class="field">事件等级：</span>
-        <span>一般</span>
-      </div>
-
-      <div class="row">
-        <span class="field">是否重点场所：</span>
-        <span>否</span>
-      </div>
-
-      <div class="row">
-        <span class="field">事件上报时间：</span>
-        <span>2021-03-05 00:00:00</span>
-      </div>
-
-      <div class="row">
-        <span class="field">来源方式：</span>
-        <span>人工录入</span>
-      </div>
-
-      
-
-      <span class="related-man">相关人员：</span>
-      <table class="related-table" frame="void" rules="none">
-        <tr>
-          <td>职务</td>
-          <td>姓名</td>
-          <td>联系方式</td>
-        </tr>
-        <tr>
-          <td>网格员</td>
-          <td>qd8013</td>
-          <td>15726890579</td>
-        </tr>
-      </table> -->
+    <div class="emergency-info" v-if="alarmList.length">
+      <p><i>名称：</i>{{companyinfo.companyName}}</p>
+      <p><i>地址地名:</i>{{companyinfo.address}}</p>
+      <p><i>联系人:</i>{{companyinfo.contact}}</p>
+      <p><i>联系方式:</i>{{companyinfo.contactTel}}</p>
     </div>
-    <div class="emergency-progress" v-if="eventForce">
-      <header>事件流程</header>
-      <ul>
-        <li v-for="(item, i) in fixEventLog" :key="i">
-          <div>{{ item.DEALDESCRIPTION }}</div>
-          <div>
-            <span><img src="/static/images/common/progress-step.png" /></span>
-            <span
-              ><p>{{ new Date(item.DEALTIME).toLocaleString() }}</p>
-              <p>{{ item.DEALUSERNAME }}</p>
-            </span>
-          </div>
-        </li>
-      </ul>
-    </div>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import quickapi from "api/alarminfo";
 export default {
-  name: "emergencyList",
+  name: "companyList",
   data() {
     return {
       searchText: "",
       fixEventList: [],
       fixEventLog: [],
       eventLogID: null,
+      companylist:[],
+      filtercompanylist:[],
+      companyinfo:{}
     };
   },
   computed: {
-    ...mapGetters("map", ["eventList", "eventLog", "eventForce","eventListMode"]),
+    ...mapGetters("map", ["eventList", "eventLog","eventForce","companyList" ,"eventListMode", "alarmList"]),
   },
   watch: {
     searchText(n) {
-      this.fixEventList = this.eventList.filter(
-        (v) => ~v.SUBJECT.indexOf(n) || ~v.ORGNAME.indexOf(n)
+      this.filtercompanylist = this.companylist.filter(
+        (v) => ~v.contact.indexOf(n) || ~v.companyName.indexOf(n)
       );
     },
     eventLog(n) {
@@ -163,34 +86,44 @@ export default {
     },
   },
   async created() {
-    await this.getEventList();
-    this.fixEventList = this.eventList;
+    // await this.getEventList();
+    // this.fixEventList = this.eventList;
+    quickapi.GetCompanyInfo().then(res=>{
+      this.companylist = res.data.data;
+      this.filtercompanylist = res.data.data;
+    })
   },
   methods: {
-    ...mapActions("map", ["getEventList", "getEventLog", "setEventForce","setEventListMode"]),
+    ...mapActions("map", ["getEventList", "getEventLog","setEventForce", "setCompanyList","setEventListMode","setAlarmList"]),
     async simulateEmergency(n, i) {
-      const event = { ...n, i };
-      this.setEventForce(event);
-      this.$bus.$emit("emergency-simulate", event);
-      this.eventLogID = event.ID;
-      await this.getEventLog(event.ID);
+      this.companyinfo = n;
+      quickapi.GetAlarmInfo(n.companyId).then(res=>{
+        this.setAlarmList(res.data.data);
+      })    
+      const event={
+        LON:Number(n.lng),
+        LAT:Number(n.lat)
+      }
+      console.log(n,event);
+      this.$bus.$emit("emergency-simulatexf", event);
+      // this.eventLogID = event.ID;
+      // await this.getEventLog(event.ID);
     },
     backToList() {
-      this.setEventForce(undefined);
+      this.setAlarmList([]);
     },
     searchClear() {
       this.searchText = "";
     },
     excmode(){
-      this.setEventListMode(1);
-      console.log(this.eventListMode)
+      this.setEventListMode(0);
     }
   },
 };
 </script>
 
 <style lang="less">
-.emergency-list {
+.company-list {
   height: 26vh;
   .ph-right {
     .back-to-list {
@@ -364,7 +297,6 @@ export default {
     flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    color:#fff;
     > img {
       width: 14vh;
       float: right;
@@ -390,117 +322,6 @@ export default {
     &::-webkit-scrollbar-thumb {
       background-color: #2a51fe;
       box-shadow: 0px 3px 6px 0px #012623;
-    }
-
-        .field {
-      font-weight: bolder;
-      color: #40b4d0;
-    }
-
-    .row {
-      display: flex;
-      justify-content: space-between;
-
-      &:not(:last-child) {
-        margin-bottom: 1.2vh;
-      }
-    }
-
-    .row-address {
-      margin-bottom: 1.2vh;
-    }
-
-    .sketch {
-      text-align: left;
-
-      > div {
-        text-align: justify;
-        width: 100%;
-        height: 10.28vh;
-        border: solid 0.09vh #707070;
-        margin: 0.65vh 0 1.11vh;
-        padding: 0.5vh;
-        overflow-y: auto;
-      }
-    }
-
-    .related-man {
-      display: block;
-      text-align: left;
-      position: relative;
-      font-weight: bolder;
-      margin-bottom: 1.39vh;
-      padding-left: 1.3vh;
-
-      &::before {
-        content: "";
-        position: absolute;
-        width: 0.74vh;
-        height: 0.74vh;
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%);
-        background-image: linear-gradient(90deg, #ffb936 0%, #f47e09 100%);
-        border-radius: 50%;
-      }
-    }
-
-    .related-table {
-      width: 100%;
-      border: solid 0.1vh #0f4465;
-      color: #c3ecff;
-      margin-bottom: 2.04vh;
-
-      tr:first-child {
-        td {
-          font-weight: bolder;
-          background-color: #0f4465;
-          color: #00b1ff;
-          padding: 0.5vh 0 0.7vh;
-        }
-      }
-
-      tr:last-child {
-        td {
-          padding: 0.3vh 0 0.5vh;
-        }
-      }
-    }
-
-    .related-video {
-      width: 28.7vh;
-      height: 17.78vh;
-      margin-bottom: 1.85vh;
-    }
-
-    .process-box {
-      .box-header {
-        text-align: left;
-        font-weight: bolder;
-        color: #81cfff;
-        cursor: pointer;
-
-        > span {
-          margin-right: 0.3vh;
-        }
-
-        > i {
-          transform: rotate(180deg);
-          transition: transform 0.25s linear;
-
-          &.active {
-            transform: rotate(0deg);
-          }
-        }
-      }
-
-      .box-body {
-        padding: 1vh;
-
-        > img {
-          width: 100%;
-        }
-      }
     }
   }
   .emergency-list-ul {
@@ -557,13 +378,13 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       &:first-child {
-        width: 8vh;
+        width: 10vh;
       }
       &:nth-child(2) {
-        flex: 1;
+        width: 12vh;
       }
       &:last-child {
-        width: 11vh;
+        width: 20vh;
       }
     }
   }

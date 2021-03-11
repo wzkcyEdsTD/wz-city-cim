@@ -77,6 +77,10 @@ export const SetNightMode = ({ commit }, data) => {
 export const SetCameraMode = ({ commit }, data) => {
   commit(types.SET_CAMERA_MODE, data);
 };
+// 地图切换
+export const SetMapMode = ({ commit }, data) => {
+  commit(types.SET_MAP_MODE, data);
+};
 //  设置tab下标
 export const SetForceTreeLabel = ({ commit }, data) => {
   commit(types.SET_FORCE_TREE_LABEL, data);
@@ -93,3 +97,13 @@ export const SetForceTrueTopicLabelId = ({ commit }, data) => {
 export const SetGridMode = ({ commit }, data) => {
   commit(types.SET_GRID_MODE, data);
 };
+//  设置企业显示隐藏
+export const setCompanyList = ({ commit }, data) => {
+  commit(types.SET_COMPANY_LIST, data);
+}
+export const setAlarmList = ({ commit }, data) => {
+  commit(types.SET_ALARM_LIST, data);
+}
+export const setEventListMode = ({ commit }, data) => {
+  commit(types.SET_EVENTLIST_MODE, data);
+}

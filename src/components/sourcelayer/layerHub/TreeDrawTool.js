@@ -85,6 +85,7 @@ export const treeDrawTool = (context, { result }, node, fields = [], fn) => {
   //   window.entityMap[node.id] = datasource;
   // });
   //  hash赋值
+  console.log(window.billboardMap[node.id]);
   window.billboardMap[node.id] = window.earth.scene.primitives.add(new Cesium.BillboardCollection());
   window.labelMap[node.id] = window.earth.scene.primitives.add(new Cesium.LabelCollection());
   //  属性赋值

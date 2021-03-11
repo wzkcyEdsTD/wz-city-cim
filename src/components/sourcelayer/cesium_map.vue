@@ -23,6 +23,7 @@
       <SceneSwitch />
       <RoadLine ref="roadline" />
       <VideoCircle ref="videoCircle" />
+      <VideoCirclexf ref="videoCirclexf" />
       <RtmpVideo />
       <Population />
       <Overview ref="overview" />
@@ -41,6 +42,7 @@ import RtmpVideo from "components/sourcelayer/extraModel/RtmpVideo/RtmpVideo";
 import Population from "components/sourcelayer/extraModel/Population/Population";
 import SceneSwitch from "components/sourcelayer/commonFrame/SceneSwitch/SceneSwitch";
 import VideoCircle from "components/sourcelayer/commonFrame/postMessage/videoCircle";
+import VideoCirclexf from "components/sourcelayer/commonFrame/postMessage/videoCirclexf";
 import ForceBuilding from "components/sourcelayer/commonFrame/ForceBuilding/ForceBuilding";
 import ModelBuilding from "components/sourcelayer/commonFrame/ModelBuilding/ModelBuilding";
 import WalkMan from "components/sourcelayer/extraModel/WalkMan/WalkMan";
@@ -90,6 +92,7 @@ export default {
     Population,
     SceneSwitch,
     VideoCircle,
+    VideoCirclexf,
     Overview,
     ForceBuilding,
     ModelBuilding,
@@ -110,6 +113,7 @@ export default {
     window.heatMap = {};
   },
   async mounted() {
+    
     await this.init3DMap(() => {
       this.mapLoaded = true;
       this.initPostRender();
@@ -162,6 +166,10 @@ export default {
         if (this.$refs.videoCircle && this.$refs.videoCircle.shallPop) {
           this.$refs.videoCircle.doPopup();
         }
+          //  *****[videoCircle]  事件传递点位*****
+        if (this.$refs.videoCirclexf && this.$refs.videoCirclexf.shallPop) {
+          this.$refs.videoCirclexf.doPopup();
+        }
         //  *****[detailPopup]  详情查看点位*****
         if (this.$refs.detailPopup) {
           this.$refs.detailPopup.renderForceEntity();
@@ -190,10 +198,19 @@ export default {
       handler.setInputAction((e) => {
         const pick = window.earth.scene.pick(e.position);
         if (!pick || !pick.id) return;
+        console.log(pick);
         if (typeof pick.id == "object") {
           if (pick.id.id && ~pick.id.id.indexOf("videopoint_")) {
             console.log(pick.id.geometry);
             this.$bus.$emit("cesium-3d-video-single", {
+              mp_id: pick.id.id,
+              mp_name: pick.id.name,
+              geometry: pick.id.geometry,
+            });
+          }
+          if (pick.id.id && ~pick.id.id.indexOf("videopointxf_")) {
+            console.log(pick.id.geometry);
+            this.$bus.$emit("cesium-3d-video-singlexf", {
               mp_id: pick.id.id,
               mp_name: pick.id.name,
               geometry: pick.id.geometry,
@@ -214,6 +231,7 @@ export default {
             this.$bus.$emit("cesium-3d-pick-model", { x, y });
           }
         } else if (typeof pick.id == "string") {
+          console.log("pick",pick.primitive.name);
           const [_TYPE_, _SMID_, _NODEID_] = pick.id.split("@");
           //  *****[detailPopup]  资源详情点*****
           if (~["label", "billboard"].indexOf(_TYPE_)) {

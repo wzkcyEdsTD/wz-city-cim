@@ -21,6 +21,9 @@
       <img src="/static/images/mode-ico/camera-ico@2x.png" />
       <span>{{ cameraLabel }}</span>
     </div>
+    <div class="btn" @click="changeMapMode">
+      <span>{{ mapLabel }}</span>
+    </div>
     <div class="btn" @click="selectOldArea('上陡门十二组团')">
       <span>老旧小区线路</span>
     </div>
@@ -55,22 +58,33 @@ export default {
     InfoSource,
   },
   computed: {
-    ...mapGetters("map", ["cameraMode"]),
+    ...mapGetters("map", ["cameraMode","mapMode"]),
     cameraLabel() {
       return this.cameraMode ? "立体地图" : "仿真地图";
+    },
+
+    mapLabel() {
+      return this.mapMode ? "白膜地图" : "精膜地图";
     },
   },
   watch: {
     cameraMode(n) {
       this.cameraMove();
     },
+
+    mapMode(n) {
+      this.mapMove();
+    },
   },
   methods: {
-    ...mapActions("map", ["SetNightMode", "SetCameraMode","setForceGridOldArea"]),
+    ...mapActions("map", ["SetNightMode", "SetCameraMode","setForceGridOldArea","SetMapMode"]),
     changeCameraMode() {
       this.SetCameraMode(!this.cameraMode);
     },
 
+    changeMapMode() {
+      this.SetMapMode(!this.mapMode);
+    },
     selectOldArea(name){
       this.setForceGridOldArea(name);
     },
@@ -88,6 +102,19 @@ export default {
         this.gridImage.show = false;
       }
     },
+
+    mapMove(){
+
+      if(this.mapMode){
+        window.earth.scene.layers.find('WZjm_POINT_AROUND').visible = true;
+        window.earth.scene.layers.find('WZBaimo_POINT_AROUND').visible = false;
+      }
+      else{
+        window.earth.scene.layers.find('WZjm_POINT_AROUND').visible = false;
+        window.earth.scene.layers.find('WZBaimo_POINT_AROUND').visible = true;
+      }
+    },
+
     /**
      * @param {boolean} cameraMode
      *  true 2.5d

@@ -26,7 +26,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "emergencyChart",
   data() {
-    return { option, month: 12, eventToday: 0, eventTotal: 0 };
+    return { option, month: 12, eventToday: 20, eventTotal: 100 };
   },
   watch: {
     eventList: {
@@ -44,14 +44,18 @@ export default {
     updateChartOption() {
       const dateHash = {};
       this.eventList.map((v) => {
-        if (this.compare(v.OCCURDATE)) {
-          const d = new Date(v.OCCURDATE).toLocaleDateString();
+        // if (this.compare(v.OCCURDATE)) {
+        //   const d = new Date(v.OCCURDATE).toLocaleDateString();
+        //   !dateHash[d] && (dateHash[d] = 0);
+        //   dateHash[d] += 1;
+        //   this.eventTotal++;
+        // }
+        const d = new Date(v.OCCURDATE).toLocaleDateString();
           !dateHash[d] && (dateHash[d] = 0);
           dateHash[d] += 1;
           this.eventTotal++;
-        }
       });
-      this.eventToday = dateHash["2020/12/25"];
+      //this.eventToday = dateHash["2020/12/25"];
       const xAxisData = Object.keys(dateHash)
         .map((v) => parseInt(v.split("/")[1]) * 100 + parseInt(v.split("/")[2]))
         .sort((a, b) => a - b);
@@ -63,6 +67,7 @@ export default {
             )}`
           ]
       );
+      console.log(xAxisData,this.eventList);
       const option = JSON.parse(JSON.stringify(this.option));
       option.xAxis.data = xAxisData.map(
         (v) => `${v.toString().substr(0, 2)}/${v.toString().substr(2, 2)}`

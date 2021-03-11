@@ -61,39 +61,13 @@
                       </span>
                     </div>
                   </span>
-                  <span
-                    v-else-if="
-                      (modelBuilding.address ==
-                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团7幢' &&
-                        ~['203', '401'].indexOf(room)) ||
-                      (modelBuilding.address ==
-                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团8幢' &&
-                        ~['102', '301', '403'].indexOf(room)) ||
-                      (modelBuilding.address ==
-                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团9幢' &&
-                        ~['103', '201', '402'].indexOf(room)) ||
-                      (modelBuilding.address ==
-                        '浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十一组团10幢' &&
-                        ~['201', '302', '401'].indexOf(room))
-                    "
-                    class="activeRent"
-                    >{{ room }}室
-                    <div class="room-info" v-if="item.length">
-                      <span
-                        v-for="(people, k) in item"
-                        :key="k"
-                        :class="{ activeRoomKeyOne: people.isKey }"
-                      >
-                        <p>{{ people.NAME }}</p>
-                        <!-- <p>{{ people.IDCARD }}</p> -->
-                      </span>
-                    </div>
-                  </span>
+ 
                   <span
                     v-else
                     :class="{
                       activeRoom: item.length,
                       activeCompany: item.length && item[0].type == 'company',
+                      activeRent:item.length&&item.filter((v)=>v.isczf).length,
                       activeKey: item.length && item.filter((v) => v.isKey).length,
                     }"
                     >{{ room }}室
@@ -121,7 +95,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { CESIUM_PEOPLE_BUILDING_SOURCE_OPTION } from "config/server/sourceTreeOption";
-const { BUILDING2D, HOME2D, PEOPLE2D, NORMAL2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
+const { BUILDING2D, HOME2D, PEOPLE2D, NORMAL2D, CZF2D } = CESIUM_PEOPLE_BUILDING_SOURCE_OPTION;
 export default {
   name: "ModelBuilding",
   data() {
@@ -137,6 +111,7 @@ export default {
     ...mapActions("map", ["setForceRoom"]),
     eventRegsiter() {
       this.$bus.$on("cesium-3d-pick-model", (geometry) => {
+        console.log(geometry);
         this.doFetchBuild(geometry);
       });
     },
@@ -156,6 +131,8 @@ export default {
         const keys = await this.fetchKeyByBuildUUID(address, PEOPLE2D);
         //  fetch normals
         const normals = await this.fetchKeyByBuildUUID(address, NORMAL2D);
+        //  fetch czf
+        const czfs = await this.fetchKeyByBuildUUID2(address, CZF2D);
         //  fetch rooms
         const rooms = await this.fetchRoomByBuildUUID(uuid, HOME2D);
         if (rooms.length) {
@@ -184,7 +161,18 @@ export default {
               !floor[f][r].filter((d) => d.NAME == v.fieldValues[3]).length &&
               floor[f][r].push(this.fixDataFormat(v.fieldNames, v.fieldValues));
           });
+          czfs.map((v) => {
+            const r = parseInt(v.fieldValues[3]);
+            const f = parseInt(r/100);
+            floor[f] &&
+              floor[f][r] &&
+              floor[f][r].push({
+                ...this.fixDataFormat(v.fieldNames, v.fieldValues),
+                isczf:true,
+              });
+          });
           modelBuilding.modelBuildFloorRoom = floor;
+          console.log(modelBuilding.modelBuildFloorRoom);
         }
         this.modelBuilding = modelBuilding;
       }
@@ -257,6 +245,7 @@ export default {
             },
           }
         );
+        console.log(newdataset,url,getFeaturesByGeometryService);
         getFeaturesByGeometryService.processAsync(
           new SuperMap.REST.GetFeaturesByGeometryParameters({
             datasetNames: [newdataset],
@@ -301,6 +290,33 @@ export default {
             processFailed: (err) => reject(err),
           },
         });
+        getFeatureBySQLService.processAsync(
+          new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: new SuperMap.REST.FilterParameter({
+              attributeFilter: `BZDZ = '${address}'`,
+            }),
+            toIndex: -1,
+            datasetNames: [newdataset],
+          })
+        );
+      });
+    },
+
+        /**
+     * 获取重点人员
+     */
+    async fetchKeyByBuildUUID2(address, { newdataset, url }) {
+      return new Promise((resolve, reject) => {
+        const getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+          eventListeners: {
+            processCompleted: (data) => data && resolve(data.originResult.features),
+            processFailed: (err) => reject(err),
+          },
+        });
+        if(address=="浙江省温州市鹿城区蒲鞋市街道绿园社区上陡门住宅区十组团2幢")
+        {
+          address = "浙江省温州市鹿城区蒲鞋市街道绿园社区学院中路上陡门住宅区十组团2幢"
+        }
         getFeatureBySQLService.processAsync(
           new SuperMap.REST.GetFeaturesBySQLParameters({
             queryParameter: new SuperMap.REST.FilterParameter({

@@ -68,6 +68,9 @@ const mutations = {
   [types.SET_CAMERA_MODE](state, data) {
     state.cameraMode = data
   },
+  [types.SET_MAP_MODE](state, data) {
+    state.mapMode = data
+  },
   [types.SET_FORCE_TREE_LABEL](state, data) {
     state.forceTreeLabel = data
   },
@@ -79,6 +82,15 @@ const mutations = {
   },
   [types.SET_GRID_MODE](state, data) {
     state.gridMode = data;
+  },
+  [types.SET_COMPANY_LIST](state, data) {
+    state.companyList = data;
+  },
+  [types.SET_ALARM_LIST](state, data) {
+    state.alarmList = data;
+  },
+  [types.SET_EVENTLIST_MODE](state, data) {
+    state.eventListMode = data;
   }
 };
 

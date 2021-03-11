@@ -60,6 +60,7 @@ export default {
       this.forceNodeKeys = [...this.$refs.tree.getCheckedKeys()];
     },
     doForceNodeChange() {
+      
       this.sourceURLs.map((d) => {
         d.children.map(({ id, url }) => {
           if (~this.forceNodeKeys.indexOf(id)) {

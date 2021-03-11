@@ -60,6 +60,7 @@ export default {
       this.forceNodeKeys = [...this.$refs.tree.getCheckedKeys()];
     },
     doForceNodeChange() {
+      console.log(this.sourceURLs);
       this.sourceURLs.map((d) => {
         d.children.map((node) => {
           if (~this.forceNodeKeys.indexOf(node.id)) {
@@ -89,6 +90,7 @@ export default {
      */
     getPOIPickedFeature(node, fn) {
       const { newdataset, url } = node;
+      console.log(window.billboardMap[node.id],node);
       var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
       getFeatureParam = new SuperMap.REST.FilterParameter({
         // attributeFilter: `SMID <= 1000`,
