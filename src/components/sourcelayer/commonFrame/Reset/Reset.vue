@@ -42,6 +42,16 @@ export default {
       });
     },
 
+    // cameraReset2() {
+    //   const { x, y } = this.fetchLngLat();
+    //   const height = window.earth.scene.camera.positionCartographic.height;
+    //   window.earth.camera.flyTo({
+    //     destination: new Cesium.Cartesian3.fromDegrees(x, y, height),
+    //     orientation: angle25d,
+    //   });
+       
+    // },
+
     cameraReset() {
       const { x, y } = this.fetchLngLat();
       const height = window.earth.scene.camera.positionCartographic.height;
